@@ -1,0 +1,37 @@
+@import url('https://api.fitravel.info/fonts/pf.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.swoosh {
+		text-shadow: 0px 0px 0 #ffc802;
+		@apply tw-font-bira tw-text-6xl tw-z-30 tw-transform -tw-rotate-4 -tw-top-16 tw-mt-20 tw-relative; 
+	}
+	.pop-emboss {
+		text-shadow: 1px 1px 1rem #147772;
+	}
+	.card-emboss {
+		text-shadow: 0 1px 4px #999;
+	}
+	.price {
+		@apply tw-font-black tw-italic tw-text-2xl
+	}
+	.condensed {
+		font-stretch: condensed;
+	}
+	.action-button {
+		@apply tw-uppercase tw-shadow tw-bg-black tw-text-white tw-py-2 tw-px-6 tw-font-light tw-rounded
+			hover:tw-bg-pf-pop disabled:hover:tw-bg-black disabled:tw-text-gray-300
+			disabled:tw-opacity-75 disabled:tw-cursor-not-allowed tw-grid tw-items-center;
+	}
+	.action-button:not(.selected) {
+		@apply tw-bg-transparent tw-shadow-none !important;
+	}
+}
+
+body, html {
+	@apply tw-bg-pf-brand tw-font-source;
+	font-size: 14px;
+}

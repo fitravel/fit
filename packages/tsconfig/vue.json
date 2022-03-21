@@ -1,0 +1,29 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+		"types": [
+			"node",
+			"vue"
+		],
+		"paths": {
+			"@/*": [
+				"src/*"
+			]
+		},
+    "lib": [
+			"esnext",
+			"dom",
+			"dom.iterable",
+			"scripthost"
+    ]
+  },
+  "include": [
+    "src/**/*.json",
+    "src/**/*.ts",
+    "src/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

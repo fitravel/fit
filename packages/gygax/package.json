@@ -1,0 +1,14 @@
+{
+  "name": "gygax",
+  "version": "0.0.3",
+  "main": "./index.ts",
+  "dependencies": {
+    "fn": "*",
+    "qs": "^6.10.3",
+    "tsconfig": "*",
+    "vui": "*"
+  },
+	"devDependencies": {
+    "@types/qs": "^6.9.7"
+	}
+}

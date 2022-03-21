@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "strict": true,
+      "declaration": true,
+      "declarationDir": "dist",
+      "noUnusedParameters": true,
+      "importHelpers": true,
+      "moduleResolution": "node",
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "baseUrl": "."
+  },
+  "includes":[
+    "./**/*.json",
+    "./**/*.ts",
+    "./**/*.js"
+    ]
+}

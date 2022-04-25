@@ -14,7 +14,7 @@ export async function renderBanner (i: Banner): Promise<any> {
 	const index = `${path}/index.html`
 
 	await createDir(path)
-	if (isExt('zip')(i.file)) return createIndex(path, '')
+	if (!isExt('zip')(i.file)) return createIndex(path, '')
 
 	await downloadFile(zip)(i.file)
 	await extractZip(zip)(path)

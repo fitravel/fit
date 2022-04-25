@@ -3,9 +3,10 @@ import createBranch from "./createBranch"
 import renderSlot from "./renderSlot"
 
 export const renderSource = createBranch<BannerSource, BannerSlot>({
-	key: 'slots',
-	fn: renderSlot,
-	template: () => ''
+	path: i => i.path,
+	children: i => i.slots,
+	child: renderSlot,
+	index: () => ''
 })
 
 export default renderSource

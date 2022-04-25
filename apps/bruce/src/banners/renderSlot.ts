@@ -3,9 +3,10 @@ import renderBanner from "./renderBanner"
 import createBranch from "./createBranch"
 
 export const renderSlot = createBranch<BannerSlot, Banner>({
-	key: 'banners',
-	fn: renderBanner,
-	template: () => ''
+	path: i => i.path,
+	children: i => i.banners,
+	child: renderBanner,
+	index: () => ''
 })
 
 export default renderSlot

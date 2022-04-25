@@ -2,12 +2,14 @@
   "name": "ntl",
   "version": "0.0.0",
   "main": "./index.ts",
+  "type": "module",
   "dependencies": {
     "adm-zip": "^0.5.9",
     "fn": "*",
     "rimraf": "^3.0.2"
   },
   "devDependencies": {
-    "@types/rimraf": "^3.0.2"
+    "@types/rimraf": "^3.0.2",
+    "ts-node": "^10.7.0"
   }
 }

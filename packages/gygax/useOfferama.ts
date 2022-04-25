@@ -1,5 +1,4 @@
-import { isNil, map, split, compose, flatten, filter, o, nifdef, difdef, parseAvailabilityQuery, type AvailabilityQuery } from "fn"
-import { parse } from 'qs'
+import { map, compose, flatten, filter, o, parseAvailabilityQuery, type AvailabilityQuery } from "fn"
 import { initState } from './initState'
 import { isAfter } from "date-fns"
 

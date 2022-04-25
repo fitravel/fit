@@ -1,4 +1,4 @@
-import rimraf from "rimraf"
+import * as rimraf from "rimraf"
 
 export async function removeDir (path: string): Promise<boolean> {
 	console.log(`Removing dir ${path}`)

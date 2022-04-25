@@ -1,5 +1,10 @@
 {
   "extends": "tsconfig/vue.json",
-  "include": ["**/*.ts", "**/*.vue", "../../packages/gygax/fetchBannerSources.ts"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts", "**/*.vue"],
+  "exclude": ["node_modules"],
+	"ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

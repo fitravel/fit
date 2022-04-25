@@ -4,6 +4,7 @@ import { initState } from "./initState"
 import { getHero } from "./getHero"
 import { extname } from "path"
 import fetchEndpoint from "./fetchEndpoint"
+import { type GygaxData } from "."
 
 export interface Banner {
 	id: number;

@@ -3,12 +3,14 @@ import { createWriteStream } from "fs"
 import { toNodeStream } from "./toNodeStream"
 import { fileExists } from "./fileExists"
 
-export const downloadFile = curry(async (path: string, url: string): Promise<undefined> => {
+export const downloadFile = curry(async (path: string, url: string): Promise<void> => {
 	console.log(`Downloading file ${url} to ${path}`)
 	
 	return new Promise(async (resolve, reject) => {
-		if (await fileExists(path)) onError(`Download cancelled: File ${path} already exists`)
-		
+		if (await fileExists(path)) {
+			console.log(`Download cancelled: File ${path} already exists`)
+			reject()
+		}
 		const stream = await fetch(url).catch(reject).then(toNodeStream)
 		const file   = createWriteStream(path)
 

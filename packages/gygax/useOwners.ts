@@ -16,4 +16,5 @@ const model = ({ id, slug, name, description, parent, acf }: Record<any, any>): 
 	confirmationPrice: +acf.confirmationPrice,
 	type: +acf.type
 })
+
 export const useOwners = initState<Owner>('owners', model)

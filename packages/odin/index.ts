@@ -1,4 +1,4 @@
-export * from "./config"
+export * as config from "./config"
 export * from "./fetchEndpoint"
 export * from "./flightPrice"
 export * from "./useFlightAvailability"

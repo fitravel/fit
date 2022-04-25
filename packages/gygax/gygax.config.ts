@@ -1,5 +1,3 @@
-export const config = {
+export default {
 	baseURL: 'https://gygax.fitravel.info/wp-json/wp/v2'
 }
-
-export default config

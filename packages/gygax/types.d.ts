@@ -1,0 +1,1 @@
+declare type GygaxData = Record<string, any>

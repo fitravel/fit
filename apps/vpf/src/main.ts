@@ -14,7 +14,7 @@ interface LaunchOptions {
 }
 const pinia = createPinia()
 
-function launch (i: LaunchOptions) {
+function embed (i: LaunchOptions) {
 	const $ = document.querySelector(i.mount) as HTMLElement
 	const { slug = null, spotlight = false } = $?.dataset ?? {}
 
@@ -24,9 +24,9 @@ function launch (i: LaunchOptions) {
 		app.mount(i.mount)
 	}
 }
-launch({ mount: '#offer-search', root: SearchEngine })
-launch({ mount: '#hotel-offerama', root: SolarPlus })
-launch({ mount: '#flight-offerama', root: FlugPlus })
+embed({ mount: '#offer-search', root: SearchEngine })
+embed({ mount: '#hotel-offerama', root: SolarPlus })
+embed({ mount: '#flight-offerama', root: FlugPlus })
 
 useOwners().init()
 useOfferama().init()

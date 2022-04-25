@@ -1,3 +1,5 @@
 export * from "./useOfferama"
 export * from "./useOwners"
-export * from "./config"
+export * as config from "./gygax.config"
+export * from "./getHero"
+export * from "./useBannerSources"

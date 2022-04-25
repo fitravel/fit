@@ -3,7 +3,6 @@ import { useFlightOffer } from "odin"
 import type { AvailabilityQuery } from "gygax"
 import { format, isValid } from 'date-fns'
 import isLocale from 'date-fns/locale/is'
-import { is } from "fn";
 
 const props = defineProps<{
 	query: AvailabilityQuery

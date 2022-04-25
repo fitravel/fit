@@ -3,14 +3,13 @@ import { useHotelOffer } from "odin"
 import type { AvailabilityQuery } from "gygax"
 import { format, isValid } from 'date-fns'
 import isLocale from 'date-fns/locale/is'
-import { is, vanityPrice, isk, o } from "fn"
 import { Price, Stars, Pricepoint } from "."
 
 const props = defineProps<{
 	query: AvailabilityQuery
 }>()
 
-const { hotel, room, stay, destination, url, pricePerPax, totalPrice, isReady } = useHotelOffer(props.query)
+const { hotel, stay, destination, url, pricePerPax, isReady } = useHotelOffer(props.query)
 
 function date (d: string|Date) {
 	const D = new Date(d)

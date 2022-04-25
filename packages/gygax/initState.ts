@@ -2,7 +2,7 @@ import { defineStore } from "pinia"
 import { find, byId, bySlug, map } from "fn"
 import fetchEndpoint from "./fetchEndpoint"
 
-export const basicGetter = <Y, T = Record<any, any>>(fn: (i: Y) => (j: T) => boolean) => {
+export const basicGetter = <Y, T = Record<string, any>>(fn: (i: Y) => (j: T) => boolean) => {
 	return (state: any) => (x: Y): T|null => (find(fn(x))(state.items as T[]) ?? null) as T|null
 }
 

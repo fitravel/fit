@@ -1,5 +1,3 @@
-export const config = {
+export default {
 	baseURL: 'https://fitravel-api.corivoapp.com/odin'
 }
-
-export default config

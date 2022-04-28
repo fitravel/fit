@@ -6,14 +6,14 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-		"test": "ts-node ./src/banners/index.ts --esm"
+    "banners": "ts-node ./src/prebuild.ts"
   },
   "dependencies": {
-    "vui": "*",
-		"gygax": "*"
+    "gygax": "*",
+    "vui": "*"
   },
   "devDependencies": {
-    "tsconfig": "*",
-		"ntl": "*"
+    "ntl": "*",
+    "tsconfig": "*"
   }
 }

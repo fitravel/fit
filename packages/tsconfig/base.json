@@ -18,5 +18,10 @@
     "./**/*.json",
     "./**/*.ts",
     "./**/*.js"
-    ]
+  ],
+	"ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  }
 }

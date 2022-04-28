@@ -1,6 +1,6 @@
 import { createDir } from "ntl"
 import { map, queue, toThunk, is } from "fn"
-import config from "./banners.config"
+import { BASE_PATH } from "./banners.config"
 import createIndex from "./createIndex"
 
 type R = Record<string, any>
@@ -17,7 +17,7 @@ const callElse = <A, B>(i: A, args: any[]|any) => (is(Function)(i) ? i(...(Array
 
 export function createBranch <T, Y>({ children, path, child, index }: BranchOptions<T, Y>) {
 	return async (i: T) => {
-		const branch = config.BASE + callElse<Input<T, string>, string>(path, i)
+		const branch = BASE_PATH + callElse<Input<T, string>, string>(path, i)
 
 		await createDir(branch)
 

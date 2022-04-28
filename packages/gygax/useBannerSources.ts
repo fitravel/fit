@@ -1,8 +1,7 @@
-import { compose, head, includes, map, sluggify, split, toLower } from "fn"
+import { compose, getExt, head, includes, map, sluggify, split, toLower } from "fn"
 import { subYears, addYears } from "date-fns"
 import { initState } from "./initState"
 import { getHero } from "./getHero"
-import { extname } from "path"
 import fetchEndpoint from "./fetchEndpoint"
 import { type GygaxData } from "."
 
@@ -51,7 +50,7 @@ export function bannerModel (source: string, slot: string, basePath: string): (i
 		const utm  = `utm_source=${source}&utm_medium=banner&utm_campaign=${campaign}&utm_content=${content}`
 		const url  = `${base}${includes('?')(base) ? '&' : '?'}${utm}`
 		const file = i?.file?.url || 'https://api.fitravel.info/banner.zip'
-		const ext  = compose(toLower, head, split('?'), extname)((i?.file ?? '') ? i.file : '')
+		const ext  = getExt((file ?? null) ? file : '')
 		const path = `${basePath}/${id}`
 
 		const startDate = new Date(i?.startDate || subYears(new Date(), 1))

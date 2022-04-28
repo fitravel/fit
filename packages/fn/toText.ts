@@ -1,3 +1,3 @@
-export const toText = (i: Response) => i.text()
+export const toText = (i: any) => i.text()
 
 export default toText

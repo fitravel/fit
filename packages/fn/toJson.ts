@@ -1,3 +1,3 @@
-export const toJson = (i: Response) => i.json()
+export const toJson = (i: any) => i.json()
 
 export default toJson

@@ -2,7 +2,6 @@
   "name": "gygax",
   "version": "0.0.3",
   "main": "./index.ts",
-	"type":"module",
   "dependencies": {
     "fn": "*",
     "qs": "^6.10.3",

@@ -34,10 +34,9 @@ export async function renderBanner (i: Banner): Promise<any> {
 			unique_filename: false,
 		}
 		return async () => {
-			const { secure_url: url = i } = (await uploadToCloudinary(path, options)) as UploadApiResponse
-			edits.push(
-				replace(new RegExp(i, 'gi'), url)
-			)
+			const response = await uploadToCloudinary(path, options)
+			const { secure_url: url = i } = response as UploadApiResponse
+			edits.push(replace(new RegExp(i, 'gi'), url))
 		}
 	}
 	const files = await readdir(media)

@@ -5,18 +5,22 @@ import { createBranch, renderSource } from "./banners"
 import { BASE_PATH } from "./banners"
 
 async function init () {
+	await resetDir(BASE_PATH)
+	
+	console.log('Copying favicon.ico')
+	await copyFile('./src/favicon.ico', `${BASE_PATH}/favicon.ico`)
+
+	console.log('Copying robots.txt')
+	await copyFile('./src/robots.txt', `${BASE_PATH}/robots.txt`)
+
+	console.log('Rendering banner tree...')
 	const root = createBranch<{}, BannerSource>({
 		path: '',
 		children: await fetchBannerSources(),
 		child: renderSource,
-		index: () => ''
+		index: () => '',
+		style: () => ''
 	})
-	await resetDir(BASE_PATH)
-	console.log('Copying favicon.ico')
-	await copyFile('./src/favicon.ico', `${BASE_PATH}/favicon.ico`)
-	console.log('Copying robots.txt')
-	await copyFile('./src/robots.txt', `${BASE_PATH}/robots.txt`)
-	console.log('Rendering banner tree...')
 	await root({})
 }
 init()

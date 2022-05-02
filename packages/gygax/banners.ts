@@ -1,9 +1,9 @@
-import { compose, getExt, head, includes, map, sluggify, split, toLower } from "fn"
+import { getExt, includes, map, sluggify } from "fn"
 import { subYears, addYears } from "date-fns"
 import { initState } from "./initState"
 import { getHero } from "./getHero"
-import fetchEndpoint from "./fetchEndpoint"
 import { type GygaxData } from "."
+import { createEndpoint } from "./createEndpoint"
 
 export interface Banner {
 	id: number;
@@ -84,11 +84,5 @@ export function sourceModel (i: GygaxData): BannerSource {
 	return { id, slug, title, modified, slots, hero, url, path }
 }
 
-export async function fetchBannerSources (query: Record<string, any> = {}) {
-	const load = await fetchEndpoint('banneramas', query)
-	return map(sourceModel)(load)
-}
-
-export const useBannerSources = initState<BannerSource>('banneramas', sourceModel)
-
-export default useBannerSources
+export const fetchBanners = createEndpoint<BannerSource>('banneramas', sourceModel)
+export const useBanners   = initState<BannerSource>('banneramas', sourceModel)

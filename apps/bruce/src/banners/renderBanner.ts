@@ -1,11 +1,10 @@
 import { UploadApiResponse } from "cloudinary"
-import { queue, replace, uploadToCloudinary, map } from "fn"
-import isExt from "fn/isExt"
+import { queue, replace, uploadToCloudinary, map, isExt } from "fn"
 import { readdir } from "fs/promises"
 import { type Banner } from "gygax"
 import { createDir, downloadFile, editFile, extractZip } from "ntl"
 import { BASE_PATH, HEAD_SCRIPT, TRACKING_SCRIPT } from "./banners.config"
-import createIndex from "./createIndex"
+import { createIndex } from "./createIndex"
 
 export async function renderBanner (i: Banner): Promise<any> {
 	const path  = BASE_PATH + i.path
@@ -24,8 +23,7 @@ export async function renderBanner (i: Banner): Promise<any> {
 		replace(/<\/body>/i, `${TRACKING_SCRIPT}</body>`),
 		replace(/"imgLocalPath":"media\/"/gi, '"imgLocalPath":""') 
 	]
-
-	function upload (i: string) {
+	const upload = (i: string) => {
 		const path = `${media}/${i}`
 		const options = {
 			folder: 'bruce',
@@ -39,11 +37,11 @@ export async function renderBanner (i: Banner): Promise<any> {
 			edits.push(replace(new RegExp(i, 'gi'), url))
 		}
 	}
-	const files = await readdir(media)
-	return queue([
-		...map(upload)(files),
-		() => editFile(index, edits)
-	])
+	const files     = await readdir(media)
+	const uploads   = map(upload)(files)
+	const editIndex = () => editFile(index, edits)
+
+	return queue([ ...uploads, editIndex ])
 }
 
 export default renderBanner

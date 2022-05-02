@@ -7,32 +7,34 @@ export const renderSlot = createBranch<BannerSlot, Banner>({
 	path: i => i.path,
 	children: i => i.banners,
 	child: renderBanner,
-	style: ({ width, height }) => `
-		* {
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-		}
-		body {
-			height: ${height}px;
-			width: ${width}px;
-		}
-		article {
-			cursor: pointer;
-			height: ${height}px;
-			width: ${width}px;
-		}
-		iframe {
-			pointer-events: none;
-			height: ${height}px;
-			width: ${width}px;
-			border: none;
-		}
-	`,
-	index: ({ banners, fallback, slug, source }) => `
+	index: ({ banners, fallback, slug, source, width, height }) => `
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			body {
+				height: ${height}px;
+				width: ${width}px;
+			}
+			article {
+				cursor: pointer;
+				height: ${height}px;
+				width: ${width}px;
+			}
+			iframe {
+				pointer-events: none;
+				height: ${height}px;
+				width: ${width}px;
+				border: none;
+			}
+		</style>
+
 		<article onClick="onBannerClick()">
 			<iframe loading="lazy" id="banner"></iframe>
 		</article>
+		
 		<script>
 			var a = ${JSON.stringify(banners)}.filter(function (i) {
 				return i ? (new Date(i.startDate) <= new Date()) && (new Date(i.endDate) >= new Date()) : false;

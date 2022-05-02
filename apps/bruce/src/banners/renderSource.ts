@@ -6,8 +6,14 @@ export const renderSource = createBranch<BannerSource, BannerSlot>({
 	path: i => i.path,
 	children: i => i.slots,
 	child: renderSlot,
-	index: () => '',
-	style: () => ''
+	index: ({ hero }) => `
+		<style>
+			body {
+				background-image: url('${hero}');
+				background-size: cover;
+			}
+		</style>
+	`
 })
 
 export default renderSource

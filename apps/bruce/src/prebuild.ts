@@ -1,26 +1,16 @@
-import { copyFile, access, readdir } from "fs/promises"
-import { type BannerSource, fetchBannerSources } from "gygax"
+import { copyFile } from "fs/promises"
 import { resetDir } from "ntl"
-import { createBranch, renderSource } from "./banners"
-import { BASE_PATH } from "./banners"
+import { renderRoot, BASE_PATH } from "./banners"
 
-async function init () {
-	await resetDir(BASE_PATH)
-	
-	console.log('Copying favicon.ico')
-	await copyFile('./src/favicon.ico', `${BASE_PATH}/favicon.ico`)
+const copy = (file: string) => {
+	console.log(`Copying ${file}`)
+	return copyFile(`./src/${file}`, `${BASE_PATH}/${file}`)
+}
 
-	console.log('Copying robots.txt')
-	await copyFile('./src/robots.txt', `${BASE_PATH}/robots.txt`)
+resetDir(BASE_PATH).then(async () => {
+	await copy('favicon.ico')
+	await copy('robots.txt')
 
 	console.log('Rendering banner tree...')
-	const root = createBranch<{}, BannerSource>({
-		path: '',
-		children: await fetchBannerSources(),
-		child: renderSource,
-		index: () => '',
-		style: () => ''
-	})
-	await root({})
-}
-init()
+	return renderRoot()
+})

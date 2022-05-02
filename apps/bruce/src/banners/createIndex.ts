@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises"
 import { HEAD_SCRIPT, BASE_URL } from "./banners.config"
 
-export const createIndex = (path: string, body: string = '', css: string = '') => {
+export const createIndex = (path: string, html: string = '') => {
 	const index = `${path}/index.html`
 	console.log(`Creating index file ${index}`)
 	return writeFile(index, (
@@ -9,13 +9,10 @@ export const createIndex = (path: string, body: string = '', css: string = '') =
 		<html>
 		<head>
 			<title>bruce</title>
-			<script>
-				${css}
-			</script>
 			${HEAD_SCRIPT}
 		</head>
 		<body>
-			${body}
+			${html}
 		</body>
 		</html>`
 	))

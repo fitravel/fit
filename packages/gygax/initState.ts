@@ -1,19 +1,21 @@
 import { defineStore } from "pinia"
-import { find, byId, bySlug, map } from "fn"
-import fetchEndpoint from "./fetchEndpoint"
+import { find, byId, bySlug } from "fn"
+import { createEndpoint } from "./createEndpoint"
+import { reactive } from "vue"
+import { type GygaxData } from "."
 
 export const basicGetter = <Y, T = Record<string, any>>(fn: (i: Y) => (j: T) => boolean) => {
 	return (state: any) => (x: Y): T|null => (find(fn(x))(state.items as T[]) ?? null) as T|null
 }
 
-export function initState <T = Record<any, any>>(
+export function initState <T = Record<string, any>>(
 	id: string, 
-	model: (i: Record<any, any>) => T, 
+	model: (i: GygaxData) => T, 
 	query: Record<any, any> = {}, 
 	_extensions = {}
 ) {
 	const extensions = { 
-		state: {} as Record<any, any>, 
+		state: {} as Record<string, any>, 
 		getters: {} as { [i: string]: (state: any) => any; }, 
 		actions: {} as { [i: string]: (...args: any[]) => any; }, 
 		..._extensions 
@@ -31,9 +33,7 @@ export function initState <T = Record<any, any>>(
 		}, 
 		actions: {
 			async init () {
-				const load   = await fetchEndpoint(id, query)
-				//@ts-ignore
-				this.items   = map(model)(load) as T[]
+				this.items   = reactive(await createEndpoint<T>(id, model)(query))
 				this.isReady = true
 			},
 			...extensions.actions

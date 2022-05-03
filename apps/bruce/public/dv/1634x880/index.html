@@ -1,0 +1,52 @@
+<!doctype html>
+		<html>
+		<head>
+			<title>bruce</title>
+			<script data-auto="false" src="https://cdn.usefathom.com/script.js" data-site="ACFWSJMD"></script>
+		</head>
+		<body>
+			
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			body {
+				height: 880px;
+				width: 1634px;
+			}
+			article {
+				cursor: pointer;
+				height: 880px;
+				width: 1634px;
+			}
+			iframe {
+				pointer-events: none;
+				height: 880px;
+				width: 1634px;
+				border: none;
+			}
+		</style>
+
+		<article onClick="onBannerClick()">
+			<iframe loading="lazy" id="banner"></iframe>
+		</article>
+		
+		<script>
+			var a = [{"id":9496,"source":"dv","slot":"1634x880","brand":"pf","campaign":"solarplus","content":"pf-forsida","url":"https://plusferdir.is?utm_source=dv&utm_medium=banner&utm_campaign=solarplus&utm_content=pf-forsida","file":"https://res.cloudinary.com/fitravel/raw/upload/v1651158926/gygax/DV-13042022-copy-copy-copy-1634x880-px_9496494ea.zip","ext":"zip","startDate":"2021-05-03T14:23:54.637Z","endDate":"2023-05-03T14:23:54.637Z","path":"/dv/1634x880/9496"}].filter(function (i) {
+				return i ? (new Date(i.startDate) <= new Date()) && (new Date(i.endDate) >= new Date()) : false;
+			});
+			var b = {"id":0,"source":"dv","slot":"1634x880","brand":"uu","campaign":"uu22","content":"uu-forsida","url":"https://uu.is/?utm_source=dv&utm_medium=banner&utm_campaign=uu22&utm_content=uu-forsida","file":"https://api.fitravel.info/banner.zip","ext":"zip","startDate":"2021-05-03T14:23:54.637Z","endDate":"2023-05-03T14:23:54.637Z","path":"/dv/1634x880/0"};
+			var i = a.length > 0 ? a[Math.floor(Math.random() * a.length)] : b;
+			
+			function onBannerClick () {
+				window.fathom.trackGoal('MD26GCVI', 0);
+				window.open(i.url);
+			}
+			
+			document.getElementById("banner").src = "https://bruce.one/dv/1634x880/" + i.id + "/";
+		</script>
+	
+		</body>
+		</html>

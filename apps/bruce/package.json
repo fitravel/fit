@@ -4,16 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "yarn build:banners && yarn build:dash",
+		"build:banners": "ts-node ./prebuild.ts",
+		"build:dash": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "banners": "ts-node ./src/prebuild.ts"
+		"count": "ts-node count.ts"
   },
   "dependencies": {
     "gygax": "*",
-    "vui": "*"
+    "vui": "*",
+		"fn": "*"
   },
   "devDependencies": {
-    "ntl": "*",
-    "tsconfig": "*"
+    "tsconfig": "*",
+		"ntl": "*"
   }
 }

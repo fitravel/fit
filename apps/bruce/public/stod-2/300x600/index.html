@@ -1,0 +1,52 @@
+<!doctype html>
+		<html>
+		<head>
+			<title>bruce</title>
+			<script data-auto="false" src="https://cdn.usefathom.com/script.js" data-site="ACFWSJMD"></script>
+		</head>
+		<body>
+			
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+			body {
+				height: 600px;
+				width: 300px;
+			}
+			article {
+				cursor: pointer;
+				height: 600px;
+				width: 300px;
+			}
+			iframe {
+				pointer-events: none;
+				height: 600px;
+				width: 300px;
+				border: none;
+			}
+		</style>
+
+		<article onClick="onBannerClick()">
+			<iframe loading="lazy" id="banner"></iframe>
+		</article>
+		
+		<script>
+			var a = [{"id":9353,"source":"stod-2","slot":"300x600","brand":"uu","campaign":"uu22","content":"sumarsol-uu","url":"https://uu.is/tilbod/sumarsol-uu/?utm_source=stod-2&utm_medium=banner&utm_campaign=uu22&utm_content=sumarsol-uu","file":"https://res.cloudinary.com/fitravel/raw/upload/v1649867652/gygax/S2-sumarsol-uu-300x600-px.zip","ext":"zip","startDate":"2021-05-03T14:23:54.636Z","endDate":"2023-05-03T14:23:54.636Z","path":"/stod-2/300x600/9353"}].filter(function (i) {
+				return i ? (new Date(i.startDate) <= new Date()) && (new Date(i.endDate) >= new Date()) : false;
+			});
+			var b = {"id":0,"source":"stod-2","slot":"300x600","brand":"uu","campaign":"uu","content":"uu-forsida","url":"https://uu.is/?utm_source=stod-2&utm_medium=banner&utm_campaign=uu&utm_content=uu-forsida","file":"https://api.fitravel.info/banner.zip","ext":"zip","startDate":"2021-05-03T14:23:54.636Z","endDate":"2023-05-03T14:23:54.636Z","path":"/stod-2/300x600/0"};
+			var i = a.length > 0 ? a[Math.floor(Math.random() * a.length)] : b;
+			
+			function onBannerClick () {
+				window.fathom.trackGoal('MD26GCVI', 0);
+				window.open(i.url);
+			}
+			
+			document.getElementById("banner").src = "https://bruce.one/stod-2/300x600/" + i.id + "/";
+		</script>
+	
+		</body>
+		</html>

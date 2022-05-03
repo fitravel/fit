@@ -6,24 +6,25 @@ import { CalendarIcon, FolderIcon, FolderOpenIcon, ClipboardCopyIcon, TruckIcon,
 import { whenever } from "@vueuse/shared"
 import { ref, computed, onMounted, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
+import { type BannerSlot, type BannerSource } from "gygax"
 
-type D = Record<string, any>
+type D = Record<string, any>|null
 
 const { data, getSource, fetchStats, isFinished, execute } = useBruce()
 const route = useRoute(), router = useRouter()
 
-const source       = ref<D>(null)
-const src          = ref<string>(undefined)
-const slots        = computed<D[]>(() => source.value?.slots ?? [])
+const source       = ref<BannerSource|null>(null)
+const src          = ref<string>('')
+const slots        = computed<BannerSlot[]>(() => source.value?.slots ?? [])
 const totalSlots   = computed<number>(() => slots.value?.length ?? 0)
-const totalBanners = computed<number>(() => flatten(map((i: D) => i.banners)(slots.value))?.length ?? 0)
+const totalBanners = computed<number>(() => flatten(map((i: BannerSlot) => i.banners)(slots.value))?.length ?? 0)
 
 //
 
 function init () {
 	if (isFinished.value) {
 		source.value = getSource(route.params.slug as string)
-		src.value = source.value?.slug
+		src.value = source.value?.slug ?? ''
 	}
 }
 onMounted(init)
@@ -59,13 +60,13 @@ whenever(isFinished, fetchDates)
 
 //
 
-const slotURL = (slot: D) => {
+const slotURL = (slot: BannerSlot) => {
 	const dimensions = `${slot.width}x${slot.height}`
 	const slug = slot.slug ? `-${slot.slug}` : ''
-	return `https://bruce.one/${source.value.slug}/${dimensions}${slug}/`
+	return `https://bruce.one/${source.value?.slug ?? ''}/${dimensions}${slug}/`
 }
 const isCopyOpen = ref(false)
-const isSlotsOpen = ref([])
+const isSlotsOpen = ref<boolean[]>([])
 
 function onExpandAll () {
 	isSlotsOpen.value = repeat(true)(totalSlots.value)
@@ -157,11 +158,11 @@ const { start: onRender } = useRender({
 
 	<section class="px-6 w-full">
 		<BannerSlot v-for="({ width, height, slug, banners, fallback }, x) of slots" 
-			@update:modelValue="b => isSlotsOpen[x] = b"
+			@update:modelValue="(b: boolean) => isSlotsOpen[x] = b"
 			v-bind="{ 
 				width, height, slug, 
 				banners, fallback,
-				source: source.slug, 
+				source: source?.slug ?? '', 
 				impressions: stats?.[x+1]?.impressions ?? {}, 
 				clicks: stats?.[x+1]?.clicks ?? {}, 
 				modelValue: isSlotsOpen[x] 

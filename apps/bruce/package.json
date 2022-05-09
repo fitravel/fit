@@ -1,22 +1,22 @@
 {
   "name": "bruce",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "yarn build:banners && yarn build:dash",
-		"build:banners": "ts-node ./prebuild.ts",
-		"build:dash": "vue-tsc --noEmit && vite build",
+    "build:banners": "ts-node ./prebuild.ts",
+    "build:dash": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-		"count": "ts-node count.ts"
+    "count": "ts-node count.ts"
   },
   "dependencies": {
+    "fn": "*",
     "gygax": "*",
-    "vui": "*",
-		"fn": "*"
+    "vui": "*"
   },
   "devDependencies": {
-    "tsconfig": "*",
-		"ntl": "*"
+    "ntl": "*",
+    "tsconfig": "*"
   }
 }

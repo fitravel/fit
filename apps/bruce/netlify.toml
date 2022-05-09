@@ -1,0 +1,10 @@
+[build]
+	base = "apps/bruce/"
+	publish = "dist/"
+	command = "yarn build"
+
+[[headers]]
+	for = "/*"
+	
+[headers.values]
+	Access-Control-Allow-Origin = "*"

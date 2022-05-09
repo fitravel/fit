@@ -1,4 +1,4 @@
-import { Queue, type QueueOptions, type TaskFactory } from "queue-promise"
+import Queue, { type QueueOptions, type TaskFactory } from "queue-promise"
 
 export function queue (tasks: readonly TaskFactory[], options: QueueOptions = {}) {
 	const q = new Queue({ concurrent: 1, interval: 1000, ...options })

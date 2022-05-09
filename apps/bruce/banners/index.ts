@@ -1,4 +1,4 @@
-export * from "../banners.config"
+export * from "../app.config"
 export * from "./createBranch"
 export * from "./createIndex"
 export * from "./renderBanner"

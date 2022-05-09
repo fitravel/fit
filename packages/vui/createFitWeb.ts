@@ -1,5 +1,5 @@
 import { defineComponent } from "vue"
-import { createApp } from 'vue/dist/vue.esm-bundler'
+import { createApp } from 'vue'
 import type { RouteRecordRaw } from "vue-router"
 import { createRouter, createWebHistory, createWebHashHistory } from "vue-router"
 import { createPinia } from 'pinia'

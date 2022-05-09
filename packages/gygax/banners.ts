@@ -1,4 +1,4 @@
-import { getExt, includes, map, sluggify } from "fn"
+import { getExt, includes, isNil, last, map, sluggify, split } from "fn"
 import { subYears, addYears } from "date-fns"
 import { initState } from "./initState"
 import { getHero } from "./getHero"
@@ -49,7 +49,8 @@ export function bannerModel (source: string, slot: string, basePath: string): (i
 		const base = i?.link?.acf?.url ?? `https://${{ uu: 'uu', pf: 'plusferdir', sf: 'sumarferdir' }[brand]}.is/`
 		const utm  = `utm_source=${source}&utm_medium=banner&utm_campaign=${campaign}&utm_content=${content}`
 		const url  = `${base}${includes('?')(base) ? '&' : '?'}${utm}`
-		const file = i?.file?.url || 'https://api.fitravel.info/banner.zip'
+		const xoo  = last(split('/')(i?.file?.url ?? ''))
+		const file = isNil(xoo) ? 'https://api.fitravel.info/banner.zip' : `https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/${xoo}`
 		const ext  = getExt((file ?? null) ? file : '')
 		const path = `${basePath}/${id}`
 

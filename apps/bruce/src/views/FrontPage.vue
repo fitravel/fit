@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Page, BruceLogo } from "vui"
+import { Page } from "vui/base"
+import { BruceLogo } from "vui/hermes"
 // import { useBruce } from "vui"
 
 // const { data } = useBruce()

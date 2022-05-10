@@ -34,10 +34,10 @@
 		</article>
 		
 		<script>
-			var a = [{"id":9601,"source":"dv","slot":"310x400","brand":"pf","campaign":"solarplus","content":"uu-tilbod-vikunnar","url":"https://uu.is/tilbod/?utm_source=dv&utm_medium=banner&utm_campaign=solarplus&utm_content=uu-tilbod-vikunnar","file":"https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/DV-09052022-UUsol-310x400-px.zip","ext":"zip","startDate":"2021-05-10T01:31:13.508Z","endDate":"2023-05-10T01:31:13.508Z","path":"/dv/310x400/9601"}].filter(function (i) {
+			var a = [{"id":9601,"source":"dv","slot":"310x400","brand":"pf","campaign":"solarplus","content":"uu-tilbod-vikunnar","url":"https://uu.is/tilbod/?utm_source=dv&utm_medium=banner&utm_campaign=solarplus&utm_content=uu-tilbod-vikunnar","file":"https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/DV-09052022-UUsol-310x400-px.zip","ext":"zip","startDate":"2021-05-10T16:29:37.290Z","endDate":"2023-05-10T16:29:37.290Z","path":"/dv/310x400/9601"}].filter(function (i) {
 				return i ? (new Date(i.startDate) <= new Date()) && (new Date(i.endDate) >= new Date()) : false;
 			});
-			var b = {"id":0,"source":"dv","slot":"310x400","brand":"uu","campaign":"uu22","content":"uu-forsida","url":"https://uu.is/?utm_source=dv&utm_medium=banner&utm_campaign=uu22&utm_content=uu-forsida","file":"https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/","ext":"com/fitravel/raw/upload/v1/gygax/","startDate":"2021-05-10T01:31:13.508Z","endDate":"2023-05-10T01:31:13.508Z","path":"/dv/310x400/0"};
+			var b = {"id":"fallback","source":"dv","slot":"310x400","brand":"uu","campaign":"uu22","content":"uu-forsida","url":"https://uu.is/?utm_source=dv&utm_medium=banner&utm_campaign=uu22&utm_content=uu-forsida","file":"https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/","ext":"com/fitravel/raw/upload/v1/gygax/","startDate":"2021-05-10T16:29:37.290Z","endDate":"2023-05-10T16:29:37.290Z","path":"/dv/310x400/fallback"};
 			var i = a.length > 0 ? a[Math.floor(Math.random() * a.length)] : b;
 			
 			function onBannerClick () {

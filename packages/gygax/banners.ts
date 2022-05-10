@@ -1,9 +1,10 @@
-import { getExt, includes, isNil, last, map, sluggify, split } from "fn"
+import { getExt, includes, isNil, last, map, o, sluggify, split, without } from "fn"
 import { subYears, addYears } from "date-fns"
 import { initState } from "./initState"
 import { getHero } from "./getHero"
 import { type GygaxData } from "."
 import { createEndpoint } from "./createEndpoint"
+import { inspect } from "util"
 
 export interface Banner {
 	id: number;
@@ -39,19 +40,19 @@ export interface BannerSource {
 	path: string;
 }
 
-export function bannerModel (source: string, slot: string, basePath: string): (i: GygaxData) => Banner {
+export function bannerModel (source: string, slot: string, basePath: string, fallback = false): (i: GygaxData) => Banner {
 	return (i: GygaxData) => {
 		const brand    = (i?.brand?.slug ?? 'uu') as 'uu'|'pf'|'sf'
 		const campaign = i?.campaign?.slug ?? brand ?? null
 		const content  = i?.link?.post_name ?? 'uu-forsida'
 
-		const id   = i?.file?.id ?? 0
+		const id   = fallback ? 'fallback' : i?.file?.id ?? 0
 		const base = i?.link?.acf?.url ?? `https://${{ uu: 'uu', pf: 'plusferdir', sf: 'sumarferdir' }[brand]}.is/`
 		const utm  = `utm_source=${source}&utm_medium=banner&utm_campaign=${campaign}&utm_content=${content}`
 		const url  = `${base}${includes('?')(base) ? '&' : '?'}${utm}`
 		const xoo  = last(split('/')(i?.file?.url ?? ''))
 		const file = isNil(xoo) ? 'https://api.fitravel.info/banner.zip' : `https://res.cloudinary.com/fitravel/raw/upload/v1/gygax/${xoo}`
-		const ext  = getExt((file ?? null) ? file : '')
+		const ext  = getExt(file)
 		const path = `${basePath}/${id}`
 
 		const startDate = new Date(i?.startDate || subYears(new Date(), 1))
@@ -66,8 +67,8 @@ export function slotModel (source: string, basePath: string): (i: GygaxData) => 
 
 		const slug     = sluggify(`${width}x${height}${i.slug ? `-${i.slug}` : ''}`)
 		const path     = `${basePath}/${slug}`
-		const banners  = map(bannerModel(source, slug, path))(i?.banners ?? [])
-		const fallback = bannerModel(source, slug, path)(i?.fallback ?? {})
+		const banners  = map(bannerModel(source, slug, path))(i?.banners || [])
+		const fallback = bannerModel(source, slug, path, true)(i?.fallback ?? {})
 
 		return { source, slug, width, height, banners, fallback, path }
 	}

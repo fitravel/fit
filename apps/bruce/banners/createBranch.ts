@@ -23,10 +23,11 @@ export function createBranch <T, Y>({ children, path, child, index }: BranchOpti
 
 		await createDir(branch)
 
-		return queue([
+		const tasks = [
 			...map(thunk(child))(array(children)),
 			isNil(index) ? () => {} : () => createIndex(branch, string(index))
-		])
+		]
+		return queue(tasks, { concurrent: 3 })
 	}
 }
 

@@ -1,30 +1,29 @@
-import { Queue, type QueueOptions, type TaskFactory } from "queue-promise"
-import { head, isEmpty, o, tail } from "ramda"
+import { take, isEmpty, o, drop, map } from "ramda"
+import { funk } from "./funk"
+import { trigger } from "./trigger"
+import { delay } from "./delay"
 
-type Tk = (() => Promise<any>)
-
-export async function queue (tasks: Tk[]) {
-	const i: any[] = []
-	const fn = async (tasks: Tk[]): Promise<void> => {
-		if (isEmpty(tasks)) return;
-		const task = head(tasks) as Tk
-		i.push(await task())
-		return o(fn, tail)(tasks)
-	}
-	await fn(tasks)
-	return i
+export type Task = (() => Promise<any>)
+export interface QueueOptions {
+	concurrent?: number;
+	interval?: number;
 }
 
+export async function queue (tasks: Task[], { concurrent = 1, interval = 0 }: QueueOptions = {}) {
+	const resolved: any[] = []
+	const fn = async (tasks: Task[]): Promise<void> => {
+		if (isEmpty(tasks)) return;
+		if (interval) await delay(interval)
 
-// export function dqueue (tasks: readonly TaskFactory[], options: QueueOptions = {}) {
-// 	const q = new Queue({ concurrent: 1, interval: 1000, ...options })
+		// const process = funk<Task[], Promise<any[]>>([ Promise.all,  ])
+		const batch   = await Promise.all(o(map(trigger), take(concurrent))(tasks))
 
-// 	q.enqueue(tasks)
-
-// 	return new Promise((resolve, reject) => {
-// 		q.on('reject', reject)
-// 		q.on('resolve', resolve)
-// 	})
-// }
+		resolved.push(...batch)
+		
+		return o(fn, drop(concurrent))(tasks)
+	}
+	await fn(tasks)
+	return resolved
+}
 
 export default queue

@@ -6,7 +6,7 @@ import { isEmpty } from "fn"
 
 export const renderSlot = createBranch<BannerSlot, Banner>({
 	path: i => i.path,
-	children: i => isEmpty(i.banners) ? [ i.fallback ] : i.banners,
+	children: i => [ ...i.banners, i.fallback ],
 	child: renderBanner,
 	index: ({ banners, fallback, slug, source, width, height }) => `
 		<style>

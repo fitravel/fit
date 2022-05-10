@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useBruce } from "vui"
+import { Page, BruceLogo } from "vui"
+// import { useBruce } from "vui"
 
-const { data } = useBruce()
+// const { data } = useBruce()
 
 </script>
 
 <template>
 	<Page class="mt-36 text-center">
-
-		<Logo class="mx-auto"/>
+		<BruceLogo class="mx-auto"/>
 
 		<h2 class="py-4">Sources</h2>
 		<section class="flex gap-4 justify-center">

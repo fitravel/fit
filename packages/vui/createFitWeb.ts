@@ -1,5 +1,6 @@
 import { defineComponent } from "vue"
-import { createApp } from 'vue'
+//@ts-ignore
+import { createApp } from 'vue/dist/vue.esm-bundler'
 import type { RouteRecordRaw } from "vue-router"
 import { createRouter, createWebHistory, createWebHashHistory } from "vue-router"
 import { createPinia } from 'pinia'
@@ -19,7 +20,7 @@ export function createFitWeb (config: FitWebConfig) {
 	}))
 	const router = createRouter({ 
 		routes: config.routes, 
-		history: config?.hash ?? false ? createWebHashHistory() : createWebHistory() 
+		history: createWebHistory()//config?.hash ?? false ? createWebHashHistory() : createWebHistory() 
 	})
 	const store = createPinia()
 	

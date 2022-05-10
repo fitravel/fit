@@ -6,5 +6,9 @@
 		"outDir": "dist",
 		"rootDir": ".",
 		"declarationDir": "dist"
-	}
+	},
+	"types": [
+		"node",
+		"vue"
+]
 }

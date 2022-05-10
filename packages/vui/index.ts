@@ -5,5 +5,5 @@ export * from "./useJanus"
 export * from "./useBruce"
 export * from "./useRender"
 
-// import baseConfig from "./baseConfig"
-// export { baseConfig }
+export * from "./base"
+export * from "./hermes"

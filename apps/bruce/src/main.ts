@@ -1,7 +1,7 @@
 import { createFitWeb } from "vui"
 import FrontPage from "./views/FrontPage.vue"
 // import StatPage from "./views/StatPage.vue"
-import SourcePage from "./views/SourcePage.vue"
+import SourcePage from "./views/Test.vue"
 
 createFitWeb({
 	lock: 'bruce',

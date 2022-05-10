@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Page } from "vui/base"
 import { BruceLogo } from "vui/hermes"
-// import { useBruce } from "vui"
+import { useBruce } from "vui"
 
-// const { data } = useBruce()
+const { data: sources } = useBruce()
 
 </script>
 
@@ -13,7 +13,7 @@ import { BruceLogo } from "vui/hermes"
 
 		<h2 class="py-4">Sources</h2>
 		<section class="flex gap-4 justify-center">
-			<router-link v-for="source of []" :to="`/${source.slug}/`">
+			<router-link v-for="source of sources" :to="`/${source.slug}/`">
 				<article class="shadow w-52 h-52 bg-cover hover:shadow-xl" :style="{ 'background-image': `url(${source.hero})` }"/>
 			</router-link>
 		</section>

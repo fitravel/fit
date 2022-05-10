@@ -13,7 +13,7 @@ import { BruceLogo } from "vui/hermes"
 
 		<h2 class="py-4">Sources</h2>
 		<section class="flex gap-4 justify-center">
-			<router-link v-for="source of data" :to="`/${source.slug}/`">
+			<router-link v-for="source of []" :to="`/${source.slug}/`">
 				<article class="shadow w-52 h-52 bg-cover hover:shadow-xl" :style="{ 'background-image': `url(${source.hero})` }"/>
 			</router-link>
 		</section>

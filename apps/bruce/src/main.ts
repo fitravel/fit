@@ -7,8 +7,8 @@ createFitWeb({
 	lock: 'bruce',
 	hash: true,
 	routes: [
-		{ path: '/', name: 'home', component: FrontPage },
+		{ path: '/smash/', name: 'home', component: FrontPage },
 		// { path: '/stats', name: 'stats', component: StatPage },
-		{ path: '/:slug', name: 'source', component: SourcePage }
+		{ path: '/smash/:slug', name: 'source', component: SourcePage }
 	]
 })

@@ -11,7 +11,7 @@ export interface FitWebConfig {
 	hash?: boolean;
 }
 
-export function createFitWeb (config: FitWebConfig) {
+export function createSite (config: FitWebConfig) {
 	const app = createApp(defineComponent({
 		template: `
 			<div class="min-h-screen min-w-screen">
@@ -29,4 +29,4 @@ export function createFitWeb (config: FitWebConfig) {
 	app.mount('#app') 
 }
 
-export default createFitWeb
+export default createSite

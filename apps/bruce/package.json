@@ -16,7 +16,10 @@
     "vui": "*"
   },
   "devDependencies": {
+		"autoprefixer": "*",
     "ntl": "*",
+		"postcss": "*",
+		"tailwindcss": "*",
     "tsconfig": "*"
   }
 }

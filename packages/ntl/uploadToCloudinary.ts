@@ -22,7 +22,7 @@ export function uploadToCloudinary (path: string, _options: UploadApiOptions = {
 		console.log(`Attempting to upload file ${path} to Cloudinary`)
 		cloudinary.uploader.upload(path, options, (error, response) => {
 			if (!isNil(error) || isNil(response)) reject(error)
-			console.log(`Upload successful: ${path} has been added to Cloudinary`)
+			console.log(`Upload successful: File ${path} has been added to Cloudinary`)
 			resolve(response as UploadApiResponse)
 		})
 	})

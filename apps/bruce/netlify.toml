@@ -4,3 +4,8 @@
 
 [build.environment]
   NETLIFY_USE_YARN = "true"
+
+[[redirects]]
+	from = "/"
+	to = "/smash/"
+	status = 301

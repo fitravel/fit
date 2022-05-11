@@ -8,7 +8,7 @@
 [[redirects]]
 	from = "/smash/*"
 	to = "/smash/index.html"
-	status = 301
+	status = 200
 	force = true
 
 [[redirects]]

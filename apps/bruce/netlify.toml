@@ -7,7 +7,7 @@
 
 [[redirects]]
 	from = "/smash/*"
-	to = "/smash/:splat"
+	to = "/smash/index.html"
 	status = 301
 	force = true
 

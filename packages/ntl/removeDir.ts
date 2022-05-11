@@ -5,6 +5,7 @@ export async function removeDir (path: string): Promise<boolean> {
 	return new Promise<boolean>((resolve, reject) => {
 		rimraf(path, (error: any) => {
 			if (error) reject(false)
+			console.log(`Dir ${path} has been removed`)
 			resolve(true)
 		})
 	})

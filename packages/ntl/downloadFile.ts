@@ -13,8 +13,8 @@ export const downloadFile = curry(async (path: string, url: string): Promise<voi
 		}
 		const stream = await fetch(url).catch(reject).then(toNodeStream)
 		const file   = createWriteStream(path)
-		//@ts-ignore
-		stream.pipe(file)
+		
+		stream?.pipe?.(file)
 
 		file.on('error', reject)
 		file.on('finish', () => {

@@ -1,5 +1,5 @@
 import { type UploadApiOptions, v2 as cloudinary, type UploadApiErrorResponse, type UploadApiResponse } from "cloudinary"
-import { isNil, isExt } from "fn"
+import { isNil, isExt, echo } from "fn"
 
 type CloudinaryUploadResponse = UploadApiErrorResponse|UploadApiResponse|undefined
 type R = CloudinaryUploadResponse
@@ -19,8 +19,10 @@ export function uploadToCloudinary (path: string, _options: UploadApiOptions = {
 		..._options
 	}
 	return new Promise((resolve, reject) => {
+		console.log(`Attempting to upload file ${path} to Cloudinary`)
 		cloudinary.uploader.upload(path, options, (error, response) => {
 			if (!isNil(error) || isNil(response)) reject(error)
+			console.log(`Upload successful: ${path} has been added to Cloudinary`)
 			resolve(response as UploadApiResponse)
 		})
 	})

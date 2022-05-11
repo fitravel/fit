@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "yarn build:banners && yarn build:dash",
     "build:banners": "ts-node ./prebuild.ts",
-    "build:dash": "vue-tsc --noEmit && vite build",
+    "build:dash": "vue-tsc --noEmit && vite build && ts-node ./postbuild.ts",
     "preview": "vite preview",
     "count": "ts-node count.ts"
   },

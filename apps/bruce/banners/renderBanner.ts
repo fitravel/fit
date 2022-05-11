@@ -32,6 +32,7 @@ export async function renderBanner (i: Banner): Promise<any> {
 		}
 		return async () => {
 			const response = await uploadToCloudinary(path, options)
+			console.log('WOOOOO',response)
 			const { secure_url: url = i } = response as UploadApiResponse
 			edits.push(replace(new RegExp(i, 'gi'), url))
 		}

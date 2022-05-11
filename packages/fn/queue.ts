@@ -15,8 +15,7 @@ export async function queue (tasks: Task[], { concurrent = 1, interval = 0 }: Qu
 		if (isEmpty(tasks)) return;
 		if (interval) await delay(interval)
 
-		// const process = funk<Task[], Promise<any[]>>([ Promise.all,  ])
-		const batch   = await Promise.all(o(map(trigger), take(concurrent))(tasks))
+		const batch = await Promise.all(o(map(trigger), take(concurrent))(tasks))
 
 		resolved.push(...batch)
 		

@@ -9,3 +9,8 @@
 	from = "/"
 	to = "/smash/"
 	status = 301
+
+[[redirects]]
+	from = "/smash/*"
+	to = "/smash/:splat"
+	status = 301

@@ -6,12 +6,13 @@
   NETLIFY_USE_YARN = "true"
 
 [[redirects]]
-	from = "/"
-	to = "/smash/"
-	status = 301
-
-[[redirects]]
 	from = "/smash/*"
 	to = "/smash/:splat"
+	status = 301
+	force = true
+
+[[redirects]]
+	from = "/"
+	to = "/smash/"
 	status = 301
 	force = true

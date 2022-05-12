@@ -1,8 +1,10 @@
-import { createSite } from "vui"
+import './index.css'
+
 import FrontPage from "./views/FrontPage.vue"
 // import StatPage from "./views/StatPage.vue"
 import SourcePage from "./views/Test.vue"
-// import './index.css'
+import { createSite } from 'vui'
+
 createSite({
 	lock: 'bruce',
 	hash: true,
@@ -12,6 +14,3 @@ createSite({
 		{ path: '/smash/:slug', name: 'source', component: SourcePage }
 	]
 })
-
-
-console.log(import('../tailwind.config') as unknown as any)

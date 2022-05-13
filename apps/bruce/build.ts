@@ -1,8 +1,10 @@
-import { indent, trim, o } from "fn"
+import { indent, trim, o, isNil, echo } from "fn"
 import { copyFile } from "fs/promises"
-import { createFile, resetDir } from "ntl"
+import { createFile, resetDir, createDir, move, removeDir, cmd, fileExists } from "ntl"
 import { renderRoot } from "./banners"
 import config from "./app.config"
+import { exec } from "child_process"
+import { type AppConfig } from "vui/defineApp"
 
 
 
@@ -41,8 +43,8 @@ export async function createIndex (config: AppConfig) {
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<!--<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">-->
 				<link href="https://api.fitravel.info/fonts/${config.kit}.css" rel="stylesheet">
-				<script data-spa="auto" src="https://cdn.usefathom.com/script.js" data-site="${config.fathom}" defer></script>
-				<title>Vite App</title>
+				${!isNil(config?.fathom) ? `<script data-spa="auto" src="https://cdn.usefathom.com/script.js" data-site="${config.fathom}" defer></script>` : ''}
+				<title>${config?.title}</title>
 			</head>
 			<body>
 				<div id="app"></div>
@@ -50,7 +52,7 @@ export async function createIndex (config: AppConfig) {
 			</body>
 		</html>
 	`
-	await createFile('./index.html')
+	await createFile('./index.html', o(trim, indent(0))(content))
 }
 
 const copy = (file: string) => {
@@ -60,17 +62,49 @@ const copy = (file: string) => {
 	return copyFile(oldFile, newFile)
 }
 
-try {
-	resetDir('./public').then(async () => {
-		await createTailwindConfig(config)
+async function buildSite () {
+	const hook   = process.argv?.[2]
+	const noHook = isNil(hook)
 
-		await copy('favicon.ico')
-		await copy('robots.txt')
+	async function run () {
+		if (noHook || hook === 'before') {
+			if (await fileExists('./dist')) {
+				await removeDir('./dist')
+			}
+			await resetDir('./public')
+			await createTailwindConfig(config)
+			await createPostcssConfig()
+			await createIndex(config)
 
-		console.log('Rendering banner tree...')
-		await renderRoot()
-	})
+			await copy('favicon.ico')
+			await copy('robots.txt')
+	
+			if (!isNil(config?.beforeBuild)) {
+				await config.beforeBuild(config)
+			}
+		}
+		if (noHook || hook === 'vite') {
+			await cmd('vue-tsc --noEmit && vite build').then(console.log)
+		}
+		if (noHook || hook === 'after') {
+			if (!isNil(config?.afterBuild)) {
+				await config.afterBuild(config)
+			}
+		}
+		if (noHook || hook === 'cleanup') {
+			await removeDir('./public')
+			await removeDir('./index.html')
+			await removeDir('./tailwind.config.js')
+			await removeDir('./postcss.config.js')
+		}
+	}
+
+	try {
+		await run()
+	}
+	catch (e) {
+		console.error(e)
+	}
 }
-catch (e) {
-	console.error(e)
-}
+
+buildSite()

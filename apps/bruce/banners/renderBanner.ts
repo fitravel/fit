@@ -2,8 +2,8 @@ import { queue, replace, map, isExt } from "fn"
 import { readdir } from "fs/promises"
 import { type Banner } from "gygax"
 import { createDir, downloadFile, editFile, extractZip, uploadToCloudinary, type UploadApiResponse } from "ntl"
-import { HEAD_SCRIPT, TRACKING_SCRIPT } from "."
 import { createIndex } from "./createIndex"
+import config from '../app.config'
 
 export async function renderBanner (i: Banner): Promise<any> {
 	const path  = `./public/${i.path}`
@@ -18,8 +18,8 @@ export async function renderBanner (i: Banner): Promise<any> {
 	await extractZip(zip)(path)
 
 	const edits = [ 
-		replace(/<\/head>/i, `    ${HEAD_SCRIPT}\n    </head>`),
-		replace(/<\/body>/i, `${TRACKING_SCRIPT}</body>`),
+		replace(/<\/head>/i, `    <script data-auto="false" src="https://cdn.usefathom.com/script.js" data-site="${config.fathom}"></script>\n    </head>`),
+		replace(/<\/body>/i, `<script>window.fathom.trackPageview();</script></body>`),
 		replace(/"imgLocalPath":"media\/"/gi, '"imgLocalPath":""') 
 	]
 	const createUpload = (i: string) => {

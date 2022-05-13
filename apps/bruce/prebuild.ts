@@ -4,10 +4,7 @@ import { createFile, resetDir } from "ntl"
 import { renderRoot } from "./banners"
 import config from "./app.config"
 
-interface AppConfig {
-	kit?: string;
 
-}
 
 export async function createTailwindConfig (config: AppConfig) {
 	const exts = '**/*.{vue,js,ts,jsx,tsx}'
@@ -21,17 +18,30 @@ export async function createTailwindConfig (config: AppConfig) {
 			]
 		}
 	`
-	await createFile('./tailwind.config.js', o(trim, indent(0))(content))
+	return createFile('./tailwind.config.js', o(trim, indent(0))(content))
 }
-export async function createIndex () {
+export async function createPostcssConfig () {
+	const content = `
+		module.exports = {
+			plugins: {
+				tailwindcss: {},
+				autoprefixer: {},
+			},
+		}
+	`
+	return createFile('./postcss.config.js', o(trim, indent(0))(content))
+}
+export async function createIndex (config: AppConfig) {
 	const content = `
 		<!DOCTYPE html>
 		<html lang="en">
 			<head>
-				<meta charset="UTF-8" />
-				<link rel="icon" href="/favicon.ico" />
-				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-				<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">
+				<meta charset="UTF-8"/>
+				<link rel="icon" href="/favicon.ico"/>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+				<!--<link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&display=swap" rel="stylesheet">-->
+				<link href="https://api.fitravel.info/fonts/${config.kit}.css" rel="stylesheet">
+				<script data-spa="auto" src="https://cdn.usefathom.com/script.js" data-site="${config.fathom}" defer></script>
 				<title>Vite App</title>
 			</head>
 			<body>

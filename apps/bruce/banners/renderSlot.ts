@@ -1,7 +1,7 @@
 import { type Banner, type BannerSlot } from "gygax"
 import { renderBanner } from "./renderBanner"
 import { createBranch } from "./createBranch"
-import { BASE_URL } from "."
+import config from "../app.config"
 
 export const renderSlot = createBranch<BannerSlot, Banner>({
 	path: i => i.path,
@@ -47,7 +47,7 @@ export const renderSlot = createBranch<BannerSlot, Banner>({
 				window.open(i.url);
 			}
 			
-			document.getElementById("banner").src = "${BASE_URL}/${source}/${slug}/" + i.id + "/";
+			document.getElementById("banner").src = "${config.baseURL}/${source}/${slug}/" + i.id + "/";
 		</script>
 	`
 })

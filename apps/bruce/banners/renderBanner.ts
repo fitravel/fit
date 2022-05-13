@@ -2,11 +2,11 @@ import { queue, replace, map, isExt } from "fn"
 import { readdir } from "fs/promises"
 import { type Banner } from "gygax"
 import { createDir, downloadFile, editFile, extractZip, uploadToCloudinary, type UploadApiResponse } from "ntl"
-import { BASE_PATH, HEAD_SCRIPT, TRACKING_SCRIPT } from "."
+import { HEAD_SCRIPT, TRACKING_SCRIPT } from "."
 import { createIndex } from "./createIndex"
 
 export async function renderBanner (i: Banner): Promise<any> {
-	const path  = BASE_PATH + i.path
+	const path  = `./public/${i.path}`
 	const zip   = `${path}/banner.zip`
 	const media = `${path}/media`
 	const index = `${path}/index.html`
@@ -22,8 +22,8 @@ export async function renderBanner (i: Banner): Promise<any> {
 		replace(/<\/body>/i, `${TRACKING_SCRIPT}</body>`),
 		replace(/"imgLocalPath":"media\/"/gi, '"imgLocalPath":""') 
 	]
-	const upload = (i: string) => {
-		const path = `${media}/${i}`
+	const createUpload = (i: string) => {
+		const file = `${media}/${i}`
 		const options = {
 			folder: 'bruce',
 			overwrite: false,
@@ -31,16 +31,16 @@ export async function renderBanner (i: Banner): Promise<any> {
 			unique_filename: false,
 		}
 		return async () => {
-			const response = await uploadToCloudinary(path, options)
-			const { secure_url: url = i } = response as UploadApiResponse
+			const response = await uploadToCloudinary(file, options)
+			const { secure_url: url = file } = response as UploadApiResponse
 			edits.push(replace(new RegExp(i, 'gi'), url))
 		}
 	}
-	const files     = await readdir(media)
-	const uploads   = map(upload)(files)
-	const editIndex = () => editFile(index, edits)
+	const files   = await readdir(media)
+	const uploads = map(createUpload)(files)
+	const edit    = () => editFile(index, edits)
 
-	return queue([ ...uploads, editIndex ])
+	return queue([ ...uploads, edit ])
 }
 
 export default renderBanner

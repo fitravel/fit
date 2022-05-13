@@ -1,6 +1,5 @@
 import { createDir } from "ntl"
 import { map, queue, thunk, is, isNil } from "fn"
-import { BASE_PATH } from "."
 import createIndex from "./createIndex"
 
 type R = Record<string, any>
@@ -19,7 +18,7 @@ export function createBranch <T, Y>({ children, path, child, index }: BranchOpti
 	return async (i?: T) => {
 		const string = (x: Input<T, string>) => callElse<Input<T, string>, string>(x, i ?? '')
 		const array  = (a: Input<T, Y[]>) => callElse<Input<T, Y[]>, Y[]>(a, isNil(i) ? [] : [ i ])
-		const branch = BASE_PATH + string(path)
+		const branch = `./public/${string(path)}`
 
 		await createDir(branch)
 

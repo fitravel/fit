@@ -8,7 +8,7 @@ export const downloadFile = curry(async (path: string, url: string): Promise<voi
 	
 	return new Promise(async (resolve, reject) => {
 		if (await fileExists(path)) {
-			console.log(`Download cancelled: File ${path} already exists`)
+			console.error(`Download cancelled: File ${path} already exists`)
 			reject()
 		}
 		const stream = await fetch(url).catch(reject).then(toNodeStream)

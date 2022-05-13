@@ -1,21 +1,22 @@
-import { writeFile } from "fs/promises"
+import { createFile } from "ntl"
 import { HEAD_SCRIPT } from "."
+import { trim } from "fn"
 
-export const createIndex = (path: string, html: string = '') => {
+export const createIndex = (path: string, content: string = '') => {
 	const index = `${path}/index.html`
-	console.log(`Creating index file ${index}`)
-	return writeFile(index, (
-		`<!doctype html>
+	const html  = trim(`
+		<!doctype html>
 		<html>
 		<head>
 			<title>bruce</title>
 			${HEAD_SCRIPT}
 		</head>
 		<body>
-			${html}
+			${content}
 		</body>
-		</html>`
-	))
+		</html>
+	`)
+	return createFile(index, html)
 }
 
 export default createIndex

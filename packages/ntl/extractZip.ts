@@ -6,7 +6,7 @@ export const extractZip = curry((zip: string, destination: string) => {
 		try {
 			console.log(`Extracting archive ${zip} into ${destination}`)
 			new AdmZip(zip).extractAllTo(destination, true)
-			console.log(`Finished extracting archive ${zip} into ${destination}`)
+			console.log(`Write successful: Archive ${zip} has been extracted into ${destination}`)
 			resolve(true)
 		}
 		catch(e) {

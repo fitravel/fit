@@ -1,5 +1,5 @@
 import { createFile } from "freki"
-import config from "../app.config"
+import config from "../site.config"
 import { trim } from "geri"
 
 export const createIndex = (path: string, content: string = '') => {

@@ -3,7 +3,7 @@ import { readdir } from "fs/promises"
 import { type Banner } from "gygax"
 import { createDir, downloadFile, editFile, extractZip, uploadToCloudinary, type UploadApiResponse } from "freki"
 import { createIndex } from "./createIndex"
-import config from '../app.config'
+import config from '../site.config'
 
 export async function createBanner (i: Banner): Promise<any> {
 	const path  = `./public/${i.path}`

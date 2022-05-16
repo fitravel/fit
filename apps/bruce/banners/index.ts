@@ -1,4 +1,4 @@
-export * from "../app.config"
+export * from "../site.config"
 export * from "./createBranch"
 export * from "./createIndex"
 export * from "./createBanner"

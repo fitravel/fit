@@ -1,7 +1,7 @@
 import { type Banner, type BannerSlot } from "gygax"
 import { createBanner } from "./createBanner"
 import { createBranch } from "./createBranch"
-import config from "../app.config"
+import config from "../site.config"
 import { createFile } from "freki"
 
 const index = ({ banners, fallback, slug, source, width, height }) => `

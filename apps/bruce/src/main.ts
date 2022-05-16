@@ -1,6 +1,6 @@
 import './index.css'
 
-import config from "../app.config"
+import config from "../site.config"
 import { createSite } from 'vui'
 
 createSite(config, [

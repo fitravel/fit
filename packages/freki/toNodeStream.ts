@@ -1,6 +1,6 @@
 import { Readable } from "stream"
 import { Buffer } from "buffer"
-import { isNil } from "fn"
+import { isNil } from "geri"
 
 export function toNodeStream (i: void|Response) {
 	const { body } = i as Response

@@ -1,5 +1,6 @@
 import { type UploadApiOptions, v2 as cloudinary, type UploadApiErrorResponse, type UploadApiResponse } from "cloudinary"
-import { isNil, isExt, echo } from "fn"
+import { isNil, isExt, echo } from "geri"
+import { logger } from "./logger"
 
 type CloudinaryUploadResponse = UploadApiErrorResponse|UploadApiResponse|undefined
 type R = CloudinaryUploadResponse
@@ -7,6 +8,7 @@ type R = CloudinaryUploadResponse
 export { type CloudinaryUploadResponse, type UploadApiResponse, type UploadApiErrorResponse }
 
 export function uploadToCloudinary (path: string, _options: UploadApiOptions = {}): Promise<R> {
+	const { log, dim, error } = logger()
 	const options = {
 		cloud_name: 'fitravel',
 		api_key: '634512946275931',
@@ -19,10 +21,13 @@ export function uploadToCloudinary (path: string, _options: UploadApiOptions = {
 		..._options
 	}
 	return new Promise((resolve, reject) => {
-		console.log(`Attempting to upload file ${path} to Cloudinary`)
-		cloudinary.uploader.upload(path, options, (error, response) => {
-			if (!isNil(error) || isNil(response)) reject(error)
-			console.log(`Upload successful: File ${path} has been added to Cloudinary`)
+		log(`Uploading file ${path} to Cloudinary`)
+		cloudinary.uploader.upload(path, options, (e, response) => {
+			if (!isNil(e) || isNil(response)) {
+				error(e)
+				reject(e)
+			}
+			dim(`...done`)
 			resolve(response as UploadApiResponse)
 		})
 	})

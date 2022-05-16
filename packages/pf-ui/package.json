@@ -10,7 +10,7 @@
   },
 
   "dependencies": {
-		"fn": "*",
+		"geri": "*",
     "tsconfig": "*",
     "vui": "*"
   }

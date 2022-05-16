@@ -1,10 +1,9 @@
-import { getExt, includes, isNil, last, map, o, sluggify, split, without } from "fn"
+import { getExt, includes, isNil, last, map, o, sluggify, split } from "geri"
 import { subYears, addYears } from "date-fns"
 import { initState } from "./initState"
 import { getHero } from "./getHero"
 import { type GygaxData } from "."
 import { createEndpoint } from "./createEndpoint"
-import { inspect } from "util"
 
 export interface Banner {
 	id: number;

@@ -2,7 +2,7 @@ import { useAsyncState, whenever } from '@vueuse/core'
 import { computed } from 'vue'
 import { stringify } from 'qs'
 import { find, head, sum, o } from 'ramda'
-import { isk, vanityPrice, propEq } from "fn"
+import { isk, vanityPrice, propEq } from "geri"
 import { AvailabilityQuery, useOwners } from 'gygax'
 import { useFlightAvailability } from '.'
 import { FlightResult } from './useFlightAvailability'

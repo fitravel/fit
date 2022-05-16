@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "vui": "*",
-		"fn": "*",
+		"geri": "*",
 		"tsconfig": "*"
   },
 	"devDependencies": {

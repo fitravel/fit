@@ -1,16 +1,18 @@
 import { curry } from "ramda"
 import AdmZip from "adm-zip"
+import logger from "./logger"
 
 export const extractZip = curry((zip: string, destination: string) => {
+	const { log, dim, error } = logger()
 	return new Promise((resolve, reject) => {
 		try {
-			console.log(`Extracting archive ${zip} into ${destination}`)
+			log(`Extracting archive ${zip} → ${destination}`)
 			new AdmZip(zip).extractAllTo(destination, true)
-			console.log(`Write successful: Archive ${zip} has been extracted into ${destination}`)
+			dim('...done')
 			resolve(true)
 		}
 		catch(e) {
-			console.error(e)
+			error(e)
 			reject(false)
 		}
 	})

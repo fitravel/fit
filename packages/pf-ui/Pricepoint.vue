@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { pricepoint } from "fn"
+import { pricepoint } from "geri"
 
 defineProps<{
 	adults: number;

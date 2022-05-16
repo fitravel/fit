@@ -11,13 +11,13 @@
     "count": "ts-node count.ts"
   },
   "dependencies": {
-    "fn": "*",
+    "geri": "*",
     "gygax": "*",
     "vui": "*"
   },
   "devDependencies": {
 		"autoprefixer": "*",
-    "ntl": "*",
+    "freki": "*",
 		"postcss": "*",
 		"tailwindcss": "*",
     "tsconfig": "*"

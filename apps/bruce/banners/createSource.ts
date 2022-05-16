@@ -1,11 +1,11 @@
 import { type BannerSource, type BannerSlot } from "gygax"
-import createBranch from "./createBranch"
-import renderSlot from "./renderSlot"
+import { createBranch } from "./createBranch"
+import { createSlot } from "./createSlot"
 
-export const renderSource = createBranch<BannerSource, BannerSlot>({
+export const createSource = createBranch<BannerSource, BannerSlot>({
 	path: i => i.path,
 	children: i => i.slots,
-	child: renderSlot,
+	child: createSlot,
 	index: ({ hero }) => `
 		<style>
 			body {
@@ -16,4 +16,4 @@ export const renderSource = createBranch<BannerSource, BannerSlot>({
 	`
 })
 
-export default renderSource
+export default createSource

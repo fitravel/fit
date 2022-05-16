@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { find, byId, bySlug } from "fn"
+import { find, byId, bySlug } from "geri"
 import { createEndpoint } from "./createEndpoint"
 import { reactive } from "vue"
 import { type GygaxData } from "."

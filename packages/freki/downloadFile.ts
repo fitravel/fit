@@ -1,14 +1,16 @@
-import { curry } from "fn"
+import { curry } from "geri"
 import { createWriteStream } from "fs"
 import { toNodeStream } from "./toNodeStream"
 import { fileExists } from "./fileExists"
+import logger from "./logger"
 
 export const downloadFile = curry(async (path: string, url: string): Promise<void> => {
-	console.log(`Downloading file ${url} to ${path}`)
+	const { log, dim, error,  } = logger()
+	log(`Downloading file ${url} → ${path}`)
 	
 	return new Promise(async (resolve, reject) => {
 		if (await fileExists(path)) {
-			console.error(`Download cancelled: File ${path} already exists`)
+			error(`Download cancelled: File ${path} already exists`)
 			reject()
 		}
 		const stream = await fetch(url).catch(reject).then(toNodeStream)
@@ -18,7 +20,7 @@ export const downloadFile = curry(async (path: string, url: string): Promise<voi
 
 		file.on('error', reject)
 		file.on('finish', () => {
-			console.log(`Download successful: File ${path} has been saved`)
+			dim(`...done`)
 			resolve()
 		})
 	}) 

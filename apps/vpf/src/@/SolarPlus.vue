@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { compose, filter, prop, sort, splitAt } from "fn"
+import { compose, filter, prop, sort, splitAt } from "geri"
 import { ref, computed } from "vue"
 import { useOfferama, type Offer } from "gygax"
 import { HotelOffer, Block } from "pf-kit"

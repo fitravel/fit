@@ -1,26 +1,29 @@
 import { defineComponent } from "vue"
 //@ts-ignore
 import { createApp } from 'vue'
-import { createRouter, createWebHistory, createWebHashHistory } from "vue-router"
+import { createRouter, createWebHistory, createWebHashHistory, type RouteRecordRaw } from "vue-router"
 import { createPinia } from 'pinia'
-import { type AppConfig } from "./defineApp"
+import { type SiteRoute, type SiteConfig } from "./defineSite"
+import { map } from "ramda"
 
-export function createSite (config: AppConfig) {
+export async function createSite (config: SiteConfig, views: SiteRoute[] = []) {
 	const app = createApp(defineComponent({
 		template: `
 			<div class="min-h-screen min-w-screen">
 				<router-view/>
 			</div>`
 	}))
-	if (config?.routes) {
-		const router = createRouter({ 
-			routes: config.routes, 
-			history: createWebHistory()//config?.hash ?? false ? createWebHashHistory() : createWebHistory() 
-		})
-		app.use(router)
+	const createRoute = (i: SiteRoute) => {
+		const name      = i.view
+		const component = () => import(`./src/views/${i.view}.vue`) 
+		return { ...i, name, component } as RouteRecordRaw
 	}
-	const store = createPinia()
+	const routes  = map(createRoute)(views)
+	const history = (config?.history ?? 'html5') === 'hash' ? createWebHashHistory() : createWebHistory() 
+	const router  = createRouter({ routes, history })
+	const store   = createPinia()
 	
+	app.use(router)
 	app.use(store)
 	app.mount('#app') 
 }

@@ -1,4 +1,4 @@
-import { map } from "fn"
+import { map } from "geri"
 import { GygaxData } from "."
 import fetchEndpoint from "./fetchEndpoint"
 

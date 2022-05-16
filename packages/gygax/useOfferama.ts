@@ -1,4 +1,4 @@
-import { map, compose, flatten, filter, o, parseAvailabilityQuery, type AvailabilityQuery } from "fn"
+import { map, compose, flatten, filter, o, parseAvailabilityQuery, type AvailabilityQuery } from "geri"
 import { initState } from './initState'
 import { isAfter } from "date-fns"
 

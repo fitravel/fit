@@ -1,4 +1,4 @@
-import { isNil } from "fn"
+import { isNil } from "geri"
 import { isValid } from "date-fns"
 
 export const difdef = (i: any) => {

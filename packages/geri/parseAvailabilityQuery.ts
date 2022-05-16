@@ -1,5 +1,5 @@
 import { parse } from "qs"
-import { difdef, nifdef, split } from "fn"
+import { difdef, nifdef, split } from "geri"
 
 export interface AvailabilityQuery {
 	oid?: number;

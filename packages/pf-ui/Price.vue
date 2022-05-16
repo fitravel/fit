@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isk, o, vanityPrice } from "fn"
+import { isk, o, vanityPrice } from "geri"
 
 const props = defineProps<{
 	amount: number;

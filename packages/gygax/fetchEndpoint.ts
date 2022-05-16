@@ -1,4 +1,4 @@
-import { toJson } from "fn"
+import { toJson } from "geri"
 import { stringify } from "qs"
 import config from "./gygax.config"
 

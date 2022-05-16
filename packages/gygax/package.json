@@ -3,7 +3,7 @@
   "version": "0.0.3",
   "main": "./index.ts",
   "dependencies": {
-    "fn": "*",
+    "geri": "*",
     "qs": "^6.10.3",
     "tsconfig": "*",
     "vui": "*"

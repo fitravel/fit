@@ -1,6 +1,6 @@
 import { useFetch } from "@vueuse/core"
 import { computed, ref, watch } from "vue"
-import { delay } from "fn"
+import { delay } from "geri"
 
 export function useRender ({ target, beforeRender = () => {}, afterRender = () => {} }: { 
 	target: string;

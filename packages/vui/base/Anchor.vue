@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, useAttrs } from "vue"
-import { startsWith } from "fn"
+import { startsWith } from "geri"
 
 const attrs = useAttrs()
 const props = defineProps({

@@ -1,5 +1,5 @@
-import { createDir } from "ntl"
-import { map, queue, thunk, is, isNil } from "fn"
+import { createDir } from "freki"
+import { map, queue, thunk, is, isNil } from "geri"
 import createIndex from "./createIndex"
 
 type R = Record<string, any>

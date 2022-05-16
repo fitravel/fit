@@ -1,6 +1,6 @@
-import { createFile } from "ntl"
+import { createFile } from "freki"
 import config from "../app.config"
-import { trim } from "fn"
+import { trim } from "geri"
 
 export const createIndex = (path: string, content: string = '') => {
 	const index = `${path}/index.html`

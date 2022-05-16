@@ -1,11 +1,11 @@
-import { queue, replace, map, isExt } from "fn"
+import { queue, replace, map, isExt } from "geri"
 import { readdir } from "fs/promises"
 import { type Banner } from "gygax"
-import { createDir, downloadFile, editFile, extractZip, uploadToCloudinary, type UploadApiResponse } from "ntl"
+import { createDir, downloadFile, editFile, extractZip, uploadToCloudinary, type UploadApiResponse } from "freki"
 import { createIndex } from "./createIndex"
 import config from '../app.config'
 
-export async function renderBanner (i: Banner): Promise<any> {
+export async function createBanner (i: Banner): Promise<any> {
 	const path  = `./public/${i.path}`
 	const zip   = `${path}/banner.zip`
 	const media = `${path}/media`
@@ -43,4 +43,4 @@ export async function renderBanner (i: Banner): Promise<any> {
 	return queue([ ...uploads, edit ])
 }
 
-export default renderBanner
+export default createBanner

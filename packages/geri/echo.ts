@@ -1,4 +1,4 @@
-import { thunk } from "fn"
+import { thunk } from "geri"
 
 export const echo = thunk(console.log)
 

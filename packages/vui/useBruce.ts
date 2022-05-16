@@ -1,5 +1,5 @@
 import { get, MaybeRef, useFetch, UseFetchOptions, whenever } from "@vueuse/core"
-import { delay } from "fn"
+import { delay } from "geri"
 import { find } from "ramda"
 import { ref, computed } from "vue"
 import sha256 from "crypto-js/sha256"

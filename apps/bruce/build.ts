@@ -2,10 +2,11 @@ import { createDir, move } from "freki"
 import { logHeading } from "freki"
 import { createBanners } from "./banners"
 import { buildSite } from "vui"
+import config from "./site.config"
 
 const smash = (i: string) => move(`./dist/${i}`, `./dist/smash/${i}`)
 
-buildSite({
+buildSite(config, {
 	async afterInit () {
 		logHeading('BUILD banners', 2)
 		await createBanners()

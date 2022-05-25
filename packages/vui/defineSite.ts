@@ -14,12 +14,13 @@ export interface BuildHooks {
 } 
 
 export interface SiteConfig {
-	'title'?: string;
-	'kit'?: string;
-	'janus'?: string;
-	'baseURL': string;
-	'fathom'?: string;
-	'history'?: 'hash'|'html5';
+	base?: string;
+	title?: string;
+	kit: string;
+	janus?: string;
+	baseURL: string;
+	fathom?: string;
+	history?: 'hash'|'html5';
 }
 
 export const defineSite = (i: SiteConfig): SiteConfig => i as SiteConfig

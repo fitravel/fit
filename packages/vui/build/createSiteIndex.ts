@@ -2,7 +2,7 @@ import { strif } from "geri"
 import { fileExists } from "freki"
 import renderFile from "./renderFile"
 
-export const createSiteIndex = renderFile('./index.html', async ({ fathom, kit, title }) => {
+export const createSiteIndex = renderFile('./index.html', async ({ fathom, kit, title, head = '' }) => {
 	const isFav = await fileExists('./src/favicon.ico')
 	return `
 		<!DOCTYPE html>
@@ -13,6 +13,7 @@ export const createSiteIndex = renderFile('./index.html', async ({ fathom, kit, 
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<link href="https://api.fitravel.info/fonts/${kit}.css" rel="stylesheet">
 				${strif(fathom, `<script data-spa="auto" src="https://cdn.usefathom.com/script.js" data-site="${fathom}" defer></script>`)}
+				${head}
 				<title>${title}</title>
 			</head>
 			<body>

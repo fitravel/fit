@@ -1,7 +1,7 @@
 import { createDir, move } from "freki"
 import { logHeading } from "freki"
 import { createBanners } from "./banners"
-import { buildSite } from "vui"
+import { buildSite } from "vui/build"
 import config from "./site.config"
 
 const smash = (i: string) => move(`./dist/${i}`, `./dist/smash/${i}`)

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.bitter {
+	font-family: 'Bitter', serif;
+}
+body {
+	font-family: 'Bitter', serif;
+	@apply text-white;
+}
+
+/* FORMS */
+
+.label {
+	@apply pl-1 left-0 text-xs opacity-60;
+}
+.field, button.field {
+	@apply h-14 w-full mt-1;
+	@apply flex;
+	@apply text-zinc-400 text-left;
+	@apply bg-black bg-opacity-30 hover:bg-opacity-40;
+	@apply border-2 border-neutral-800 rounded shadow;
+
+	> * {
+		@apply h-14 grid items-center first:w-full;
+	}
+	> input {
+		@apply pl-3 bg-transparent;
+	}
+
+	&--select {
+		.field {
+			@apply pr-0;
+		}
+	}
+	&--counter {
+
+	}
+}
+.dropdown {
+	@apply absolute w-full top-0 list-none z-30;
+
+	> div {
+		@apply bg-neutral-900 bg-opacity-95;
+		@apply border-2 border-neutral-800 rounded;
+	}
+}
+
+.options {
+	@apply max-h-[12.5rem] overflow-scroll;
+
+	> li {
+		@apply border-b border-neutral-900 last:border-0;
+	}
+}
+.option {
+	@apply min-h-[3.5rem] px-6 w-full;
+	@apply cursor-pointer;
+	@apply grid items-center;
+	@apply bg-black opacity-50;
+
+	&.value {
+		@apply bg-neutral-800 bg-opacity-100 opacity-100 shadow-inner text-neutral-600;
+	}
+	&.active {
+		@apply opacity-80;
+	}
+}
+
+.slab {
+	@apply border-y border-neutral-800 py-6;
+
+	+ .slab {
+		@apply border-t-0;
+	}
+}

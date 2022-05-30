@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useAlerts, useJanus } from "vui"
+import { useAlerts, useJanus } from "vui/fn"
 
 const { isLoggedIn } = useJanus()
 const { alerts, dismiss } = useAlerts()
 </script>
 
 <template>
-	<section>
+	<section class="min-h-screen min-w-screen">
 		<header id="page-header" v-if="$slots.header">
 			<slot name="header"/>
 		</header>

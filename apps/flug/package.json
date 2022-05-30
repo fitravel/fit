@@ -1,0 +1,21 @@
+{
+  "name": "flugviti",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "ts-node ./build.ts",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "geri": "*",
+    "gygax": "*",
+    "vui": "*"
+  },
+  "devDependencies": {
+		"autoprefixer": "*",
+		"postcss": "*",
+		"tailwindcss": "*",
+    "tsconfig": "*"
+  }
+}

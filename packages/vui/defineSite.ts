@@ -21,6 +21,7 @@ export interface SiteConfig {
 	baseURL: string;
 	fathom?: string;
 	history?: 'hash'|'html5';
+	head?: string;
 }
 
 export const defineSite = (i: SiteConfig): SiteConfig => i as SiteConfig

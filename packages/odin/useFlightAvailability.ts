@@ -1,6 +1,6 @@
-import { pick, map, join, sort, compose, toPairs, includes, take, propEq, find } from 'fn'
+import { pick, map, join, sort, compose, toPairs, includes, take, propEq, find } from 'geri'
 import { defineStore } from 'pinia'
-import type { AvailabilityQuery } from 'gygax'
+import { type AvailabilityQuery } from 'gygax'
 import { fetchEndpoint } from './fetchEndpoint'
 
 export interface FlightAvailability {

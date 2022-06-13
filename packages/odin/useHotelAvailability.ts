@@ -1,9 +1,9 @@
-import { pick, map, join, sort, compose, toPairs, includes, take, propEq, find, dashDate, isNil } from 'fn'
+import { pick, map, join, sort, compose, toPairs, includes, take, propEq, find, dashDate, isNil } from 'geri'
 import { defineStore } from 'pinia'
-import type { AvailabilityQuery } from 'gygax'
+import { type AvailabilityQuery } from 'gygax'
 import { fetchEndpoint } from './fetchEndpoint'
 
-export interface Pricing {
+export interface HotelPricing {
 	price: number;
 	encrypted: string;
 }
@@ -15,12 +15,12 @@ export interface RoomResult {
 		id: number;
 		name: string;
 		code: string;
-		pricing: Pricing;
+		pricing: HotelPricing;
 	},
 	price: {
-		total: Pricing;
-		room: Pricing;
-		mealplan: Pricing;
+		total: HotelPricing;
+		room: HotelPricing;
+		mealplan: HotelPricing;
 		perPax: number;
 	}
 }
@@ -79,7 +79,7 @@ export const roomModel = (i: Record<string, any>) => {
 	return { id, name, isAvailable, mealplan, price }
 }
 
-export const model = (i: Record<string, any>) => {
+const model = (i: Record<string, any>) => {
 	const { id, externalID: externalId, name, shortName, stars, coordinates, inventoryType, roomCount, telephone, url, address } = i
 
 	const rooms  = map(roomModel)(i.rooms)

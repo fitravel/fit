@@ -1,3 +1,4 @@
+import { filter } from 'geri';
 import { initState } from './initState'
 
 export interface Owner {
@@ -17,4 +18,7 @@ const model = ({ id, slug, name, description, parent, acf }: Record<any, any>): 
 	type: +acf.type
 })
 
-export const useOwners = initState<Owner>('owners', model)
+export const useOwners = initState<Owner>('owners', model, {}, (ctx) => {
+	const byType = (x: number) => ctx.filterBy('type', x)
+	return { ...ctx, byType }
+})

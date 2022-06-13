@@ -26,3 +26,6 @@ export * from "./strif"
 export * from "./capHead"
 export * from "./importAs"
 export * from "./ifNil"
+export * from "./unrefProps"
+
+export type R = Record<string, any>

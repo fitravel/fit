@@ -1,21 +1,26 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from "@vue/reactivity"
-import { compose, find, last, prop, split } from "ramda"
-import { SelectField, Counter, MultiSelectField } from "vui/@"
+import { compose, filter, find, last, map, prop, split, flatten, uniqBy } from "geri"
+import { SelectField, Counter, DataTable, IconButton, MapIcon, CodeIcon } from "vui/@"
 import { Page } from "vui/@/hermes"
+import { useOwners, type Owner } from "gygax"
+import { useFlightSchedules, useDestinationSchedules, useDestinations } from "odin"
+import { format } from "date-fns"
+import locale from "date-fns/locale/is"
+import { watch } from "vue"
+import { asyncComputed } from "@vueuse/core"
 
-const items = [
-	{ text: 'foo', value: 0 },
-	{ text: 'bar', value: 1 },
-	{ text: 'moo', value: 2 },
-	{ text: 'boo', value: 3 },
-	{ text: 'bla', value: 4 }
-]
+const schedules  = useFlightSchedules()
+const destules   = useDestinationSchedules()
+const destinationStore      = useDestinations()
+const ownerStore = useOwners()
+
 interface SelectOption {
 	text: string;
 	value: any;
 	disabled?: boolean;
 }
+
 // OWNERS
 
 const types: SelectOption[] = [
@@ -23,7 +28,34 @@ const types: SelectOption[] = [
 	{ text: 'Flug og gisting', value: 1 },
 	{ text: 'Pakkar', value: 3 }
 ]
-const type = ref()
+const type         = ref(1)
+const owners       = computed(() => map((i: Owner) => ({ text: i.name, value: i.id }))(ownerStore.byType(type.value)))
+const oid          = ref(2)
+const schedule     = schedules.queried(() => ({ oid }))
+const destinations = destinationStore.queried(() => ({ oid }))
+
+const foo = asyncComputed(
+	async () => {
+		const dests = await Promise.all(map(i => destules.query(() => ({ oid, origin: 1, destination: i.id })))(destinations.value))
+		console.log('d',dests)
+		const bar = flatten(map(({ outbound, inbound }) => [ ...outbound, ...inbound ])(dests))
+		console.log('dd', bar)
+		return uniqBy(prop('id'))(bar)
+	}, 
+	[]
+)
+
+watch(foo, (z) => console.log('zz', z))
+
+
+const items = computed(() => {
+	console.log('foo?', foo.value)
+	return schedule.value
+})
+
+// const dest = computed(() => {
+// 	return map(i => destules.query({ oid, origin: 1, destination: 12 }))(destinations.value)
+// })
 
 // DIRECTION
 
@@ -48,42 +80,118 @@ const maxSeats = ref(300)
 
 //
 
-const destinations = ref([])
+
+const dimIfLocal = (code: string) => code === 'KEF' || code === 'AEY' ? 'opacity-50' : ''
+const severity   = (seats: number = 0) => {
+	if (seats < 10) return 'low-severity'
+	if (seats >= 10 && seats < 20) return 'medium-severity'
+	return 'high-severity'
+}
 
 </script>
 
 <template>
 	<Page title="Flugviti">
 		<div class="w-full px-6">
-			<aside class="slab grid grid-cols-4 gap-6">
-				<SelectField :items="types" v-model="type" label="Veldu tegund"/>
-				<SelectField :items="[]" label="Veldu Odin owner"/>
-				<SelectField :items="origins" v-model="origin" label="Veldu lókal flugvöll"/>
-				<SelectField :items="directions" v-model="direction" label="Veldu átt"/>
+			<aside class="slab grid grid-cols-8 grid-rows-1 gap-6 grid-flow-row">
+				<SelectField :items="types" v-model="type" label="Veldu tegund" class="col-span-2 row-span-1"/>
+				<SelectField :items="owners" v-model="oid" label="Veldu Odin owner" class="col-span-2 row-span-1"/>
+				<SelectField :items="origins" v-model="origin" label="Veldu lókal flugvöll" class="col-span-2 row-span-1"/>
+				<SelectField :items="directions" v-model="direction" label="Veldu átt" class="col-span-2 row-span-1"/>
 			</aside>
-			<aside class="slab grid grid-cols-8 gap-6">
-				<MultiSelectField :items="items" v-model="destinations" label="Afmarka við áfangastaði" class="col-span-2 row-span-2"/>
-				<MultiSelectField :items="items" label="Afmarka við flugfélag" class="col-span-2 row-span-2"/>
+			<!-- <aside class="slab grid grid-cols-8 grid-rows-2 grid-flow-col gap-6">
+				<SelectField :items="items" v-model="destinations" label="Afmarka við áfangastaði" class="col-span-2 row-span-1"/>
+				<SelectField :items="items" label="Afmarka við flugfélag" class="col-span-2 row-span-1"/>
 
-					<SelectField :items="items" label="Veldu tegund"  class="col-span-2 row-span-1"/>
-					<SelectField :items="items" label="Veldu tegund"  class="col-span-2 row-span-1"/>
-						<Counter :min="0" :max="300" label="Min. sæti" v-model="minSeats"/>
-						<Counter :min="0" :max="300" label="Max. sæti" v-model="maxSeats"/>
-
+				<Counter :min="0" :max="300" label="Min. sæti" v-model="minSeats" class="col-span-1 row-span-1"/>
+				<Counter :min="0" :max="300" label="Max. sæti" v-model="maxSeats" class="col-span-1 row-span-1"/>
 				
-			</aside>
-			<table>
-				<thead>
+			</aside> -->
+			<section class="slab">
+				<DataTable
+					:paginated="12"
+					:cols="[
+						{ header: 'Frá → Til', key: 'origin', td: 'text-sm' },
+						{ header: 'Brottför', key: 'departure', td: 'text-left' },
+						{ header: 'Óseld sæti', key: 'available', td: 'dim text-left' },
+						{ header: 'Flugkóði', key: 'code', td: 'dim text-left' },
+						{ header: 'Odin ID', key: 'id', td: 'dim text-center' },
+						{ header: 'Læsingar', key: 'returnLimit', td: 'dim text-center' },
+						{ header: '', key: 'ctrl', td: 'text-left' },
+						{ header: 'PNL listi', key: 'pnl', td: 'dim text-center' },
+					]"
+					:rows="items"
+				>
+					<template #cell:origin="{ row }">
+						<div class="value">
+							<span>
+								<span :class="dimIfLocal(row.origin.code)">
+									{{ row.origin.code }}
+								</span>
+								<span class="opacity-50">
+									→
+								</span>
+								<span :class="dimIfLocal(row.destination.code)">
+									{{ row.destination.code }}
+								</span>
+							</span>
+						</div>
+					</template>
+					
+					<template #cell:departure="{ value }">
+						<div class="value">
+							<span>
+								<span class="opacity-100">{{ format(new Date(value), 'do MMM', { locale }) }}</span>
+								<span class="opacity-50 ml-2">{{ format(new Date(value), 'hh:mm') }}</span>
+							</span>
+						</div>
+					</template>
 
-				</thead>
-				<tbody>
+					<template #cell:available="{ value }">
+						<div class="value">
+							<span v-if="value" :class="severity(value)">
+								{{ value }}
+							</span>
+							<Loader v-else/>
+						</div>
+					</template>
 
-				</tbody>
-			</table>
+					<template #cell:id="{ value }">
+						<div class="value">
+							<a :href="`https://fitravel.corivoapp.com/Pages/Inventory/Flights/Edit.aspx?ItemID=${value}`" target="_blank">
+								{{ value }}
+							</a>
+						</div>
+					</template>
+					
+					<template #cell:ctrl="{ value }">
+						<div class="value">
+							<div class="flex">
+								<IconButton class="">
+									<MapIcon/>
+								</IconButton>
+								<IconButton class="">
+									<CodeIcon/>
+								</IconButton>
+							</div>
+						</div>
+					</template>
+				</DataTable>
+			</section>
 		</div>
 	</Page>
 </template>
 
 <style scoped lang="postcss">
+
+.low-severity {
+	@apply text-green-500;
+}
+.medium-severity {
+	@apply text-orange-500;
+}
+.high-severity {
+	@apply text-red-500;
+}
 
 </style>

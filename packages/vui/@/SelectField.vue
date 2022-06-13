@@ -15,7 +15,8 @@ interface SelectOption {
 const props = defineProps<{
 	modelValue: string;
 	items: SelectOption[];
-	label: string;
+	label?: string;
+	multiple?: boolean;
 }>()
 
 const model     = useVModel(props)
@@ -35,7 +36,7 @@ const onScroll = ({ y }: UseScrollReturn) => {
 </script>
 
 <template>
-	<Listbox v-model="model" #="{ open }">
+	<Listbox v-model="model" #="{ open }" :multiple="multiple">
 		<div class="field--select">
 			<ListboxLabel class="label" v-if="label">
 				{{ label }}

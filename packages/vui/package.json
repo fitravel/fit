@@ -12,6 +12,7 @@
     "@vueuse/core": "^7.5.1",
     "geri": "*",
     "pinia": "^2.0.11",
+    "pinia-plugin-persistedstate": "^1.6.1",
     "vue": "^3.2.25",
     "vue-router": "^4"
   },

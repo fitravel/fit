@@ -1,6 +1,6 @@
 {
   "name": "flugviti",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -10,13 +10,13 @@
   "dependencies": {
     "geri": "*",
     "gygax": "*",
-		"odin": "*",
+    "odin": "*",
     "vui": "*"
   },
   "devDependencies": {
-		"autoprefixer": "*",
-		"postcss": "*",
-		"tailwindcss": "*",
+    "autoprefixer": "*",
+    "postcss": "*",
+    "tailwindcss": "*",
     "tsconfig": "*"
   }
 }

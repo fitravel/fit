@@ -104,10 +104,12 @@ const maxSeats = ref(300)
 
 const dimIfLocal = (code: string) => code === 'KEF' || code === 'AEY' ? 'opacity-50' : ''
 const severity   = (seats: number = 0) => {
+	if (seats < 1) return 'no-severity'
 	if (seats < 10) return 'low-severity'
 	if (seats >= 10 && seats < 20) return 'medium-severity'
 	return 'high-severity'
 }
+const getAvailability = (id: number) => find((i: R) => i.id === id)(items.value)?.available ?? null
 
 </script>
 
@@ -134,7 +136,7 @@ const severity   = (seats: number = 0) => {
 					:cols="[
 						{ header: 'Frá → Til', key: 'origin', td: 'text-sm' },
 						{ header: 'Brottför', key: 'departure', td: 'text-left' },
-						{ header: 'Óseld sæti', key: 'available', td: 'dim text-left' },
+						{ header: 'Óseld sæti', key: 'available', td: 'text-left' },
 						{ header: 'Flugkóði', key: 'code', td: 'dim text-left' },
 						{ header: 'Odin ID', key: 'id', td: 'dim text-center' },
 						{ header: 'Læsingar', key: 'returnLimit', td: 'dim text-center' },
@@ -173,7 +175,6 @@ const severity   = (seats: number = 0) => {
 							<span v-if="value !== null" :class="severity(value)">
 								{{ value }}
 							</span>
-							<Loader v-else/>
 						</div>
 					</template>
 
@@ -187,13 +188,12 @@ const severity   = (seats: number = 0) => {
 
 					<template #cell:returnLimit="{ value }">
 						<div class="value">
-							<span v-for="id of value">
+							<span v-for="id of value" class="return-flight">
 								<a :href="`https://fitravel.corivoapp.com/Pages/Inventory/Flights/Edit.aspx?ItemID=${id}`" target="_blank">
 									{{ id }}
 								</a>
-								({{ find(i => i.id === id)(items)?.available ?? '-' }})
+								<span v-if="getAvailability(id) !== null" :class="severity(getAvailability(id))">({{ getAvailability(id) }})</span>
 							</span>
-							
 						</div>
 					</template>
 					
@@ -217,7 +217,21 @@ const severity   = (seats: number = 0) => {
 
 <style scoped lang="postcss">
 .available .value {
-	@apply font-bold text-sm;
+	@apply text-sm;
+}
+.return-flight {
+	a {
+		@apply mr-2;
+	}
+	&::after {
+		content: ', ';
+	}
+	&:last-child::after {
+		content: '';
+	}
+}
+.no-severity {
+	@apply text-neutral-700;
 }
 .low-severity {
 	color: greenyellow;

@@ -30,9 +30,10 @@ const model = ({ outbound, inbound }: R): DestinationSchedule => {
 		departingAirport: origin, arrivingAirport: destination,
 		departureDate: departure, arrivalDate: arrival
 	}: R): DestinationScheduleItem => ({
-		id, code, available, returnLimit,
+		id, code, available,
 		hotelCheckInDate, hotelCheckOutDate,
-		origin, departure, destination, arrival
+		origin, departure, destination, arrival,
+		returnLimit: map(parseInt)(returnLimit)
 	})
 	return {
 		outbound: map(flight)(outbound),

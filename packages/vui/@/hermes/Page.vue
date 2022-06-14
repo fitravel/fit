@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-	<BasePage class="bg-neutral-900 p-6">
+	<BasePage class="p-6 max-w-[1600px] mx-auto">
 		<template #header>
 			<div class="w-full text-center mb-6">
 				<HermesLogo class="inline-block"/>

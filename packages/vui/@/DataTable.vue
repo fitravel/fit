@@ -56,7 +56,7 @@ const items = computed(() => {
 
 			<tbody>
 				<tr v-for="(row, x) of items" :class="`row-${x}`">
-					<td v-for="(col, y) of cols" :class="`col-${y} ${col.td ?? ''}`">
+					<td v-for="(col, y) of cols" :class="`${col.key} col-${y} ${col.td ?? ''}`">
 						<slot :name="`cell:${col.key}`" v-bind="{ row, col, value: row?.[col.key] ?? null, rowIndex: x, colIndex: y }">
 							<div class="value">
 								{{ row[col.key] }}

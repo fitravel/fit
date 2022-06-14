@@ -4,7 +4,7 @@ import { Airport, Pricing } from "./useFlightAvailability"
 import createEndpointStore from "./createEndpointStore";
 
 
-interface FlightClass {
+export interface FlightClass {
 	id: number;
 	name: string;
 	prices: {
@@ -21,7 +21,7 @@ interface FlightClass {
 		baggage: string;
 	}
 }
-interface FlightScheduleItem {
+export interface FlightScheduleItem {
 	id: number;
 	code: string;
 	origin: Airport;
@@ -61,7 +61,7 @@ const model = (a: R[]) => {
 		departureDate: departure,
 		arrivalDate: arrival
 	}: R): FlightScheduleItem => {
-		const classes   = o<R[], R[], FlightClass[]>(map(flightClass), filter((i: R) => i.isAvailable))(distribution)
+		const classes = o<R[], R[], FlightClass[]>(map(flightClass), filter((i: R) => i.isAvailable))(distribution)
 		return { id, code, origin, departure, destination, arrival, classes }
 	}
 	return map(flightScheduleItem)(a)

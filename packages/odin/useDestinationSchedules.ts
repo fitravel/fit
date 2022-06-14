@@ -2,7 +2,7 @@ import createEndpointStore from "./createEndpointStore"
 import { type R, map } from "geri"
 import { Airport } from "./useFlightAvailability";
 
-interface DestinationScheduleItem {
+export interface DestinationScheduleItem {
 	id: number;
 	code: string;
 	available: number;
@@ -14,7 +14,7 @@ interface DestinationScheduleItem {
 	arrival: string;
 	returnLimit: number[];
 }
-interface DestinationSchedule {
+export interface DestinationSchedule {
 	outbound: DestinationScheduleItem[];
 	inbound: DestinationScheduleItem[];
 }

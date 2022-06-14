@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from "@vue/reactivity"
-import { compose, filter, find, last, map, prop, split, flatten, uniqBy } from "geri"
+import { compose, filter, find, last, map, prop, split, flatten, uniqBy, o, type R, byId } from "geri"
 import { SelectField, Counter, DataTable, IconButton, MapIcon, CodeIcon } from "vui/@"
 import { Page } from "vui/@/hermes"
 import { useOwners, type Owner } from "gygax"
-import { useFlightSchedules, useDestinationSchedules, useDestinations } from "odin"
+import { useFlightSchedules, useDestinationSchedules, useDestinations, 
+	type DestinationSchedule, type DestinationScheduleItem, type FlightScheduleItem } from "odin"
 import { format } from "date-fns"
 import locale from "date-fns/locale/is"
-import { watch } from "vue"
+import { onMounted, watch } from "vue"
 import { asyncComputed } from "@vueuse/core"
 
-const schedules  = useFlightSchedules()
-const destules   = useDestinationSchedules()
+const flightScheduleStore      = useFlightSchedules()
+const destinationScheduleStore = useDestinationSchedules()
 const destinationStore      = useDestinations()
 const ownerStore = useOwners()
 
@@ -31,16 +32,25 @@ const types: SelectOption[] = [
 const type         = ref(1)
 const owners       = computed(() => map((i: Owner) => ({ text: i.name, value: i.id }))(ownerStore.byType(type.value)))
 const oid          = ref(2)
-const schedule     = schedules.queried(() => ({ oid }))
+const schedule     = flightScheduleStore.queried(() => ({ oid }))
 const destinations = destinationStore.queried(() => ({ oid }))
 
-const foo = asyncComputed(
+const foo = asyncComputed<DestinationScheduleItem[]>(
 	async () => {
-		const dests = await Promise.all(map(i => destules.query(() => ({ oid, origin: 1, destination: i.id })))(destinations.value))
-		console.log('d',dests)
-		const bar = flatten(map(({ outbound, inbound }) => [ ...outbound, ...inbound ])(dests))
-		console.log('dd', bar)
-		return uniqBy(prop('id'))(bar)
+		const conjoin = compose<
+			DestinationSchedule[][],
+			DestinationScheduleItem[][],
+			DestinationScheduleItem[],
+			DestinationScheduleItem[]
+		>(
+			uniqBy(prop('id')), 
+			flatten, 
+			map((i: DestinationSchedule) => [ ...i.outbound, ...i.inbound ])
+		)
+		const query = (i: DestinationScheduleItem) => destinationScheduleStore.query({ oid, origin: 1, destination: i.id })
+		const load  = await Promise.all(map(query)(destinations.value)) as DestinationSchedule[]
+		
+		return conjoin(load)
 	}, 
 	[]
 )
@@ -49,8 +59,19 @@ watch(foo, (z) => console.log('zz', z))
 
 
 const items = computed(() => {
-	console.log('foo?', foo.value)
-	return schedule.value
+	const pepper = map(
+		(i: FlightScheduleItem) => {
+			const item = (find(byId(i.id))(foo.value) ?? {}) as DestinationScheduleItem
+			const { 
+				available = null, returnLimit = null, 
+				hotelCheckInDate = item.departure, 
+				hotelCheckOutDate = item.arrival 
+			} = item
+
+			return { ...i, ...item, available, returnLimit, hotelCheckInDate, hotelCheckOutDate }
+		}
+	)
+	return pepper(schedule.value)
 })
 
 // const dest = computed(() => {
@@ -149,7 +170,7 @@ const severity   = (seats: number = 0) => {
 
 					<template #cell:available="{ value }">
 						<div class="value">
-							<span v-if="value" :class="severity(value)">
+							<span v-if="value !== null" :class="severity(value)">
 								{{ value }}
 							</span>
 							<Loader v-else/>
@@ -161,6 +182,18 @@ const severity   = (seats: number = 0) => {
 							<a :href="`https://fitravel.corivoapp.com/Pages/Inventory/Flights/Edit.aspx?ItemID=${value}`" target="_blank">
 								{{ value }}
 							</a>
+						</div>
+					</template>
+
+					<template #cell:returnLimit="{ value }">
+						<div class="value">
+							<span v-for="id of value">
+								<a :href="`https://fitravel.corivoapp.com/Pages/Inventory/Flights/Edit.aspx?ItemID=${id}`" target="_blank">
+									{{ id }}
+								</a>
+								({{ find(i => i.id === id)(items)?.available ?? '-' }})
+							</span>
+							
 						</div>
 					</template>
 					
@@ -183,15 +216,17 @@ const severity   = (seats: number = 0) => {
 </template>
 
 <style scoped lang="postcss">
-
+.available .value {
+	@apply font-bold text-sm;
+}
 .low-severity {
-	@apply text-green-500;
+	color: greenyellow;
 }
 .medium-severity {
-	@apply text-orange-500;
+	color: orange;
 }
 .high-severity {
-	@apply text-red-500;
+	color: red;
 }
 
 </style>

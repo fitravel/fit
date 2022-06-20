@@ -27,5 +27,6 @@ export * from "./capHead"
 export * from "./importAs"
 export * from "./ifNil"
 export * from "./unrefProps"
+export * from "./localize"
 
 export type R = Record<string, any>

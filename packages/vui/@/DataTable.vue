@@ -102,36 +102,5 @@ const items = computed(() => {
 </template>
 
 <style lang="postcss">
-.dim {
-	@apply opacity-50;
-}
-.data-table {
-	tbody {
-		@apply bg-black bg-opacity-30 rounded font-extralight text-xs font-mono;
-	}
 
-	tr {
-		@apply border-b border-neutral-800;
-	}
-	td, th {
-		@apply text-center;
-
-		.label {
-			@apply h-12 grid items-center font-normal;
-		}
-		.value {
-			@apply grid items-center min-h-[3rem] justify-center;
-
-			a {
-				@apply border-b inline-block w-min;
-			}
-		}
-	}
-	
-	.pagination {
-		.disabled {
-			@apply cursor-not-allowed opacity-50;
-		}
-	}
-}
 </style>

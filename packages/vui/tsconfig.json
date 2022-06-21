@@ -3,12 +3,9 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
 	"compilerOptions": {
-		"outDir": "dist",
-		"rootDir": ".",
-		"declarationDir": "dist"
-	},
-	"types": [
-		"node",
-		"vue"
-	]
+		"types": [
+			"node",
+			"vue"
+		]
+	}
 }

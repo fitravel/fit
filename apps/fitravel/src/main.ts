@@ -1,11 +1,12 @@
 import './index.css'
 
 import config from "../site.config"
-import { createSite } from 'vui'
+import { createSite } from 'vui/@'
 
 createSite(config, [
 	{ path: '/', view: 'Home' },
+	{ path: '/contact', view: 'Contact' },
 	{ path: '/login', view: 'Login' },
-	{ path: '/user', view: 'User' },
-	{ path: '/user/edit', view: 'EditUser' },
+	{ path: '/users', view: 'Users' },
+	{ path: '/user/:id', view: 'EditUser' },
 ])

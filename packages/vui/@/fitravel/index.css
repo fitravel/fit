@@ -1,0 +1,54 @@
+body {
+	@apply bg-white text-gray-900;
+}
+
+h2 {
+	@apply text-2xl font-bold;
+}
+
+.field {
+	@apply block;
+
+	.label {
+		@apply text-gray-500 font-bold h-8 mt-4;
+	}
+	.input {
+		@apply h-12 p-2 bg-gray-200 shadow-inner w-full text-lg text-gray-500 rounded-sm border-b border-gray-300;
+	}
+
+	&--button {
+		@apply flex rounded-sm shadow hover:bg-gray-300 bg-gray-200 text-gray-500 h-12 border-b border-gray-300;
+
+		> div {
+			@apply text-center font-bold pl-5 pr-6 py-2 shadow-inner h-full w-full grid items-center;
+		}
+	}
+}
+
+.data-table {
+	tbody {
+
+	}
+
+	tr {
+		@apply border-b border-gray-300 h-12 hover:bg-gray-200;
+	}
+	th {
+		@apply font-bold text-left;
+	}
+	td, th {
+		@apply first:pl-4 last:pr-4;
+		.label {
+			@apply grid items-center;
+		}
+		.value {
+
+		}
+	}
+	
+	.pagination {
+		.disabled {
+			@apply cursor-not-allowed opacity-50;
+		}
+	}
+}

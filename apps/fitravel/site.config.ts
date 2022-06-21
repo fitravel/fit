@@ -1,4 +1,4 @@
-import { defineSite, type SiteConfig } from "vui"
+import { defineSite } from "vui"
 
 export default defineSite({ 
 	title: 'Ferðaskrifstofa Íslands',

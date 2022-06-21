@@ -9,12 +9,21 @@ body {
 }
 
 /* FORMS */
+.field {
+	&--select {
+		.input {
+			@apply pr-0;
+		}
+	}
+	&--counter {
 
-.label {
-	@apply pl-1 left-0 text-xs opacity-60;
+	}
 }
-.field, button.field {
-	@apply h-14 w-full mt-1;
+.label {
+	@apply pl-1 h-6 text-xs opacity-60;
+}
+.input, button.input {
+	@apply h-14 w-full;
 	@apply flex;
 	@apply text-zinc-400 text-left;
 	@apply bg-black bg-opacity-30 hover:bg-opacity-40;
@@ -25,15 +34,6 @@ body {
 	}
 	> input {
 		@apply pl-3 bg-transparent;
-	}
-
-	&--select {
-		.field {
-			@apply pr-0;
-		}
-	}
-	&--counter {
-
 	}
 }
 .dropdown {
@@ -63,6 +63,16 @@ body {
 	}
 	&.active {
 		@apply opacity-80;
+	}
+}
+.cells {
+	@apply grid gap-1;
+}
+.day-picker {
+	@apply p-3;
+
+	.cells {
+		@apply grid-cols-7;
 	}
 }
 

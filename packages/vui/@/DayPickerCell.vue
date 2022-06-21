@@ -27,8 +27,9 @@ function onSelect () {
 </script>
 
 <template>
-	<PopoverButton :disabled="!isActive" @click="onSelect"
+	<PopoverButton class="cell day-picker-cell" 
 		:class="{ [type]: true, selected, active: isActive }"
+		:disabled="!isActive" @click="onSelect"
 	>
 		{{ type === 'date' ? localize(value, 'd') : value }}
 	</PopoverButton>

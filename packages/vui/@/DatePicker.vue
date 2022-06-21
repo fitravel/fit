@@ -8,6 +8,7 @@ import MonthPicker from "./MonthPicker.vue"
 
 const props = defineProps<{
 	modelValue: Date|null;
+	label?: string;
 	startDate?: Date;
 	endDate?: Date;
 	disabled?: boolean;
@@ -28,28 +29,37 @@ watch(nav, i => {
 </script>
 
 <template>
-	<Popover class="date-picker">
-		<PopoverButton v-slot="{ open }" :disabled="isDisabled">
-			<slot name="input" v-bind="{ open, model }">
-				<input readonly :value="model"/>
-			</slot>
-		</PopoverButton>
-		<PopoverPanel>
-			<DayPicker v-show="view === 'days'"
-				v-model="model"
-				v-model:nav-date="nav"
-				:start-date="firstDate"
-				:end-date="endDate"
-				@click-label="view = 'months'"
-			/>
-			<MonthPicker v-show="view === 'months'"
-				v-model="model"
-				v-model:nav-date="nav"
-				:start-date="firstDate"
-				:end-date="endDate"
-				@click-label="view = 'days'"
-				@select="view = 'days'"
-			/>
-		</PopoverPanel>
-	</Popover>
+	<label class="field field--date-picker">
+		<div class="label" v-if="label">
+			{{ label }}
+		</div>
+		<Popover class="relative">
+			<PopoverButton v-slot="{ open }" :disabled="isDisabled" class="input">
+				{{ model }}
+			</PopoverButton>
+			<PopoverPanel class="dropdown">
+				<DayPicker v-show="view === 'days'"
+					v-model="model"
+					v-model:nav-date="nav"
+					:start-date="firstDate"
+					:end-date="endDate"
+					@click-label="view = 'months'"
+				/>
+				<MonthPicker v-show="view === 'months'"
+					v-model="model"
+					v-model:nav-date="nav"
+					:start-date="firstDate"
+					:end-date="endDate"
+					@click-label="view = 'days'"
+					@select="view = 'days'"
+				/>
+			</PopoverPanel>
+		</Popover>
+	</label>
 </template>
+
+<style lang="postcss">
+.field--date-picker {
+	
+}
+</style>

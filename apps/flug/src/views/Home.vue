@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, type Ref } from "@vue/reactivity"
 import { compose, filter, find, last, map, prop, split, flatten, uniqBy, o, type R, byId } from "geri"
-import { SelectField, Counter, DataTable, IconButton, MapIcon, CodeIcon } from "vui/@"
+import { SelectField, Counter, DataTable, IconButton, MapIcon, CodeIcon, DatePicker } from "vui/@"
 import { Page } from "vui/@/hermes"
 import { useOwners, type Owner } from "gygax"
 import { useFlightTable } from "odin"
@@ -56,11 +56,13 @@ const getAvailability = (id: number) => find((i: R) => i.id === id)(schedule.val
 	<Page title="Flugviti">
 		<div class="w-full px-6">
 			<aside class="slab grid grid-cols-8 grid-rows-1 gap-6 grid-flow-row">
-				<SelectField :items="ownerTypes" v-model="selectedOwnerType" label="Veldu tegund" class="col-span-2 row-span-1"/>
-				<SelectField :items="ownersOfSelectedType" v-model="selectedOwner" label="Veldu Odin owner" class="col-span-2 row-span-1"/>
-				<SelectField :items="origins" v-model="origin" label="Frá dagsetningu" class="col-span-2 row-span-1"/>
-				<SelectField :items="origins" v-model="origin" label="Fram að dagsetningu" class="col-span-2 row-span-1"/>
+				<SelectField :items="ownerTypes" v-model="selectedOwnerType" label="Veldu tegund" class="col-span-1 row-span-1"/>
+				<SelectField :items="ownersOfSelectedType" v-model="selectedOwner" label="Veldu Odin owner" class="col-span-1 row-span-1"/>
+				<!-- <SelectField :items="origins" v-model="origin" label="Frá dagsetningu" class="col-span-2 row-span-1"/>
+				<SelectField :items="origins" v-model="origin" label="Fram að dagsetningu" class="col-span-2 row-span-1"/> -->
 				<SelectField :items="directions" v-model="direction" label="Veldu átt" class="col-span-2 row-span-1"/>
+				<DatePicker class="col-span-1 row-span-1" label="Frá dags."/>
+				<DatePicker class="col-span-1 row-span-1" label="Fram að dags."/>
 			</aside>
 			<!-- <aside class="slab grid grid-cols-8 grid-rows-2 grid-flow-col gap-6">
 				<SelectField :items="items" v-model="destinations" label="Afmarka við áfangastaði" class="col-span-2 row-span-1"/>

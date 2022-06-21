@@ -37,13 +37,13 @@ const onScroll = ({ y }: UseScrollReturn) => {
 
 <template>
 	<Listbox v-model="model" #="{ open }" :multiple="multiple">
-		<div class="field--select">
-			<ListboxLabel class="label" v-if="label">
+		<label class="field field--select">
+			<ListboxLabel as="div" class="label" v-if="label">
 				{{ label }}
 			</ListboxLabel>
 
 			<div class="relative">
-				<ListboxButton class="field">
+				<ListboxButton class="input">
 					<span class="pl-4">
 						{{ modelText }}
 					</span>
@@ -108,6 +108,6 @@ const onScroll = ({ y }: UseScrollReturn) => {
 					</ListboxOptions>
 				</Transition>
 			</div>
-		</div>
+		</label>
 	</Listbox>
 </template>

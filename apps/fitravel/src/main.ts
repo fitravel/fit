@@ -9,4 +9,5 @@ createSite(config, [
 	{ path: '/login', view: 'Login' },
 	{ path: '/users', view: 'Users' },
 	{ path: '/user/:id', view: 'EditUser' },
+	{ path: '/register', view: 'Register' }
 ])

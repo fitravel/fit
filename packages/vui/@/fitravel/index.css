@@ -2,6 +2,17 @@ body {
 	@apply bg-white text-gray-900;
 }
 
+main {
+	@apply text-lg;
+
+	a {
+		@apply underline inline-block text-[#d61a21];
+	}
+	p, h2 {
+		@apply px-4 pb-4;
+	}
+}
+
 h2 {
 	@apply text-2xl font-bold;
 }

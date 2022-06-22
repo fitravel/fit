@@ -31,7 +31,7 @@ import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
 		</template>
 
 		<template #default>
-			<section class="min-h-screen -mt-72 p-8 pt-72">
+			<section class="min-h-screen -mt-72 p-8 pt-72 grid items-center">
 				<slot />
 			</section>
 		</template>
@@ -42,7 +42,7 @@ import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
 				<div class="w-full border-t-[3px] pb-3 pl-12 pr-1 border-[#d61a21]"></div>
 			</div>
 			<div class="text-center text-gray-500 px-8 pb-8">
-				Ferðaskrifstofa Íslands ehf. · Hlíðasmára 19 · 201 Kópavogur · s. +354 585 4000
+				Ferðaskrifstofa Íslands ehf. · Hlíðasmára 19 · 201 Kópavogur · heildsala@fitravel.is · s. +354 585 4000
 			</div>
 		</template>
 	</BasePage>

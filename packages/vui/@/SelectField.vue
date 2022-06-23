@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
 import { Listbox, ListboxButton, ListboxLabel, ListboxOption, ListboxOptions, 
-	ChevronDownIcon, XIcon, ChevronDoubleDownIcon, ChevronDoubleUpIcon, 
+	FieldChevron, ChevronDoubleDownIcon, ChevronDoubleUpIcon, 
 	vScroll, type UseScrollReturn } from "vui/@"
 import { find } from "geri"
-import { computed, ref } from "@vue/reactivity"
+import { computed, ref } from "vue"
 
 interface SelectOption {
 	text: string;
@@ -47,10 +47,7 @@ const onScroll = ({ y }: UseScrollReturn) => {
 					<span class="pl-4">
 						{{ modelText }}
 					</span>
-					<span class="h-6 w-6 mr-4 transition" :class="{ 'z-40 rotate-180 duration-100 ease-out': open }">
-						<XIcon v-if="open && model" class="h-4 w-4" @click="model = null"/>
-						<ChevronDownIcon v-else/>
-					</span>
+					<FieldChevron :open="open" @nulled="model = null"/>
 				</ListboxButton>
 
 				<Transition

@@ -7,9 +7,9 @@ main {
 
 	a {
 		@apply underline inline-block text-[#d61a21];
-	}
+	}	
 	p, h2 {
-		@apply px-4 pb-4;
+		@apply pb-4;
 	}
 }
 
@@ -25,6 +25,10 @@ h2 {
 	}
 	.input {
 		@apply h-12 p-2 bg-gray-200 shadow-inner w-full text-lg text-gray-500 rounded-sm border-b border-gray-300;
+
+		> * {
+			@apply h-12 grid items-center first:w-full;
+		}
 	}
 
 	&--button {
@@ -33,6 +37,38 @@ h2 {
 		> div {
 			@apply text-center font-bold pl-5 pr-6 py-2 shadow-inner h-full w-full grid items-center;
 		}
+
+		&.danger-zone {
+			@apply bg-red-600 text-red-900 hover:bg-red-700 border-red-900;
+		}
+	}
+}
+.dropdown {
+	@apply absolute w-full top-0 list-none z-30;
+
+	> div {
+		@apply bg-gray-200 bg-opacity-90;
+		@apply border border-gray-300 rounded-sm;
+	}
+}
+
+.options {
+	@apply max-h-[12.5rem] overflow-scroll;
+
+	> li {
+		@apply border-b border-gray-300 last:border-0;
+	}
+}
+.option {
+	@apply min-h-[3.5rem] px-4 w-full;
+	@apply cursor-pointer;
+	@apply grid items-center;
+
+	&.value {
+		@apply shadow-inner text-gray-600;
+	}
+	&.active {
+		@apply bg-gray-300;
 	}
 }
 

@@ -4,7 +4,7 @@ import { TextField } from "vui/@"
 </script>
 
 <template>
-	<Page>
+	<Page centered>
 		<div class="h-full grid items-center">
 			<form id="login" class="mx-auto w-full max-w-[24rem]">
 				<h2>Sendu fyrirspurn</h2>

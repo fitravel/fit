@@ -4,9 +4,9 @@ import { Anchor } from "vui/@"
 </script>
 
 <template>
-	<Page>
+	<Page centered>
 		<section class="max-w-[50rem] mx-auto">
-			<div class="p-4 border-b border-t border-t-gray-100 rounded-sm mb-8 pt-8 shadow-lg">
+			<div class="py-4 px-8 border-b border-t border-t-gray-100 rounded-sm mb-8 pt-8 shadow-lg">
 				<h2>Markaðstorg</h2>
 				<p>
 					Á markaðstorgi Ferðaskrifstofu Íslands ehf. gefst ferðaskrifstofum með gilt 

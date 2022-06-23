@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { Page } from "vui/@/fitravel"
-import { UserLoginForm } from "../@"
 </script>
 
 <template>
-	<Page centered>
-		<UserLoginForm/>
+	<Page secure>
+		Dashboard!
 	</Page>
 </template>

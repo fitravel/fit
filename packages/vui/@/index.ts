@@ -14,6 +14,7 @@ import MonthPicker from "./MonthPicker.vue"
 import MonthPickerCell from "./MonthPickerCell.vue"
 import TextField from "./TextField.vue"
 import ActionButton from "./ActionButton.vue"
+import FieldChevron from "./FieldChevron.vue"
 
 export {
 	ActionButton,
@@ -25,6 +26,7 @@ export {
 	DatePickerHeader,
 	DayPicker,
 	DayPickerCell,
+	FieldChevron,
 	IconButton,
 	MonthPicker, 
 	MonthPickerCell,

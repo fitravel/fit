@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
+
+defineProps<{
+	secure?: boolean;
+	admin?: boolean;
+	centered?: boolean;
+}>()
 </script>
 
 <template>
@@ -7,7 +13,7 @@ import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
 		<template #header>
 			<div class="flex p-8 gap-2">
 				<Anchor to="/" class="border-b-[3px] pb-4 grow-0 shrink-0 pl-1 border-[#014387] w-80">
-					<img src="fi-logo.jpg" class="h-24">
+					<img src="/fi-logo.jpg" class="h-24">
 				</Anchor>
 				<nav class="w-full border-b-[3px] pb-4 pr-1 border-[#d61a21] relative">
 					<div class="absolute bottom-4 right-48">
@@ -31,7 +37,7 @@ import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
 		</template>
 
 		<template #default>
-			<section class="min-h-screen -mt-72 p-8 pt-72 grid items-center">
+			<section class="min-h-screen -mt-72 p-8 pt-72" :class="{ centered }">
 				<slot />
 			</section>
 		</template>
@@ -41,9 +47,30 @@ import { Page as BasePage, LockClosedIcon, Anchor, AtSymbolIcon } from "vui/@"
 				<div class="border-t-[3px] pt-4 grow-0 shrink-0 pl-1 border-[#014387] w-80"></div>
 				<div class="w-full border-t-[3px] pb-3 pl-12 pr-1 border-[#d61a21]"></div>
 			</div>
-			<div class="text-center text-gray-500 px-8 pb-8">
-				Ferðaskrifstofa Íslands ehf. · Hlíðasmára 19 · 201 Kópavogur · heildsala@fitravel.is · s. +354 585 4000
+			<div id="footer-info">
+				<span>Ferðaskrifstofa Íslands ehf.</span>
+				<span>Hlíðasmára 19, 201 Kópavogur</span>
+				<span>heildsolutengilidur@fitravel.is</span>
+				<span>s. +354 585 4000</span>
 			</div>
 		</template>
 	</BasePage>
 </template>
+
+<style lang="postcss" scoped>
+.centered {
+	@apply grid items-center;
+}
+#footer-info {
+	@apply text-center text-gray-500 px-8 pb-8;
+
+	> span {
+		@apply inline-block;
+
+		& + span::before {
+			content: '•';
+			@apply px-1;
+		}
+	}
+}
+</style>

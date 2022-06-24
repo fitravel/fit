@@ -6,14 +6,8 @@ import { type SiteRoute, type SiteConfig } from "../defineSite"
 import { map, omit } from "geri"
 import { App } from "vui/@"
 
-export async function createSite (config: SiteConfig, views: SiteRoute[] = []) {
-	const createRoute = (i: SiteRoute) => {
-		const name      = i.view
-		const component = () => import(`/views/${i.view}.vue`) 
-		return { ...omit(['view'])(i), name, component } as RouteRecordRaw
-	}
+export async function createSite (config: SiteConfig, routes: RouteRecordRaw[] = []) {
 	const app     = createApp(App)
-	const routes  = map(createRoute)(views)
 	const history = (config?.history ?? 'html5') === 'hash' ? createWebHashHistory() : createWebHistory() 
 	const router  = createRouter({ routes, history })
 	const store   = createPinia()

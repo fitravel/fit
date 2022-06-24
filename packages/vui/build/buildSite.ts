@@ -30,7 +30,7 @@ export async function buildSite (config: SiteConfig, hooks: BuildHooks = {}) {
 	}
 	const buildPublic = () => resetDir('./public').then(async () => {
 		const paths         = await readdir('./src')
-		const whitelist     = [ 'api', 'index.css', 'main.ts', 'tailwind.css', '@' ]
+		const whitelist     = [ 'views', 'api', 'index.css', 'main.ts', 'tailwind.css', '@' ]
 		const isWhitelisted = (i: string) => includes(i)(whitelist)
 		//@ts-ignore
  		const tasks         = o(map(copyToPublic), reject(isWhitelisted))(paths)

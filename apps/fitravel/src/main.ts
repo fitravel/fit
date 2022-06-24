@@ -16,5 +16,6 @@ createSite(config, [
 	{ path: '/login', component: Login },
 	{ path: '/users', component: Users },
 	{ path: '/user/:id', component: EditUser },
-	{ path: '/register', component: Register }
+	{ path: '/register', component: Register },
+	{ path: '/terms', component: Terms }
 ])

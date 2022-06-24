@@ -19,6 +19,9 @@ import { Anchor } from "vui/@"
 					tilkynningu um fyrirhugaðar ferðir FÍ auk upplýsinga um áætlaðar dagsetningar 
 					flugferða og áætlaðan sætisfjölda sem stendur endurseljendum til boða hverju sinni.
 				</p>
+				<p>
+					Skilmála Markaðstorgs má <Anchor to="/terms">lesa hér</Anchor>.
+				</p>
 			</div>
 
 			<!-- <h2>Ferðaskrifstofa Íslands</h2>

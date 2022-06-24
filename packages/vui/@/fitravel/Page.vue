@@ -16,14 +16,14 @@ defineProps<{
 					<img src="/fi-logo.jpg" class="h-24">
 				</Anchor>
 				<nav class="w-full border-b-[3px] pb-4 pr-1 border-[#d61a21] relative">
-					<div class="absolute bottom-4 right-48">
+					<!-- <div class="absolute bottom-4 right-48">
 						<Anchor to="/contact" class="flex text-gray-500">
 							<AtSymbolIcon class="w-6"/>
 							<span>
 								Senda fyrirspurn
 							</span>
 						</Anchor>
-					</div>
+					</div> -->
 					<div class="shadow absolute right-1 bottom-4 rounded-3xl overflow-hidden border-b border-gray-300">
 						<button class="flex shadow-inner hover:bg-gray-300 pl-5 bg-gray-200 pr-6 py-2 text-gray-500" @click="$router.push('/login')">
 							<LockClosedIcon class="h-6 text-gray-500"/>

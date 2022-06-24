@@ -4,7 +4,7 @@ import { Page } from "vui/@/fitravel"
 
 <template>
 	<Page>
-		<div>
+		<div class="px-8">
 			<h2>SKILMÁLAR UM HEILDSÖLU FERÐASKRIFSTOFU ÍSLANDS EHF. Á FLUGSÆTUM Í LOFTFARI Á VEGUM FÉLAGSINS</h2>
 
 			<h3>1. TENGSL SKILMÁLA OG SÁTTAR</h3>

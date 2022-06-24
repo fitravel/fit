@@ -9,7 +9,7 @@ import { App } from "vui/@"
 export async function createSite (config: SiteConfig, views: SiteRoute[] = []) {
 	const createRoute = (i: SiteRoute) => {
 		const name      = i.view
-		const component = () => import(/* @vite-ignore */`/src/views/${i.view}.vue`) 
+		const component = () => import(`/src/views/${i.view}.vue`) 
 		return { ...omit(['view'])(i), name, component } as RouteRecordRaw
 	}
 	const app     = createApp(App)

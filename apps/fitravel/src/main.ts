@@ -8,6 +8,7 @@ import Login from "./views/Login.vue"
 import Users from "./views/Users.vue"
 import EditUser from "./views/EditUser.vue"
 import Register from "./views/Register.vue"
+import Terms from "./views/Terms.vue"
 
 createSite(config, [
 	{ path: '/', component: Home },

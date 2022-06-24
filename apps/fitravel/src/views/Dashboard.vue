@@ -14,9 +14,9 @@ import { DataTable } from "vui/@"
 				{ header: 'Ath', key: 'comment' }
 			]"
 			:rows="[
-				{ destination: 'AGP', seats: 20, date: '04-08-22', comment: 'Trallala' },
-				{ destination: 'TFS', seats: 6, date: '04-08-22', comment: 'Rýmingarsala!' },
-				{ destination: 'PMI', seats: 4, date: '04-08-22', comment: 'Millilent kannski' },
+				{ destination: 'AGP', seats: 20, date: '04-09-22', comment: 'Trallala' },
+				{ destination: 'TFS', seats: 6, date: '02-12-22', comment: 'Rýmingarsala!' },
+				{ destination: 'PMI', seats: 4, date: '16-08-22', comment: 'Millilent kannski' },
 			]"
 		>
 		</DataTable>

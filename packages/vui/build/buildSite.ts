@@ -1,11 +1,11 @@
-import { copy, logHeading, remove, terminal, logger, resetDir } from "freki"
+import { copy, logHeading, remove, terminal, logger, resetDir, createDir } from "freki"
 import { queue, Task, isNil, capHead, map, o, reject, includes } from "geri"
 import { createPostcssConfig } from "./createPostcssConfig"
 import { createSiteIndex } from "./createSiteIndex"
 import { createTailwindConfig } from "./createTailwindConfig"
 import { createViteConfig } from "./createViteConfig"
 import { type BuildHook, type BuildHookFn, type BuildHooks, type SiteConfig } from "../defineSite"
-import { readdir } from "fs/promises"
+import { readdir, lstat } from "fs/promises"
 
 export async function buildSite (config: SiteConfig, hooks: BuildHooks = {}) {
 	const phase = process.argv?.[2]
@@ -15,10 +15,22 @@ export async function buildSite (config: SiteConfig, hooks: BuildHooks = {}) {
 		const fn = hooks[i as BuildHook] as BuildHookFn
 		return isNil(fn) ? undefined : fn(config)
 	}
-	const copyToPublic = (file: string): Promise<any> => copy(`./src/${file}`, `./public/${file}`)
+	const copyToPublic = async (file: string): Promise<any> => {
+		const src   = `./src/${file}`
+		const stats = await lstat(src)
+		
+		if (stats.isFile()) {
+			return copy(src, `./public/${file}`)
+		}
+		else {
+			const files = await readdir(src)
+			await createDir(`./public/${file}`)
+			return Promise.all(map((i: string) => copyToPublic(`${file}/${i}`))(files))
+		}
+	}
 	const buildPublic = () => resetDir('./public').then(async () => {
 		const paths         = await readdir('./src')
-		const whitelist     = [ 'api', 'views', 'index.css', 'main.ts', 'tailwind.css', '@' ]
+		const whitelist     = [ 'api', 'index.css', 'main.ts', 'tailwind.css', '@' ]
 		const isWhitelisted = (i: string) => includes(i)(whitelist)
 		//@ts-ignore
  		const tasks         = o(map(copyToPublic), reject(isWhitelisted))(paths)

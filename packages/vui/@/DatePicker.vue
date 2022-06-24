@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
 import { getDate, setDate } from "date-fns"
-import { computed, onMounted, ref, watch } from "vue"
+import { computed, onMounted, Ref, ref, watch } from "vue"
 import { Popover, PopoverButton, PopoverPanel } from "vui/@"
 import DayPicker from "./DayPicker.vue"
 import MonthPicker from "./MonthPicker.vue"
@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const isDisabled = computed(() => props.disabled ?? false)
-const model      = useVModel(props)
+const model      = useVModel(props) as Ref<Date|null>
 const firstDate  = computed(() => props.startDate ?? new Date())
 const nav        = ref(new Date())
 const view       = ref<'days'|'months'>('days')

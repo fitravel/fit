@@ -1,12 +1,16 @@
 <script setup lang="ts">
+import { ref } from "vue"
 import { TextField, ActionButton, Anchor } from "vui/@"
+
+const user = ref('')
+const password = ref('')
 </script>
 
 <template>
 	<form id="user-login" class="mx-auto max-w-[24rem]">
 		<h2>Innskráning</h2>
-		<TextField label="Notandi (netfang)" class="w-full"/>
-		<TextField label="Lykilorð" type="password" class="w-full"/>
+		<TextField v-model="user" label="Notandi (netfang)" class="w-full"/>
+		<TextField v-model="password" label="Lykilorð" type="password" class="w-full"/>
 		<div class="flex">
 			<ActionButton class="mt-8">
 				Skrá inn

@@ -6,7 +6,7 @@ import { PopoverButton } from "vui/@"
 import { localize } from "geri"
 
 const props = defineProps<{
-	modelValue: Date;
+	modelValue: Date|null;
 	value: string|Date;
 	type: 'weekday'|'date'|'gap';
 	isActive: boolean;
@@ -15,13 +15,14 @@ const emit = defineEmits([
 	'update:modelValue',
 	'select'
 ])
-const model    = useVModel(props)
-const selected = computed(() => props.type === 'date' ? isSameDay(props.modelValue, props.value as Date) : false)
+const model    = useVModel(props, 'modelValue')
+const selected = computed(() => props.type === 'date' ? isSameDay(props.modelValue as Date, props.value as Date) : false)
 
 function onSelect () {
 	if (props.isActive) {
-		model.value = props.value
-		emit('select', props.value)
+		const date = new Date(props.value)
+		model.value = date
+		emit('select', date)
 	}
 }
 </script>

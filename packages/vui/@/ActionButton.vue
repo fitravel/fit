@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-	dangerZone: boolean;
+	dangerZone?: boolean;
 }>()
 </script>
 

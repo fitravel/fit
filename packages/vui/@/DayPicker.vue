@@ -2,12 +2,12 @@
 import { computed } from "vue"
 import DatePickerHeader from "./DatePickerHeader.vue"
 import DayPickerCell from "./DayPickerCell.vue"
-import { localize, isNil, o, addIndex, map, repeat, compose } from "geri"
+import { localize, isNil, addIndex, map, repeat } from "geri"
 import { useVModel } from "@vueuse/core"
 import { addDays, addMonths, getDay, getDaysInMonth, getMonth, getYear, isAfter, isBefore, setDay, subDays, subMonths } from "date-fns";
 
 const props = defineProps<{
-	modelValue: Date;
+	modelValue: Date|null;
 	navDate: Date;
 	startDate?: Date;
 	endDate?: Date;
@@ -21,7 +21,7 @@ const emit = defineEmits([
 ])
 
 //DATES
-const model = useVModel(props)
+const model = useVModel(props, 'modelValue')
 const nav   = useVModel(props, 'navDate')
 
 const currentMonth = computed(() => getMonth(nav.value))
@@ -80,7 +80,7 @@ function onNextClick () {
 			@prev="onPrevClick" @click-label="$emit('click-label')" @next="onNextClick"
 		/>
 		<div class="cells">
-			<DayPickerCell v-for="cell of cells" v-model="model" v-bind="{ ...cell }"/>
+			<DayPickerCell v-for="cell of cells" v-model="model" v-bind="cell"></DayPickerCell>
 		</div>
 	</div>
 </template>

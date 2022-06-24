@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { Page } from "vui/@/fitravel"
 import { TextField } from "vui/@"
 </script>
@@ -18,4 +18,4 @@ import { TextField } from "vui/@"
 			</form>
 		</div>
 	</Page>
-</template>
+</template> -->

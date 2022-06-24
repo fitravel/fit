@@ -1,0 +1,8 @@
+[build.environment]
+  NETLIFY_USE_YARN = "true"
+
+[[redirects]]
+	from = "/smash/*"
+	to = "/smash/index.html"
+	status = 200
+	force = true

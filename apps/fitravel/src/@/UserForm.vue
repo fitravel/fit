@@ -48,6 +48,11 @@ const passwordRepeat = ref('')
 			<TextField v-model="passwordRepeat" label="Endurtaktu lykilorð" type="password" class="w-full"/>
 		</div>
 
+		<label class="flex">
+			<input type="checkbox"/>
+			<span>Ég hef lesið og samþykki <Anchor to="/terms">skilmála</Anchor></span>
+		</label>
+
 		<div class="col-span-3">
 			<ActionButton class="mt-8">
 				{{ action }}

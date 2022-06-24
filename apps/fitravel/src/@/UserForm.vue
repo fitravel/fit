@@ -20,7 +20,7 @@ const passwordRepeat = ref('')
 </script>
 
 <template>
-	<form id="login" class="mx-auto w-full max-w-[50rem] grid grid-cols-3 gap-4">
+	<form id="login" class="mx-auto w-full max-w-[32rem]">
 		<h2 class="col-span-3">
 			{{ label }}
 		</h2>

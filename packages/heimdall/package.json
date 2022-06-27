@@ -1,0 +1,15 @@
+{
+  "name": "heimdall",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "freki": "*",
+    "geri": "*",
+    "jsonwebtoken": "^8.5.1",
+    "mimir": "*",
+    "tsconfig": "*",
+    "vui": "*"
+  },
+  "devDependencies": {}
+}

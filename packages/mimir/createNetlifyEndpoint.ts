@@ -21,11 +21,10 @@ export const refactorEvent = <T = R>(event: HandlerEvent) => {
 		headers = {}
 	} = event
 	const method  = toLower(httpMethod)
-	const token   = headers?.Bearer ?? null
 	const query   = parse(rawQuery)
 	const payload = JSON.parse(body)
 
-	return { query, payload, method, headers, token, event }
+	return { query, payload, method, headers, event }
 }
 export const response = (status: number, payload: any) => ({ 
 	statusCode: status, 
@@ -57,7 +56,7 @@ export type EndpointConfig = EndpointMethods & {
 	error?: (i: EndpointMethodContext) => Promise<EndpointMethodContext>
 } 
 
-export function createEndpoint (config: EndpointConfig): Handler {
+export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 	const methods = {
 		get: config?.get ?? null,
 		post: config?.post ?? null,
@@ -79,7 +78,6 @@ export function createEndpoint (config: EndpointConfig): Handler {
 
 		try {
 			if (!method) throw 'Unsupported method'
-
 			results = await method(context)
 			status  = 200
 		}
@@ -92,3 +90,5 @@ export function createEndpoint (config: EndpointConfig): Handler {
 		}
 	}
 }
+
+export default createNetlifyEndpoint

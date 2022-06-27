@@ -1,0 +1,14 @@
+{
+  "name": "mimir",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "dependencies": {
+    "@netlify/functions": "^1.0.0",
+    "freki": "*",
+    "geri": "*",
+    "mariadb": "^3.0.0",
+    "tsconfig": "*",
+    "vui": "*"
+  },
+  "devDependencies": {}
+}

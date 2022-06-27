@@ -11,7 +11,8 @@
   "dependencies": {
     "geri": "*",
     "gygax": "*",
-    "vui": "*"
+    "vui": "*",
+		"mimir": "*"
   },
   "devDependencies": {
 		"autoprefixer": "*",

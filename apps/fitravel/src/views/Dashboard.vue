@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Page } from "vui/@/fitravel"
+import { Page } from "../@"
 import { DataTable } from "vui/@"
 </script>
 

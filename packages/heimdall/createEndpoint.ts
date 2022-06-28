@@ -1,10 +1,13 @@
-import { createNetlifyEndpoint } from "mimir"
+import { createNetlifyEndpoint, type EndpointMethodContext } from "mimir"
 import { connect } from "./connect"
+import { head, isEmpty, toLower, o, trim, type R } from "geri"
 import bcrypt from "bcrypt"
 import JWT from "jsonwebtoken"
 
 type CTX = EndpointMethodContext
 
+export const hashPass = (i: string) => bcrypt.hash(i, 10)
+	
 export const createEndpoint = (database: string) => {
 	const context = async (i: CTX) => {
 		const { users, authenticate, disconnect, bearer } = await connect(database)
@@ -19,7 +22,7 @@ export const createEndpoint = (database: string) => {
 			const allowed = isSelf || isAdmin
 			if (!allowed) throw 'Lacks authorization'
 		}
-		const getUser = async ({ query }) => {
+		const getUser = async (query: R) => {
 			const user = head(await users.select(query)) ?? null
 			if (!user) throw 'User not found'
 			return user
@@ -33,7 +36,6 @@ export const createEndpoint = (database: string) => {
 
 	// HTTP METHODS
 
-	const hashPass = (i) => bcrypt.hash(i, 10)
 
 	const get = ({ users, isAdmin, id, getUser, checkAuthority }: CTX) => {
 		if (id) {
@@ -43,7 +45,7 @@ export const createEndpoint = (database: string) => {
 		if (!isAdmin) throw 'Lacks authorization'
 		return users.select({})
 	}
-	const post = async ({ payload, users, getUser }: CTX) => {
+	const post = async ({ payload, getUser }: CTX) => {
 		const email    = o(trim, toLower)(payload.email)
 		const password = await hashPass(payload.password)
 		const user     = await getUser({ email })
@@ -57,6 +59,7 @@ export const createEndpoint = (database: string) => {
 		return { user, token }
 	}
 	const put = async ({ users, payload, isAdmin }: CTX) => {
+		const { email } = payload
 		const userExists = !isEmpty(await users.select({ email }))
 		if (userExists) throw 'Email is already in use'
 		
@@ -71,7 +74,7 @@ export const createEndpoint = (database: string) => {
 		return users.update({ id }, payload)
 	}
 
-	return createNetlifyEndpoint({ context, final, get, put, patch })
+	return createNetlifyEndpoint({ context, final, get, post, put, patch })
 }
 
 export default createEndpoint

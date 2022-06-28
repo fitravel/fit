@@ -1,6 +1,7 @@
+import { values, join, is, compose, isEmpty, map, repeat, keys, o, type R, toPairs, length } from "geri"
+import { type Connection } from "mariadb"
 
-
-export async function createTable (db, table: string) {
+export function createTable (db: Connection, table: string) {
 	const where = (query: R) => {
 		const AND = join(' AND ')
 		const toString = ([ key, i ]: [string, any]) => {
@@ -13,14 +14,14 @@ export async function createTable (db, table: string) {
 		}
 		return isEmpty(query) ? '' : ' WHERE ' + compose(AND, map(toString), toPairs)(query)
 	}
-	const fieldKeys = (keys?: string[]) => keys ?? false ? join(', ')(keys) : '*'
+	const fieldKeys = (fields?: string[]) => fields ?? false ? join(', ')(fields as string[]) : '*'
 
 	const select = (query: R, fields?: string[]) => {
 		return db.query(`SELECT ${fieldKeys(fields)} FROM ${table}${where(query)}`)
 	}
 	const insert = (data: R) => {
 		const fields       = o(join(', '), keys)(data)
-		const placeholders = o(join(', '), repeat('?'))(keys(data))
+		const placeholders = o(join(', '), repeat('?'))(o(length, keys)(data))
 		return db.query(`INSERT INTO ${table} (${fields}) VALUES (${placeholders})`, values(data))
 	}
 	const update = (query: R, data: R) => {

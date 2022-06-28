@@ -5,19 +5,20 @@
   "scripts": {
     "dev": "vite",
     "build": "ts-node ./build.ts",
-		"vite-build": "vue-tsc --noEmit && vite build",
+    "vite-build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "geri": "*",
     "gygax": "*",
-    "vui": "*",
-		"mimir": "*"
+    "mimir": "*",
+    "vui": "*"
   },
   "devDependencies": {
-		"autoprefixer": "*",
-		"postcss": "*",
-		"tailwindcss": "*",
+    "@types/jsonwebtoken": "^8.5.8",
+    "autoprefixer": "*",
+    "postcss": "*",
+    "tailwindcss": "*",
     "tsconfig": "*"
   }
 }

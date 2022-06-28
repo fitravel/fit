@@ -5,8 +5,13 @@ import { Anchor } from "vui/@"
 
 <template>
 	<Page centered>
-		<section class="max-w-[50rem] mx-auto">
-			<div class="py-4 px-8 border-b border-t border-t-gray-100 rounded-sm mb-8 pt-8 shadow-lg">
+		<section class="max-w-[50rem] mx-auto grid grid-cols-2 grid-rows-2 gap-4">
+
+			<div>
+				<img src="/plane-goes-swoosh.jpg">
+			</div>
+
+			<div class="col-span-2">
 				<h2>Markaðstorg</h2>
 				<p>
 					Á markaðstorgi Ferðaskrifstofu Íslands ehf. gefst ferðaskrifstofum með gilt 

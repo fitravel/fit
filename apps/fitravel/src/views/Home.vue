@@ -5,28 +5,34 @@ import { Anchor } from "vui/@"
 
 <template>
 	<Page centered>
-		<section class="max-w-[50rem] mx-auto grid grid-cols-2 grid-rows-2 gap-4">
+		<section class="max-w-full mx-auto grid grid-cols-2 grid-rows-2 gap-8">
 
-			<div>
+			<div class="col-span-1">
 				<img src="/plane-goes-swoosh.jpg">
 			</div>
 
-			<div class="col-span-2">
-				<h2>Markaðstorg</h2>
-				<p>
-					Á markaðstorgi Ferðaskrifstofu Íslands ehf. gefst ferðaskrifstofum með gilt 
-					ferðaskrifstofuleyfi frá Ferðamálastofu („endurseljendum“) tækifæri til þess 
-					að kaupa sæti í vélum FÍ í heildsölu. 
-				</p>
-				<p>
-					Endurseljendur þurfa að óska eftir aðgangi að markaðstorginu með því að skrá 
-					sig <Anchor to="/register">hér</Anchor>. Skráning er nauðsynleg til þess að fá 
-					tilkynningu um fyrirhugaðar ferðir FÍ auk upplýsinga um áætlaðar dagsetningar 
-					flugferða og áætlaðan sætisfjölda sem stendur endurseljendum til boða hverju sinni.
-				</p>
-				<p>
-					Skilmála Markaðstorgs má <Anchor to="/terms">lesa hér</Anchor>.
-				</p>
+			<div class="col-span-1">
+				<img src="/plane-goes-swoosh.jpg">
+			</div>
+
+			<div class="col-span-2 grid items-center">
+				<div class="mx-auto max-w-[50rem]">
+					<h2>Markaðstorg</h2>
+					<p>
+						Á markaðstorgi Ferðaskrifstofu Íslands ehf. gefst ferðaskrifstofum með gilt 
+						ferðaskrifstofuleyfi frá Ferðamálastofu („endurseljendum“) tækifæri til þess 
+						að kaupa sæti í vélum FÍ í heildsölu. 
+					</p>
+					<p>
+						Endurseljendur þurfa að óska eftir aðgangi að markaðstorginu með því að skrá 
+						sig <Anchor to="/register">hér</Anchor>. Skráning er nauðsynleg til þess að fá 
+						tilkynningu um fyrirhugaðar ferðir FÍ auk upplýsinga um áætlaðar dagsetningar 
+						flugferða og áætlaðan sætisfjölda sem stendur endurseljendum til boða hverju sinni.
+					</p>
+					<p>
+						Skilmála Markaðstorgs má <Anchor to="/terms">lesa hér</Anchor>.
+					</p>
+				</div>
 			</div>
 
 			<!-- <h2>Ferðaskrifstofa Íslands</h2>

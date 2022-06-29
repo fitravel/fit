@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
+import { ref, watch } from "vue";
 
 const props = defineProps<{
 	modelValue: string;
@@ -7,7 +8,6 @@ const props = defineProps<{
 	large?: boolean;
 }>()
 const model = useVModel(props)
-
 </script>
 
 <template>
@@ -15,6 +15,7 @@ const model = useVModel(props)
 		<div class="label" v-if="label">
 			{{ label }}
 		</div>
-		<component :is="large ?? false ? 'textarea' : 'input'" v-model="model" class="input" v-bind="$attrs"/>
+		<textarea v-model="model" v-bind="$attrs" class="input" v-if="large"/>
+		<input v-model="model" v-bind="$attrs" class="input" v-else/>
 	</label>
 </template>

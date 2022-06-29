@@ -28,5 +28,7 @@ export * from "./importAs"
 export * from "./ifNil"
 export * from "./unrefProps"
 export * from "./localize"
+export * from "./verifyEmail"
+export * from "./verifyPassword"
 
 export type R = Record<string, any>

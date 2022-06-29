@@ -25,7 +25,7 @@ export const refactorEvent = (event: HandlerEvent) => {
 
 	return { query, body, method, headers, event }
 }
-export const response = (status: number, body: any) => ({ 
+export const handlerResponse = (status: number, body: any): HandlerResponse => ({ 
 	statusCode: status, 
 	body: JSON.stringify(body),
 	headers: {
@@ -64,30 +64,33 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 		patch: config?.patch ?? null,
 		options: config?.options ?? (async () => 'OK') as EndpointMethod
 	}
-	const onError    = config?.error ?? (async i => i.error)
-	const onWrapUp   = config?.final ?? (async i => i.results)
+	const onError    = config?.error ?? (async ({ response, error }) => response({ message: 'Upp kom villa', error }, 500))
+	const onWrapUp   = config?.final ?? (async () => {})
 	const forContext = config?.context ?? (async i => i)
 
-	return async (i: HandlerEvent): HandlerResponse => {
-		let status = 500, results = null
+	return async (i: HandlerEvent) => {
+		let _status = 200, _body = null
 
+		const response = (body: any, code: number = 200) => {
+			_status = code
+			_body   = body
+		}
 		const event   = refactorEvent(i)
-		const context = await forContext(event)
+		const context = await forContext({ ...event, response })
 		const method  = methods[event.method as keyof EndpointMethods]
 
 		try {
 			if (!method) throw 'Unsupported method'
-			results = await method(context)
-			status  = 200
+			await method(context)
 		}
 		catch (error) {
-			results = await onError({ ...context, error })
+			await onError({ ...context, error })
 		}
 		finally {
-			results = await onWrapUp({ ...context, status, results })
-			return response(status, results)
+			await onWrapUp(context)
+			return handlerResponse(_status, _body)
 		}
-	}
+	} 
 }
 
 export default createNetlifyEndpoint

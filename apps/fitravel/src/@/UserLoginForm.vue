@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, watch } from "vue"
 import { TextField, ActionButton, Anchor } from "vui/@"
+import { useLogin } from "heimdall"
 
-const user = ref('')
-const password = ref('')
+const { email, password, login, error } = useLogin()
 </script>
 
 <template>
-	<form id="user-login" class="mx-auto max-w-[24rem]">
+	<form id="user-login" class="mx-auto max-w-[24rem]" :class="{ error }" @submit.prevent="login">
 		<h2>Innskráning</h2>
-		<TextField v-model="user" label="Notandi (netfang)" class="w-full"/>
-		<TextField v-model="password" label="Lykilorð" type="password" class="w-full"/>
+		<p v-if="error" class="text-red-500">
+			{{ error }}
+		</p>
+		<TextField v-model="email" label="Notandi (netfang)"/>
+		<TextField v-model="password" label="Lykilorð" type="password"/>
 		<div class="flex">
 			<ActionButton class="mt-8">
 				Skrá inn

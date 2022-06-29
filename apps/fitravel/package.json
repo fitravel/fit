@@ -15,7 +15,6 @@
     "vui": "*"
   },
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.8",
     "autoprefixer": "*",
     "postcss": "*",
     "tailwindcss": "*",

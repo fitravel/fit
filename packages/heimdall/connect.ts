@@ -18,7 +18,7 @@ export async function connect (database: string) {
 	const users      = createTable(db, 'heimdall-users')
 	const tokens     = createTable(db, 'heimdall-tokens')
 	const bearer     = (headers: R) => o(last, split(' '))(headers['authorization'] ?? '') as string
-	const disconnect = db.end
+	const disconnect = () => db.end()
 
 	const authenticate = async (token: string) => {
 		try {

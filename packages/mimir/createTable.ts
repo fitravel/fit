@@ -17,16 +17,16 @@ export function createTable (db: Connection, table: string) {
 	const fieldKeys = (fields?: string[]) => fields ?? false ? join(', ')(fields as string[]) : '*'
 
 	const select = (query: R, fields?: string[]) => {
-		return db.query(`SELECT ${fieldKeys(fields)} FROM ${table}${where(query)}`)
+		return db.query(`SELECT ${fieldKeys(fields)} FROM \`${table}\`${where(query)}`)
 	}
 	const insert = (data: R) => {
 		const fields       = o(join(', '), keys)(data)
 		const placeholders = o(join(', '), repeat('?'))(o(length, keys)(data))
-		return db.query(`INSERT INTO ${table} (${fields}) VALUES (${placeholders})`, values(data))
+		return db.query(`INSERT INTO \`${table}\` (${fields}) VALUES (${placeholders})`, values(data))
 	}
 	const update = (query: R, data: R) => {
 		const fields = o(join(', '), map(i => `${i}=?`))(keys(data))
-		return db.query(`UPDATE ${table} SET ${fields}${where(query)}`, values(data))
+		return db.query(`UPDATE \`${table}\` SET ${fields}${where(query)}`, values(data))
 	}
 
 	return { select, insert, update }

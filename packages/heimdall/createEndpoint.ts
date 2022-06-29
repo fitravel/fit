@@ -2,11 +2,8 @@ import { createNetlifyEndpoint, type EndpointMethodContext } from "mimir"
 import { connect } from "./connect"
 import { head, isEmpty, toLower, o, trim, type R } from "geri"
 import bcrypt from "bcrypt"
-import JWT from "jsonwebtoken"
 
 type CTX = EndpointMethodContext
-
-export const hashPass = (i: string) => bcrypt.hash(i, 10)
 	
 export const createEndpoint = (database: string) => {
 	const context = async (i: CTX) => {
@@ -36,6 +33,12 @@ export const createEndpoint = (database: string) => {
 
 	// HTTP METHODS
 
+	const credentials = async (body: R, hash: boolean = false) => {
+		const email    = o(trim, toLower)(body.email)
+		const password = hash ? await bcrypt.hash(body.password, 10) : body.password
+		return { email, password }
+	}
+
 
 	const get = ({ users, isAdmin, id, getUser, checkAuthority }: CTX) => {
 		if (id) {
@@ -45,10 +48,9 @@ export const createEndpoint = (database: string) => {
 		if (!isAdmin) throw 'Lacks authorization'
 		return users.select({})
 	}
-	const post = async ({ payload, getUser }: CTX) => {
-		const email    = o(trim, toLower)(payload.email)
-		const password = await hashPass(payload.password)
-		const user     = await getUser({ email })
+	const post = async ({ body, getUser }: CTX) => {
+		const { email, password } = await credentials(body)
+		const user = await getUser({ email })
 
 		const correctPassword = await bcrypt.compare(password, user.password)
 		if (!correctPassword) throw 'Wrong password'
@@ -58,20 +60,23 @@ export const createEndpoint = (database: string) => {
 
 		return { user, token }
 	}
-	const put = async ({ users, payload, isAdmin }: CTX) => {
-		const { email } = payload
-		const userExists = !isEmpty(await users.select({ email }))
+	const put = async ({ users, body, isAdmin }: CTX) => {
+		const { email, password } = await credentials(body, true)
+		
+		const userExists = !!((await users.select({ email }))?.length ?? 0)
 		if (userExists) throw 'Email is already in use'
 		
-		const password   = await hashPass(payload.password)
 		const isVerified = isAdmin
+		const isActive   = true
+		
+		await users.insert({ ...body, email, password, isVerified, isActive })
 
-		return users.insert({ ...payload, password, isVerified })
+		return {}
 	}
-	const patch = async ({ users, getUser, checkAuthority, id, payload }: CTX) => {
+	const patch = async ({ users, getUser, checkAuthority, id, body }: CTX) => {
 		checkAuthority()
 		await getUser({ id })
-		return users.update({ id }, payload)
+		return users.update({ id }, body)
 	}
 
 	return createNetlifyEndpoint({ context, final, get, post, put, patch })

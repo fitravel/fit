@@ -1,10 +1,10 @@
-import { type Handler, type HandlerEvent } from "@netlify/functions"
+import { type Handler, type HandlerEvent, type HandlerResponse } from "@netlify/functions"
 import { type R, toLower } from "geri"
 import { parse } from "qs"
 
 export interface Event {
 	query: R
-	payload: R
+	body: R
 	method: string
 	headers: {
     [name: string]: string | undefined;
@@ -15,19 +15,19 @@ export interface Event {
 export const refactorEvent = (event: HandlerEvent) => {
 	const { 
 		rawQuery = '',
-		body = null,
+		body: payload = null,
 		httpMethod = 'GET',
 		headers = {}
 	} = event
-	const method  = toLower(httpMethod)
-	const query   = parse(rawQuery)
-	const payload = JSON.parse(`${body}`)
+	const method = toLower(httpMethod)
+	const query  = parse(rawQuery)
+	const body   = JSON.parse(`${payload}`)
 
-	return { query, payload, method, headers, event }
+	return { query, body, method, headers, event }
 }
-export const response = (status: number, payload: any) => ({ 
+export const response = (status: number, body: any) => ({ 
 	statusCode: status, 
-	body: JSON.stringify(payload),
+	body: JSON.stringify(body),
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		'Content-Type': 'application/json; charset=utf-8',
@@ -68,7 +68,7 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 	const onWrapUp   = config?.final ?? (async i => i.results)
 	const forContext = config?.context ?? (async i => i)
 
-	return async (i: HandlerEvent) => {
+	return async (i: HandlerEvent): HandlerResponse => {
 		let status = 500, results = null
 
 		const event   = refactorEvent(i)

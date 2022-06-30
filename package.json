@@ -1,6 +1,6 @@
 {
   "name": "fitweb",
-  "version": "0.0.93",
+  "version": "0.0.94",
   "private": true,
   "workspaces": [
     "apps/*",

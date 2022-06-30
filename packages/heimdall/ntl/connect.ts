@@ -7,9 +7,9 @@ const secret = 'trallala'
 export type UserRole = 'admin'|'reseller'|null
 export interface AuthToken {
 	id: number
-	role: UserRole|null
+	role?: UserRole
 	iat: number
-	exp: number
+	exp?: number
 }
 
 export async function connect (database: string) {
@@ -30,11 +30,11 @@ export async function connect (database: string) {
 				throw 'Útrunnin/ógild aðgangsheimild'
 			}
 		}
-		return { id: 0, role: null, iat: epoch(), exp: 0 }
+		return { id: 0, role: null, iat: epoch(), exp: 0 } as AuthToken
 	}
-	const createToken = async (id: number, role: 'reseller'|'admin', isAuthToken = false) => {
+	const createToken = async (id: number, role: UserRole, isAuthToken = false) => {
 		const iat  = epoch()
-		const data = { id, role, iat }
+		const data = { id, role, iat } as AuthToken
 
 		if (isAuthToken) {
 			data.exp = iat + 60
@@ -42,7 +42,7 @@ export async function connect (database: string) {
 		return await jwt.sign(data, secret)
 	}
 	const refreshToken = async (userToken: string) => {
-		const { id, role = null } = await authenticateToken(userToken)
+		const { id, role = null, exp = null } = await authenticateToken(userToken)
 		if (exp) throw 'Invalid token'
 		return createToken(id, role, true)
 	}

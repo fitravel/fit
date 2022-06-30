@@ -11,7 +11,7 @@ import PhoneNumber from "vui/@/PhoneNumber.vue"
 
 const users = useUsers()
 
-onMounted(() => users.fetch())
+onMounted(() => users.fetchAll())
 
 </script>
 
@@ -43,7 +43,7 @@ onMounted(() => users.fetch())
 					{{ localize(value, "do MMM yyyy — HH:mm") }}
 				</template>
 				<template #cell:id="{ value }">
-					<a href="#" @click.prevent="users.verify(value)">
+					<a href="#" @click.prevent="users.verify(value, true)">
 						<ThumbUpIcon class="w-6"></ThumbUpIcon>
 					</a>
 				</template>
@@ -78,7 +78,7 @@ onMounted(() => users.fetch())
 				</template>
 
 				<template #sidebar>
-					<Anchor to="/register" class="flex no-underline items-center">
+					<Anchor to="/user" class="flex no-underline items-center">
 						<UserAddIcon class="w-6 mr-1"></UserAddIcon>
 						<span class="text-sm font-normal">
 							Stofna nýjan aðgang
@@ -102,7 +102,7 @@ onMounted(() => users.fetch())
 				:rows="users.verified"
 			>
 				<template #cell:isActive="{ value, row }">
-					<a href="#" @click.prevent="() => users.toggle(row.id)">
+					<a href="#" @click.prevent="() => users.toggle(row.id, true)">
 						<LightningBoltIcon v-if="value" class="w-6"></LightningBoltIcon>
 						<OuutlinedLightningBoltIcon v-else class="w-6 text-gray-400"></OuutlinedLightningBoltIcon>
 					</a>

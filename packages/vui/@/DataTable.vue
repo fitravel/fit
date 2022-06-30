@@ -9,7 +9,7 @@ export interface DataTableColumn {
 	header: string
 	th?: string
 	td?: string
-	cell?: string
+	col?: string
 }
 const props = defineProps<{
 	cols: DataTableColumn[];

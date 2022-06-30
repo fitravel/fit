@@ -25,10 +25,14 @@ const isLocked = computed(() => {
 
 	return false
 })
-const login  = () => router.push('/login?from=${route.path}')
+const login  = () => router.push(`/login?from=${route.path}`)
 const logout = () => auth.logout(() => router.push('/login?logout=true'))
-onMounted(() => { if (isLocked.value) router.push(`/login?from=${route.path}`) })
 
+onMounted(() => { 
+	if (isLocked.value) {
+		router.push(`/login?from=${route.path}`)
+	} 
+})
 </script>
 
 <template>

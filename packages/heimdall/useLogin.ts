@@ -7,7 +7,7 @@ export function useLogin () {
 
 	const email    = ref('')
 	const password = ref('')
-	const error    = ref('')
+	const error    = ref<any>('')
 
 	const login = async () => {
 		try {

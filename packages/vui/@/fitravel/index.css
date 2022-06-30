@@ -5,12 +5,15 @@ body {
 main {
 	@apply text-lg;
 
-	a {
-		@apply underline inline-block text-[#d61a21];
-	}	
 	p, h2 {
 		@apply pb-4;
 	}
+}
+
+main, #page-header {
+	a {
+		@apply underline inline-block text-[#d61a21];
+	}	
 }
 
 h2 {
@@ -75,16 +78,23 @@ h3 {
 	}
 }
 
-.data-table {
-	tbody {
+th, td {
+	@apply text-left;
+}
 
+.data-table {
+	thead {
+		@apply text-sm;
+	}
+	tbody {
+		@apply text-base;
 	}
 
 	tr {
-		@apply border-b border-gray-300 h-12 hover:bg-gray-200;
+		@apply border-b border-gray-300 h-12 hover:bg-[#004287] hover:bg-opacity-10;
 	}
 	th {
-		@apply font-bold text-left;
+		@apply font-bold bg-[#004287] bg-opacity-20;
 	}
 	td, th {
 		@apply first:pl-4 last:pr-4;

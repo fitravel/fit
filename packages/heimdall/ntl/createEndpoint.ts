@@ -1,6 +1,6 @@
 import { createNetlifyEndpoint, type EndpointMethodContext } from "mimir"
 import { connect } from "./connect"
-import { head, toLower, o, trim, type R, pick, omit } from "geri"
+import { head, toLower, o, trim, type R, pick, omit, epoch } from "geri"
 import bcrypt from "bcrypt"
 
 type CTX = EndpointMethodContext
@@ -12,9 +12,9 @@ export const createEndpoint = (database: string) => {
 		const token     = bearer(i.headers)
 		const auth      = await authenticateToken(token)
 		const id        = i.query?.id ?? 0
-		const isSelf    = id === auth.id
-		const isAdmin   = auth.role === 'admin'
-		const isRefresh = auth.id && !auth.role && !auth.iat
+		const isSelf    = auth.exp && id === auth.id
+		const isAdmin   = auth.exp && auth.role === 'admin'
+		const isRefresh = auth.id && !auth.exp
 
 		const checkAuthority = () => {
 			const allowed = isSelf || isAdmin
@@ -39,35 +39,32 @@ export const createEndpoint = (database: string) => {
 	const get = async ({ users, isAdmin, id, getUser, checkAuthority, response }: CTX) => {
 		if (id) {
 			checkAuthority()
-			return response(getUser({ id }))
+			return response(await getUser({ id }))
 		}
 		if (!isAdmin) throw 'Notandi hefur ekki réttindi til að framkvæma þessa aðgerð'
 		return response(await users.select({}))
 	}
 	const post = async ({ body, users, getUser, response, createToken, auth, isRefresh }: CTX) => {
-		let user = { id: 0, token: '', password: '', role: '' }
-
 		if (isRefresh) {
-			user = await getUser({ id: auth.id })
-		}
-		else {
-			const { email, password } = await credentials(body)
-			user = await getUser({ email })
+			const user  = await getUser({ id: auth.id }, true)
+			const token = await createToken(user.id, user.role, true)
 
-			const correctPassword = await bcrypt.compare(password, user.password)
-			if (!correctPassword) throw 'Rangt lykilorð'
-
-			if (!user.token) {
-				const { id, role } = user
-				const token = createToken({ id, role, iat: new Date().toString() })
-				await users.update({ id }, { token })
-				user = await getUser({ id })
-			}
+			return response({ token })
 		}
-		
-		user = omit([ 'password', 'verifiedBy' ])(await getUser({ id }))
-		const token = createToken(id, user.role)
-		return response({ user, token })
+		const { email, password } = await credentials(body)
+		let user = await getUser({ email }, true)
+
+		const correctPassword = await bcrypt.compare(password, user.password)
+		if (!correctPassword) throw 'Rangt lykilorð'
+
+		if (!user.token) {
+			const { id, role } = user
+			const token = await createToken(id, role)
+			await users.update({ id }, { token })
+			user = await getUser({ id }, true)
+		}
+		user = omit([ 'password', 'verifiedBy' ])(user)
+		return response(user)
 	}
 	const put = async ({ users, body, isAdmin, response }: CTX) => {
 		const { email, password } = await credentials(body, true)

@@ -31,7 +31,7 @@ export const handlerResponse = (status: number, body: any): HandlerResponse => (
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 		'Content-Type': 'application/json; charset=utf-8',
-		'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+		'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
 		'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS, DELETE'
 	}
 })
@@ -69,25 +69,28 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 	const forContext = config?.context ?? (async i => i)
 
 	return async (i: HandlerEvent) => {
-		let _status = 200, _body = null
+		let _status = 200, _body = null, _context = {} as EndpointMethodContext
 
-		const response = (body: any, code: number = 200) => {
+		const response = (body: any, code = 200) => {
 			_status = code
 			_body   = body
 		}
 		const event   = refactorEvent(i)
-		const context = await forContext({ ...event, response })
 		const method  = methods[event.method as keyof EndpointMethods]
+		const context = (toAdd: R) => _context = { ..._context, ...toAdd }
 
+		const ctx = await forContext(event)
 		try {
+			context({ ...ctx, response })
 			if (!method) throw 'Unsupported method'
-			await method(context)
+			await method(_context)
 		}
 		catch (error) {
-			await onError({ ...context, error })
+			context({ error })
+			await onError(_context)
 		}
 		finally {
-			await onWrapUp(context)
+			await onWrapUp(_context)
 			return handlerResponse(_status, _body)
 		}
 	} 

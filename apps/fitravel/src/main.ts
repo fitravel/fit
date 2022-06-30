@@ -11,7 +11,7 @@ import Register from "./views/Register.vue"
 import Terms from "./views/Terms.vue"
 import Dashboard from "./views/Dashboard.vue"
 
-createSite(config, [
+const site = await createSite(config, [
 	{ path: '/', component: Home },
 	{ path: '/login', component: Login },
 	{ path: '/users', component: Users },
@@ -20,3 +20,6 @@ createSite(config, [
 	{ path: '/terms', component: Terms },
 	{ path: '/dash', component: Dashboard }
 ])
+
+export const router = site.router
+export const store  = site.store

@@ -15,6 +15,11 @@ import IconButton from "./IconButton.vue"
 import TextField from "./TextField.vue"
 import ActionButton from "./ActionButton.vue"
 import FieldChevron from "./FieldChevron.vue"
+import Heading from "./Heading.vue"
+import RegistryNumber from "./RegistryNumber.vue"
+import LicenceNumber from "./LicenceNumber.vue"
+import PhoneNumber from "./PhoneNumber.vue"
+import Email from "./Email.vue"
 
 export {
 	ActionButton,
@@ -26,12 +31,17 @@ export {
 	// DatePickerHeader,
 	// DayPicker,
 	// DayPickerCell,
+	Email,
 	FieldChevron,
+	Heading,
 	IconButton,
+	LicenceNumber,
 	// MonthPicker, 
 	// MonthPickerCell,
 	// MultiSelectField,
 	Page,
+	PhoneNumber,
+	RegistryNumber,
 	SelectField,
 	TextField
 }

@@ -4,11 +4,12 @@ import { map, slice, length } from "geri"
 import { watch } from "vue";
 import { ChevronRightIcon, ChevronLeftIcon, ChevronDoubleRightIcon, ChevronDoubleLeftIcon, IconButton } from "vui/@"
 
-interface DataTableColumn {
-	key: string;
-	header: string;
-	th?: string;
-	td?: string;
+export interface DataTableColumn {
+	key: string
+	header: string
+	th?: string
+	td?: string
+	cell?: string
 }
 const props = defineProps<{
 	cols: DataTableColumn[];
@@ -39,12 +40,12 @@ const items = computed(() => {
 </script>
 
 <template>
-	<div class="data-table">
+	<div class="data-table overflow-x-scroll pb-4">
 		<table class="w-full">
 
 			<thead>
 				<tr>
-					<th v-for="(col, x) of cols" :class="`col-${x} ${col.th ?? ''}`">
+					<th v-for="(col, x) of cols" :class="`col-${x} ${col.col ?? ''} ${col.th ?? ''}`">
 						<slot :name="`header:${col.key}`">
 							<div class="label">
 								{{ col?.header ?? '' }}
@@ -56,7 +57,7 @@ const items = computed(() => {
 
 			<tbody>
 				<tr v-for="(row, x) of items" :class="`row-${x}`">
-					<td v-for="(col, y) of cols" :class="`${col.key} col-${y} ${col.td ?? ''}`">
+					<td v-for="(col, y) of cols" :class="`${col.key} col-${y} ${col.col ?? ''} ${col.td ?? ''}`">
 						<slot :name="`cell:${col.key}`" v-bind="{ row, col, value: row?.[col.key] ?? null, rowIndex: x, colIndex: y }">
 							<div class="value">
 								{{ row[col.key] }}
@@ -68,7 +69,7 @@ const items = computed(() => {
 
 			
 		</table>
-		<div class="pagination w-full flex pt-3">
+		<div class="pagination w-full flex pt-3" v-if="paginated">
 			<div class="self-start h-9 text-right w-full pr-6 grid items-center">
 				<span class="dim">Síða {{ page }} af {{ totalPages }}</span>
 			</div>

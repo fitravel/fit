@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { Page } from "../@"
-import { DataTable } from "vui/@"
+import { DataTable, Heading, TableIcon } from "vui/@"
 </script>
 
 <template>
 	<Page secure admin>
-		<h2>Markaðstorg</h2>
+		<Heading>
+			Markaðstorg
+
+			<template #icon>
+				<TableIcon></TableIcon>
+			</template>
+		</Heading>
 		<DataTable 
 			:cols="[
 				{ header: 'Dags.', key: 'date' },

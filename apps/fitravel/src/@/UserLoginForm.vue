@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from "vue"
+import { onMounted } from "vue"
 import { TextField, ActionButton, Anchor } from "vui/@"
-import { useLogin } from "heimdall"
+import { useLogin, useAuth } from "heimdall"
+import { whenever } from "@vueuse/core"
+import { useRouter } from "vue-router";
 
 const { email, password, login, error } = useLogin()
+const auth = useAuth(), router = useRouter()
+
+whenever(() => auth.isLoggedIn, () => router.push('/dash'))
+onMounted(() => { if (auth.isLoggedIn) router.push('/dash') })
 </script>
 
 <template>
@@ -12,8 +18,8 @@ const { email, password, login, error } = useLogin()
 		<p v-if="error" class="text-red-500">
 			{{ error }}
 		</p>
-		<TextField v-model="email" label="Notandi (netfang)"/>
-		<TextField v-model="password" label="Lykilorð" type="password"/>
+		<TextField v-model="email" label="Notandi (netfang)"></TextField>
+		<TextField v-model="password" label="Lykilorð" type="password"></TextField>
 		<div class="flex">
 			<ActionButton class="mt-8">
 				Skrá inn

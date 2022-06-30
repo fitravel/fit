@@ -17,6 +17,8 @@ export async function createSite (config: SiteConfig, routes: RouteRecordRaw[] =
 	app.use(router)
 	app.use(store)
 	app.mount('#app') 
+
+	return { router, store }
 }
 
 export default createSite

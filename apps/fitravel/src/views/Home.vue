@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { Page } from "../@"
 import { Anchor } from "vui/@"
+import { useAuth } from "heimdall"
+import { onMounted } from "vue";
+import { useRouter } from "vue-router"
+
+const auth = useAuth()
+const router = useRouter()
+
+onMounted(() => { if (auth.isLoggedIn) router.push('/dash') })
 </script>
 
 <template>
-	<Page centered>
+	<Page>
 		<section class="max-w-full mx-auto grid grid-cols-2 grid-rows-2 gap-8">
 
 			<div class="col-span-1">

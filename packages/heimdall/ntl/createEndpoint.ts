@@ -5,7 +5,7 @@ import bcrypt from "bcrypt"
 
 type CTX = EndpointMethodContext
 	
-export const createEndpoint = (database: string) => {
+export const createEndpoint = (domain: string, database: string) => {
 	const context = async (i: CTX) => {
 		const { users, authenticateToken, disconnect, bearer, createToken, getUser } = await connect(database)
 
@@ -90,7 +90,7 @@ export const createEndpoint = (database: string) => {
 		return response({})
 	}
 
-	return createNetlifyEndpoint({ context, final, get, post, put, patch })
+	return createNetlifyEndpoint({ domain, context, final, get, post, put, patch })
 }
 
 export default createEndpoint

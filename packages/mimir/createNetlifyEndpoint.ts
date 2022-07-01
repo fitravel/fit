@@ -25,21 +25,18 @@ export const refactorEvent = (event: HandlerEvent) => {
 
 	return { query, body, method, headers, event }
 }
-export const handlerResponse = (status: number, body: any): HandlerResponse => ({ 
+export const handlerResponse = (status: number, body: any, allowed = ''): HandlerResponse => ({ 
 	statusCode: status, 
 	body: JSON.stringify(body),
 	headers: {
-		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Origin': allowed ? allowed : '*',
 		'Content-Type': 'application/json; charset=utf-8',
 		'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
 		'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS, DELETE'
 	}
 })
 
-export type EndpointMethodContext = Event & R & {
-	success?: R|null
-	error?: any
-}
+export type EndpointMethodContext = Event & R
 export type EndpointMethod = (i: EndpointMethodContext) => Promise<any>
 export interface EndpointMethods {
 	get?: EndpointMethod|null
@@ -50,6 +47,7 @@ export interface EndpointMethods {
 	options?: EndpointMethod|null
 }
 export type EndpointConfig = EndpointMethods & {
+	domain?: string
 	context?: (i: EndpointMethodContext) => Promise<EndpointMethodContext>
 	final?: (i: EndpointMethodContext) => Promise<EndpointMethodContext>
 	error?: (i: EndpointMethodContext) => Promise<EndpointMethodContext>
@@ -91,7 +89,7 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 		}
 		finally {
 			await onWrapUp(_context)
-			return handlerResponse(_status, _body)
+			return handlerResponse(_status, _body, domain ?? '')
 		}
 	} 
 }

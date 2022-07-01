@@ -13,7 +13,7 @@ import Dashboard from "./views/Dashboard.vue"
 import EditProduct from "./views/EditProduct.vue"
 import Schedule from "./views/Schedule.vue"
 
-const site = await createSite(config, [
+createSite(config, [
 	{ path: '/', component: Home },
 	{ path: '/login', component: Login },
 	{ path: '/users', component: Users },
@@ -27,6 +27,3 @@ const site = await createSite(config, [
 	{ path: '/schedule', component: Schedule },
 	{ path: '/schedule/:id', component: Schedule }
 ])
-
-export const router = site.router
-export const store  = site.store

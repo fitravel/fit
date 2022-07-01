@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { useVModel } from "@vueuse/core"
-import { ref, watch } from "vue"
 
 const props = defineProps<{
-	modelValue: string;
-	label?: string;
-	large?: boolean;
+	modelValue: string
+	label?: string
+	large?: boolean
 }>()
-const model = useVModel(props)
+const model = useVModel(props, 'modelValue')
 </script>
 
 <template>
@@ -15,7 +14,7 @@ const model = useVModel(props)
 		<div class="label" v-if="label">
 			{{ label }}
 		</div>
-		<textarea v-model="(model as string)" v-bind="$attrs" class="input" v-if="large"></textarea>
+		<textarea v-model="model" v-bind="$attrs" class="input" v-if="large"></textarea>
 		<input v-model="model" v-bind="$attrs" class="input" v-else>
 	</label>
 </template>

@@ -5,6 +5,6 @@ import { UserForm } from "../@"
 
 <template>
 	<Page centered>
-		<UserForm label="Nýskráning" action="Skrá notanda"/>
+		<UserForm label="Nýskráning" action="Skrá notanda"></UserForm>
 	</Page>
 </template>

@@ -1,6 +1,6 @@
 import { createNetlifyEndpoint, type EndpointMethodContext } from "mimir"
 import { connect } from "./connect"
-import { head, toLower, o, trim, type R, pick, omit, epoch } from "geri"
+import { take, takeLast, toLower, o, trim, type R, omit } from "geri"
 import bcrypt from "bcrypt"
 
 type CTX = EndpointMethodContext
@@ -75,8 +75,10 @@ export const createEndpoint = (domain: string, database: string) => {
 		const isVerified = isAdmin
 		const isActive   = true
 		const created    = new Date()
+		const registry   = `${take(6)(body.registry)}${takeLast(4)(body.registry)}`
+		const licence    = `${take(4)(body.licence)}-${takeLast(3)(body.licence)}`
 		
-		await users.insert({ ...body, email, password, isVerified, isActive, created })
+		await users.insert({ ...body, email, password, isVerified, isActive, created, registry, licence })
 
 		const message = `Aðgangur hefur verið stofnaður á netfang ${email}` + (
 			isAdmin ? '' : ' — Athugaðu að það þarf að staðfesta aðganginn áður en hann verður virkur, sem getur tekið 1-2 virka daga'

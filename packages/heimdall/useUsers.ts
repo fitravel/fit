@@ -38,6 +38,9 @@ export const useUsers = defineStore('heimdall-users', () => {
 		await _update(query, data)
 		return _refresh(list)
 	}
+	const create = async (data: R) => {
+		return fetchEndpoint('PUT', {}, data)
+	} 
 	const toggle = async (id: number, list = false) => {
 		let { isActive = false } = find<R>(byId(id))(verified.value) ?? {}
 		isActive = !isActive
@@ -48,7 +51,7 @@ export const useUsers = defineStore('heimdall-users', () => {
 		await _update({ id }, { isVerified: true })
 		return _refresh(list)
 	}
-	return { verified, unverified, user, reduced, fetch, fetchAll, update, toggle, verify }
+	return { verified, unverified, user, reduced, create, fetch, fetchAll, update, toggle, verify }
 })
 
 export default useUsers

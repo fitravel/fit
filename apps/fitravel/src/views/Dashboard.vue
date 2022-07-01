@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { Page } from "../@"
 import { type DataTableColumn } from "vui/@/DataTable.vue"
-import { DataTable, Heading, TableIcon, Anchor, DocumentAddIcon, CloudDownloadIcon, LocationMarkerIcon } from "vui/@"
-import { localize, type R, isk } from "geri"
+import { DataTable, Heading, TableIcon, Anchor, DocumentAddIcon, CloudDownloadIcon } from "vui/@"
+import { localize, isk } from "geri"
+import { useAuth } from "heimdall"
 
 const cols: DataTableColumn[] = [
 	{ header: 'Titill', key: 'title' },
@@ -14,10 +15,11 @@ const cols: DataTableColumn[] = [
 	{ header: 'Athugasemdir', key: 'comment' },
 	{ header: 'Flugáætlun', key: 'id' }
 ]
+const auth = useAuth()
 </script>
 
 <template>
-	<Page secure admin>
+	<Page secure>
 		<Heading>
 			Markaðstorg
 
@@ -26,7 +28,7 @@ const cols: DataTableColumn[] = [
 			</template>
 
 			<template #sidebar>
-				<Anchor to="/product" class="flex no-underline items-center">
+				<Anchor to="/product" class="flex no-underline items-center" v-if="auth.isAdmin">
 					<DocumentAddIcon class="w-6 mr-1"></DocumentAddIcon>
 					<span class="text-sm font-normal">
 						Búa til tilboð
@@ -51,10 +53,10 @@ const cols: DataTableColumn[] = [
 						<TableIcon class="w-6 mr-2"></TableIcon>
 						<span>Skoða áætlun</span>
 					</Anchor>
-					<a href="#" class="inline-flex items-center no-underline">
+					<!-- <a href="#" class="inline-flex items-center no-underline">
 						<CloudDownloadIcon class="w-6 mr-2"></CloudDownloadIcon>
 						<span>Sækja á <strong>.csv</strong> sniði</span>
-					</a>
+					</a> -->
 				</div>
 			</template>
 			<template #cell:price="{ value }">

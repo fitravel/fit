@@ -4,8 +4,7 @@
   "exclude": ["node_modules"],
 	"ts-node": {
     "compilerOptions": {
-			"target": "esnext",
-      "module": "esnext"
+      "module": "CommonJS"
     }
   }
 }

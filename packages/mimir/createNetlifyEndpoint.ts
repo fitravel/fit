@@ -89,7 +89,7 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 		}
 		finally {
 			await onWrapUp(_context)
-			return handlerResponse(_status, _body, domain ?? '')
+			return handlerResponse(_status, _body, config?.domain ?? '')
 		}
 	} 
 }

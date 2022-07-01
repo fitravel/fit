@@ -1,5 +1,3 @@
-import { isNil } from "ramda"
-
-export const isDev = () => isNil(process) ? false : !!(process?.env?.DEV ?? null)
+export const isDev = () => import.meta.env.DEV
 
 export default isDev

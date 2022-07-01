@@ -1,7 +1,8 @@
 import { unrefProps, type R } from "geri"
 import { stringify } from "qs"
 
-const api = import.meta.env.DEV ? 'http://localhost:9999/.netlify/functions/users' : 'https://spiffy-arithmetic-4222e4.netlify.app/'
+//@ts-ignore
+const api = import.meta.env.DEV ? 'http://localhost:9999/.netlify/functions/users' : 'https://spiffy-arithmetic-4222e4.netlify.app/api/users'
 
 export async function fetchEndpoint (method: string, query: R, payload: any, token = '') {
 	const search  = stringify(unrefProps(query))

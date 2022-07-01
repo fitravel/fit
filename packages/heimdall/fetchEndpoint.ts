@@ -1,7 +1,7 @@
-import { unrefProps, type R } from "geri"
+import { unrefProps, type R, isDev } from "geri"
 import { stringify } from "qs"
 
-const api = 'http://localhost:9999/.netlify/functions/users'
+const api = isDev() ? 'http://localhost:9999/.netlify/functions/users' : 'https://test.fitravel.info/api/users'
 
 export async function fetchEndpoint (method: string, query: R, payload: any, token = '') {
 	const search  = stringify(unrefProps(query))

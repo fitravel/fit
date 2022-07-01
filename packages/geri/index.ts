@@ -32,6 +32,5 @@ export * from "./verifyEmail"
 export * from "./verifyPassword"
 export * from "./epoch"
 export * from "./key"
-export * from "./isDev"
 
 export type R = Record<string, any>

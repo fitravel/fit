@@ -5,7 +5,7 @@
 	"ts-node": {
     "compilerOptions": {
 			"target": "esnext",
-      "module": "CommonJS"
+      "module": "esnext"
     }
   }
 }

@@ -6,10 +6,10 @@ const api = import.meta.env.DEV ? 'http://localhost:9999/.netlify/functions/user
 
 export async function fetchEndpoint (method: string, query: R, payload: any, token = '') {
 	const search  = stringify(unrefProps(query))
-	const body    = method === 'GET' ? undefined : JSON.stringify(unrefProps(payload))
-	const headers = new Headers()
+	const options = { method, headers: new Headers() }
 
-	if (token) headers.append('Authorization', `Bearer ${token}`)
+	if (token) options.headers.append('Authorization', `Bearer ${token}`)
+	if (method !== 'GET') options.body = JSON.stringify(unrefProps(payload))
 
 	return fetch(`${api}?${search}`, { method, body, headers }).then(async response => {
 		const body = await response.json()

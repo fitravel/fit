@@ -29,7 +29,7 @@ export const handlerResponse = (status: number, body: any, allowed = ''): Handle
 	statusCode: status, 
 	body: JSON.stringify(body),
 	headers: {
-		'Access-Control-Allow-Origin': allowed ? allowed : '*',
+		'Access-Control-Allow-Origin': process.env.PROD && allowed ? allowed : '*',
 		'Content-Type': 'application/json; charset=utf-8',
 		'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
 		'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS, DELETE'

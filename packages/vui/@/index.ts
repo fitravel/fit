@@ -16,8 +16,8 @@ import TextField from "./TextField.vue"
 import ActionButton from "./ActionButton.vue"
 import FieldChevron from "./FieldChevron.vue"
 import Heading from "./Heading.vue"
-import RegistryNumber from "./RegistryNumber.vue"
-import LicenceNumber from "./LicenceNumber.vue"
+import NationalRegistryNumber from "./NationalRegistryNumber.vue"
+import TravelLicenceNumber from "./TravelLicenceNumber.vue"
 import PhoneNumber from "./PhoneNumber.vue"
 import Email from "./Email.vue"
 
@@ -35,13 +35,13 @@ export {
 	FieldChevron,
 	Heading,
 	IconButton,
-	LicenceNumber,
+	TravelLicenceNumber,
 	// MonthPicker, 
 	// MonthPickerCell,
 	// MultiSelectField,
 	Page,
 	PhoneNumber,
-	RegistryNumber,
+	NationalRegistryNumber,
 	SelectField,
 	TextField
 }

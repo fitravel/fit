@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { Page } from "../@"
 import { DataTable, Heading, PencilIcon, Anchor, UsersIcon, LightningBoltIcon, ThumbUpIcon, 
-	UserAddIcon, TerminalIcon, TagIcon, LicenceNumber, Email } from "vui/@"
+	UserAddIcon, TerminalIcon, TagIcon, TravelLicenceNumber, NationalRegistryNumber, Email, PhoneNumber } from "vui/@"
 import { UsersIcon as OutlinedUsersIcon, LightningBoltIcon as OuutlinedLightningBoltIcon } from "@heroicons/vue/outline"
 import { useUsers } from "heimdall"
 import { onMounted } from "vue"
 import { localize } from "geri"
-import RegistryNumber from "vui/@/RegistryNumber.vue"
-import PhoneNumber from "vui/@/PhoneNumber.vue"
 
 const users = useUsers()
 
@@ -42,6 +40,7 @@ onMounted(() => users.fetchAll())
 				<template #cell:created="{ value }">
 					{{ localize(value, "do MMM yyyy — HH:mm") }}
 				</template>
+
 				<template #cell:id="{ value }">
 					<a href="#" @click.prevent="users.verify(value, true)">
 						<ThumbUpIcon class="w-6"></ThumbUpIcon>
@@ -49,11 +48,11 @@ onMounted(() => users.fetchAll())
 				</template>
 
 				<template #cell:registry="{ value }">
-					<RegistryNumber :no="value"></RegistryNumber>
+					<NationalRegistryNumber :no="value"></NationalRegistryNumber>
 				</template>
 
 				<template #cell:licence="{ value }">
-					<LicenceNumber :no="value"></LicenceNumber>
+					<TravelLicenceNumber :no="value"></TravelLicenceNumber>
 				</template>
 
 				<template #cell:phone="{ value }">
@@ -115,11 +114,11 @@ onMounted(() => users.fetchAll())
 				</template>
 
 				<template #cell:registry="{ value }">
-					<RegistryNumber :no="value"></RegistryNumber>
+					<NationalRegistryNumber :no="value"></NationalRegistryNumber>
 				</template>
 
 				<template #cell:licence="{ value }">
-					<LicenceNumber :no="value"></LicenceNumber>
+					<TravelLicenceNumber :no="value"></TravelLicenceNumber>
 				</template>
 
 				<template #cell:phone="{ value }">

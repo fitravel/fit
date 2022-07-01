@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Page as BasePage, LockClosedIcon, PencilIcon, Anchor, UsersIcon, LogoutIcon, TableIcon } from "vui/@"
+import { Page as BasePage, LockClosedIcon, PencilIcon, Anchor, UsersIcon, LogoutIcon, TableIcon, NationalRegistryNumber, TravelLicenceNumber } from "vui/@"
 import { useAuth } from "heimdall"
 import { computed, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import RegistryNumber from "vui/@/RegistryNumber.vue";
 
 const props = defineProps<{
 	secure?: boolean
@@ -65,10 +64,13 @@ onMounted(() => {
 
 						<div v-else class="text-right">
 							<p>
-								Velkomin/n, <strong>{{ auth.user.name }}</strong>
+								Velkomin/n, <strong>{{ auth.user.contact }}</strong>
 							</p>
 							<p class="text-sm">
-								Leyfisnr. {{ auth.user.licence }} • kt. <RegistryNumber :no="auth.user.registry"></RegistryNumber>
+								f.h. {{ auth.user.name }}
+							</p>
+							<p class="text-sm">
+								Leyfisnr. <TravelLicenceNumber :no="auth.user.licence"></TravelLicenceNumber> • kt. <NationalRegistryNumber :no="auth.user.registry"></NationalRegistryNumber>
 							</p>
 							<div class="inline-flex">
 								<Anchor :to="`/user/${auth.user.id}`" class="block text-sm">

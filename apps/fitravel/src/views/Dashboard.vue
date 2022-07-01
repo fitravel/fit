@@ -13,7 +13,8 @@ const cols: DataTableColumn[] = [
 	{ header: 'Sæti seld', key: 'sold', col: 'text-center' },
 	{ header: 'Verð p/sæti', key: 'price', col: 'text-center' },
 	{ header: 'Athugasemdir', key: 'comment' },
-	{ header: 'Flugáætlun', key: 'id' }
+	{ header: 'Flugáætlun', key: 'id' },
+	{ header: 'Birtingardagur', key: 'published' }
 ]
 const auth = useAuth()
 </script>
@@ -37,10 +38,8 @@ const auth = useAuth()
 			</template>
 		</Heading>
 
-		<DataTable 
-			:cols="cols"
-			:rows="[
-				{ id: 1, title: 'Keflavík | Verona 2022-2023', destination: 'Verona', sold: 0, available: 20, dateFrom: '2022-7-03', dateTo: '2023-08-01', comment: 'Án tösku', price: 20000 }
+		<DataTable :cols="cols" :rows="[
+				{ id: 1, title: 'Keflavík | Verona 2022-2023', destination: 'Verona', sold: 0, available: 20, dateFrom: '2022-7-03', dateTo: '2023-08-01', comment: 'Án tösku', price: 20000, published: '2022-07-01' }
 			]"
 		>
 			<template #cell:dates="{ row }">
@@ -61,6 +60,9 @@ const auth = useAuth()
 			</template>
 			<template #cell:price="{ value }">
 				{{ isk(value) }}
+			</template>
+			<template #cell:published="{ value }">
+				{{ localize(value, 'do MMM yyyy') }}
 			</template>
 		</DataTable>
 	</Page>

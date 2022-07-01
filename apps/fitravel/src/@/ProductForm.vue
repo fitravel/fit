@@ -7,13 +7,13 @@ defineProps<{
 	label: string
 }>()
 
-const title = ref('')
+const title       = ref('')
 const destination = ref('')
-const available = ref('')
-const sold = ref('')
-const comment = ref('')
-const outbound = ref('')
-const inbound = ref('')
+const available   = ref('')
+const sold        = ref('')
+const comment     = ref('')
+const outbound    = ref('')
+const inbound     = ref('')
 </script>
 
 <template>

@@ -2,6 +2,7 @@
 import { DataTable, ThumbUpIcon, TravelLicenceNumber, NationalRegistryNumber, Email, PhoneNumber } from "vui/@"
 import { useUsers } from "heimdall"
 import { localize } from "geri"
+import { computed } from "vue";
 
 const users = useUsers()
 
@@ -15,10 +16,15 @@ const columns = [
 	{ header: 'Símanúmer', key: 'phone', col: 'text-center' },
 	{ header: 'Samþykkja', key: 'id', col: 'text-center' },
 ]
+const table = computed(() => ({
+	cols: columns,
+	rows: users.unverified,
+	noResults: 'Það eru engir óstaðfestir aðgangar'
+}))
 </script>
 
 <template>
-	<DataTable :cols="columns" :rows="users.unverified" v-if="users.unverified.length">
+	<DataTable id="unverified-user-table" v-bind="table">
 		<template #cell:created="{ value }">
 			{{ localize(value, "do MMM yyyy — HH:mm") }}
 		</template>
@@ -45,7 +51,12 @@ const columns = [
 			<Email :address="value"></Email>
 		</template>
 	</DataTable>
-	<div v-else class="border border-green-400 bg-green-200 p-4 text-center text-green-900 opacity-50">
-		Það eru engir óstaðfestir aðgangar
-	</div>
 </template>
+
+<style lang="postcss" scoped>
+#unverified-user-table {
+	&:deep(.no-results) {
+		@apply border border-green-400 bg-green-200 p-4 text-center text-green-900 opacity-50;
+	}
+}
+</style>

@@ -5,6 +5,6 @@ import { ProductForm } from "../@"
 
 <template>
 	<Page secure centered>
-		<ProductForm label="Sníða nýtt tilboð" action="Skrá breytingar" show-delete show-roles></ProductForm>
+		<ProductForm :id="+$route.params.id" label="Sníða nýtt tilboð" action="Skrá breytingar"></ProductForm>
 	</Page>
 </template>

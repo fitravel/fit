@@ -20,7 +20,7 @@ const columns = [
 </script>
 
 <template>
-	<DataTable :cols="columns" :rows="users.verified" v-if="users.verified.length">
+	<DataTable id="verified-user-table" :cols="columns" :rows="users.verified" no-results="Það eru engir staðfestir aðgangar">
 		<template #cell:isActive="{ value, row }">
 			<a href="#" @click.prevent="() => users.toggle(row.id, true)">
 				<LightningBoltIcon v-if="value" class="w-6"/>
@@ -57,7 +57,13 @@ const columns = [
 			</span>
 		</template>
 	</DataTable>
-	<div v-else class="border border-red-400 bg-red-200 p-4 text-center text-red-900 opacity-50">
-		Það eru engir staðfestir aðgangar
-	</div>
 </template>
+
+
+<style lang="postcss" scoped>
+#verified-user-table {
+	&:deep(.no-results) {
+		@apply border border-red-400 bg-red-200 p-4 text-center text-red-900 opacity-50;
+	}
+}
+</style>

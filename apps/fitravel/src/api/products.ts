@@ -14,13 +14,16 @@ const context = async (event: CTX) => {
 	const id       = event.query?.id ?? 0
 	const auth     = await authenticateToken(token)
 
-	const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
-	const checkAdmin = () => {
-		if (!auth.exp && auth.role !== 'admin') throw fuckOff
-	}
-	if (!auth.id) throw fuckOff
+	console.log('AUTH', auth)
 
-	return { ...event, disconnect, id, auth, products, checkAdmin }
+	// const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
+	// const checkAdmin = () => {
+	// 	if (auth.role !== 'admin') throw fuckOff
+	// }
+	// console.log('wut', token, auth, event.headers)
+	// if (!auth.id) throw fuckOff
+
+	return { ...event, disconnect, id, auth, products, checkAdmin: () => true }
 }
 const final = async ({ disconnect, results }: CTX) => {
 	await disconnect()
@@ -36,7 +39,7 @@ const parseSchedule = (i: R) => {
 }
 const stringifySchedule = (i: R) => {
 	i.outbound = JSON.stringify(i.outbound)
-	i.iinbound = JSON.stringify(i.inbound)
+	i.inbound = JSON.stringify(i.inbound)
 	return i
 }
 
@@ -70,13 +73,15 @@ const put = async ({ checkAdmin, body, products, auth, response }: CTX) => {
 
 	const item       = stringifySchedule(body)
 	const created    = new Date()
+	const dateFrom   = new Date(body?.dateFrom)
+	const dateTo     = new Date(body?.dateTo)
 	const modified   = created
 	const createdBy  = auth.id
 	const modifiedBy = createdBy
 
-	await products.insert({ ...item, created, createdBy, modified, modifiedBy })
+	await products.insert({ ...item, dateFrom, dateTo, created, createdBy, modified, modifiedBy })
 
 	return response({ message: 'Tilboð hefur verið stofnað' })
 }
 
-export const handler = createNetlifyEndpoint({ context, final, get, patch, put })
+export const handler = createNetlifyEndpoint({ context, final, get, patch, put, domain: '*' })

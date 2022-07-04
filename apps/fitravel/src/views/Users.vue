@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Page } from "../@"
-import { DataTable, Heading, PencilIcon, Anchor, UsersIcon, LightningBoltIcon, 
-	UserAddIcon, TerminalIcon, TagIcon, TravelLicenceNumber, NationalRegistryNumber, Email, PhoneNumber, ActionAnchor } from "vui/@"
-import { UsersIcon as OutlinedUsersIcon, LightningBoltIcon as OuutlinedLightningBoltIcon } from "@heroicons/vue/outline"
+import { Heading, UsersIcon, UserAddIcon, ActionAnchor } from "vui/@"
+import { UsersIcon as OutlinedUsersIcon } from "@heroicons/vue/outline"
 import { useUsers } from "heimdall"
 import { UnverifiedUserTable, VerifiedUserTable } from "../@"
 import { onMounted } from "vue"

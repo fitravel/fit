@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
-import { byId, filter, find, isEmpty, isEmpty, key, reject, type R } from "geri"
+import { byId, filter, find, isEmpty, key, reject, type R } from "geri"
 import fetchEndpoint from "./fetchEndpoint"
 import useAuth from "./useAuth"
 
@@ -32,7 +32,7 @@ export const useUsers = defineStore('heimdall-users', () => {
 		})
 	}
 	const _refresh = (list: boolean) => {
-		return list ? fetchAll() : fetch(user.value.id)
+		return list ? fetchAll() : fetch(user.value?.id ?? 0)
 	}
 	const _update = async (query: R, data: R) => {
 		const auth = useAuth()

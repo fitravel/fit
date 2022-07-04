@@ -8,7 +8,7 @@ type CTX = EndpointMethodContext
 export const createEndpoint = (domain: string, database: string) => {
 	const context = async (i: CTX) => {
 		const { users, authenticateToken, disconnect, bearer, createToken, getUser } = await connect(database)
-
+		
 		const token     = bearer(i.headers)
 		const auth      = await authenticateToken(token)
 		const id        = i.query?.id ?? 0

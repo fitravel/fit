@@ -4,7 +4,7 @@ import { ProductForm } from "../@"
 </script>
 
 <template>
-	<Page secure centered>
+	<Page admin centered>
 		<ProductForm label="Sníða nýtt tilboð" action="Skrá tilboð"></ProductForm>
 	</Page>
 </template>

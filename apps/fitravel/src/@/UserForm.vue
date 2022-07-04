@@ -11,11 +11,13 @@ const props = defineProps<{
 	showRoles?: boolean
 	showTerms?: boolean
 }>()
+const emit = defineEmits([
+	'submit'
+])
 
 const auth  = useAuth()
 const users = useUsers()
 
-const isSubmitted = ref(false)
 const alerts      = ref([] as string[])
 const name        = ref('')
 const email       = ref('')
@@ -90,7 +92,7 @@ const onSubmit = async () => {
 				licence, password, role, isTerms, isActive
 			})
 		}
-		isSubmitted.value = true
+		emit('submit')
 	}
 	catch (e) {
 		alerts.value.push(e as string)
@@ -99,14 +101,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-	<div class="mx-auto w-full max-w-[32rem] text-center" v-if="isSubmitted">
-		<h2>Skráning tókst!</h2>
-		<p>
-			Athugaðu að það þarf að staðfesta aðganginn áður en hann verður virkur, sem getur tekið nokkra virka daga
-		</p>
-	</div>
-
-	<form id="user" class="mx-auto w-full" @submit.prevent="onSubmit" v-else>
+	<form id="user" class="mx-auto w-full max-w-[80rem]" @submit.prevent="onSubmit">
 		<Heading :label="label">
 			<template #icon><slot name="icon"/></template>
 			<template #sidebar v-if="showRoles">

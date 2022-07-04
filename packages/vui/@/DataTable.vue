@@ -40,7 +40,7 @@ const items = computed(() => {
 </script>
 
 <template>
-	<div class="data-table overflow-x-scroll pb-4">
+	<div class="data-table overflow-x-scroll pb-4 animate-in fade-in">
 		<table class="w-full">
 
 			<thead>
@@ -67,7 +67,6 @@ const items = computed(() => {
 				</tr>
 			</tbody>
 
-			
 		</table>
 		<div class="pagination w-full flex pt-3" v-if="paginated">
 			<div class="self-start h-9 text-right w-full pr-6 grid items-center">

@@ -58,7 +58,7 @@ export async function connect (database: string) {
 		return user
 	}
 
-	return { users, tokens, disconnect, authenticateToken, createToken, refreshToken, bearer, getUser }
+	return { db, users, tokens, disconnect, authenticateToken, createToken, refreshToken, bearer, getUser }
 }
 
 export default connect

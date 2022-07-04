@@ -20,8 +20,10 @@ import NationalRegistryNumber from "./NationalRegistryNumber.vue"
 import TravelLicenceNumber from "./TravelLicenceNumber.vue"
 import PhoneNumber from "./PhoneNumber.vue"
 import Email from "./Email.vue"
+import ActionAnchor from "./ActionAnchor.vue"
 
 export {
+	ActionAnchor,
 	ActionButton,
 	Anchor,
 	App,

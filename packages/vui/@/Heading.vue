@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 defineProps<{
+	label?: string
 	level?: number
 }>()
 
@@ -11,8 +12,10 @@ defineProps<{
 		<span v-if="$slots.icon" class="w-6 mr-2 flex">
 			<slot name="icon"></slot>
 		</span>
-		<span v-if="$slots.default">
-			<slot name="default"></slot>
+		<span>
+			<slot name="default">
+				{{ label }}
+			</slot>
 		</span>
 		<span v-if="$slots.sidebar" class="absolute right-1 bottom-4">
 			<slot name="sidebar"></slot>

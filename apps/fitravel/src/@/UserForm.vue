@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { any, isEmpty, verifyEmail, verifyPassword } from "geri";
-import { useAuth, useUsers } from "heimdall"
-import { onMounted, ref } from "vue";
-import { TextField, ActionButton, SelectField, Anchor } from "vui/@"
+import { useAuth, useUsers, type User } from "heimdall"
+import { computed, onMounted, ref } from "vue";
+import { TextField, ActionButton, Heading, Anchor } from "vui/@"
 
 const props = defineProps<{
 	label: string
 	action: string
 	id?: number
 	showRoles?: boolean
-	showDelete?: boolean
+	showTerms?: boolean
 }>()
 
 const auth  = useAuth()
@@ -24,50 +24,70 @@ const contact     = ref('')
 const registry    = ref('')
 const licence     = ref('')
 const password    = ref('')
-const passsynonym = ref('')
-const isTerms     = ref(false)
+const passterm    = ref('')
+
+const isAdmin  = ref(false)
+const isActive = ref(true)
+const isTerms  = ref(false)
+const isSignUp = computed(() => !(props.id ?? 0))
 
 onMounted(async () => {
-	const { id = 0 } = props
+	if (!isSignUp.value) {
+		await users.fetch(props.id as number)
+		const user = users.user as User
 
-	if (id) {
-		await users.fetch(id)
-
-		name.value     = users.user.name
-		email.value    = users.user.email
-		phone.value    = users.user.phone
-		contact.value  = users.user.contact
-		registry.value = users.user.registry
-		licence.value  = users.user.licence
+		name.value     = user.name
+		email.value    = user.email
+		phone.value    = user.phone
+		contact.value  = user.contact
+		registry.value = user.registry
+		licence.value  = user.licence
+		isAdmin.value  = user.role === 'admin'
+		isActive.value = !!user.isActive
+		isTerms.value  = !!user.isTerms
 	}
 })
 const onSubmit = async () => {
 	alerts.value = []
 
-	try {
-		if (password.value !== passsynonym.value) {
+	const checkPass = () => {
+		if (password.value !== passterm.value) {
 			throw 'Lykilorðin stemma ekki'
 		}
-		verifyEmail(email.value)
 		verifyPassword(password.value)
+	}
 
-		const isAnyNotFilled = any(isEmpty)([ 
+	try {
+		verifyEmail(email.value)
+
+		if (isSignUp.value) {
+			if (password.value) checkPass()
+			else throw 'Verður að velja lykilorð'
+		}
+		else if (password.value) {
+			checkPass()
+		}
+
+		const isAnyEmpty = any(isEmpty)([ 
 			name.value, email.value, phone.value, contact.value,
-			registry.value, licence.value, password.value
+			registry.value, licence.value
 		])
-		if (isAnyNotFilled) throw 'Það verður að fylla í alla reiti'
-		if (!isTerms.value) throw 'Það verður að samþykkja skilmálana'
+		if (isAnyEmpty) throw 'Það verður að fylla í alla reiti'
+		if (!isSignUp.value && !isTerms.value) throw 'Það verður að samþykkja skilmálana'
 
-		if (props.id) {
+		// 
+		const role = isAdmin.value ? 'admin' : 'reseller'
+
+		if (!isSignUp.value) {
 			await users.update({ id: props.id }, {
-				name, email, phone, contact, registry, licence
+				name, email, phone, contact, registry, 
+				licence, role, isActive
 			})
 		}
 		else {
-			const role = 'reseller'
 			await users.create({
 				name, email, contact, phone, registry,  
-				licence, password, role, isTerms
+				licence, password, role, isTerms, isActive
 			})
 		}
 		isSubmitted.value = true
@@ -86,38 +106,51 @@ const onSubmit = async () => {
 		</p>
 	</div>
 
-	<form id="user" class="mx-auto w-full max-w-[32rem]" @submit.prevent="onSubmit" v-else>
-		<h2 class="col-span-3">
-			{{ label }}
-		</h2>
+	<form id="user" class="mx-auto w-full" @submit.prevent="onSubmit" v-else>
+		<Heading :label="label">
+			<template #icon><slot name="icon"/></template>
+			<template #sidebar v-if="showRoles">
+				<div class="flex gap-4 text-lg font-normal">
+					<label class="flex gap-2 items-center" for="admin">
+						<input v-model="isActive" name="admin" type="checkbox"/>
+						<span>Virkur aðgangur</span>
+					</label>
+
+					<label class="flex gap-2" for="admin">
+						<input v-model="isAdmin" name="admin" type="checkbox"/>
+						<span>Gefa <strong>admin</strong> réttindi</span>
+					</label>
+				</div>
+			</template>
+		</Heading>
 
 		<ul class="text-red-500" v-if="alerts">
 			<li v-for="alert of alerts">{{ alert }}</li>
 		</ul>
 
-		<div class="col-span-1">
-			<h3>Upplýsingar vegna ferðaskrifstofu</h3>
+		<div class="grid grid-cols-3 gap-8">
+			<div class="col-span-1">
+				<h3>Upplýsingar vegna ferðaskrifstofu</h3>
+				<TextField v-model="name" label="Nafn ferðaskrifstofu"></TextField>
+				<TextField v-model="registry" label="Kennitala"></TextField>
+				<TextField v-model="licence" label="Leyfisnúmer á ferðaskrifstofuleyfi"></TextField>
+			</div>
+			
+			<div class="col-span-1">
+				<h3>Upplýsingar vegna tengiliðs</h3>
+				<TextField v-model="contact" label="Nafn tengiliðs"></TextField>
+				<TextField v-model="email" label="Netfang (ath. er einnig notendanafn)"></TextField>
+				<TextField v-model="phone" label="Símanúmer"></TextField>
+			</div>
 
-			<TextField v-model="name" label="Nafn ferðaskrifstofu"></TextField>
-			<TextField v-model="registry" label="Kennitala"></TextField>
-			<TextField v-model="licence" label="Leyfisnúmer á ferðaskrifstofuleyfi"></TextField>
-		</div>
-		
-		<div class="col-span-1">
-			<h3>Upplýsingar vegna tengiliðs</h3>
-
-			<TextField v-model="contact" label="Nafn tengiliðs"></TextField>
-			<TextField v-model="email" label="Netfang (ath. er einnig notendanafn)"></TextField>
-			<TextField v-model="phone" label="Símanúmer"></TextField>
-		</div>
-
-		<div class="col-span-1">
-			<h3>Lykilorð</h3>
-			<p>
-				Lykilorðið má ekki vera styttra en 8 slög, verður að innihalda a.m.k. 1 hástaf, 1 lágstaf, 1 tölu og 1 óvenjulegan karakter (t.d. !, # eða @)
-			</p>
-			<TextField v-model="password" label="Veldu lykilorð" type="password"></TextField>
-			<TextField v-model="passsynonym" label="Endurtaktu lykilorð" type="password"></TextField>
+			<div class="col-span-1">
+				<h3>Lykilorð</h3>
+				<TextField v-model="password" label="Veldu lykilorð" type="password"></TextField>
+				<TextField v-model="passterm" label="Endurtaktu lykilorð" type="password"></TextField>
+				<p class="pt-4 text-xs">
+					Lykilorðið má ekki vera styttra en 8 slög, verður að innihalda a.m.k. 1 hástaf, 1 lágstaf, 1 tölu og 1 óvenjulegan karakter (t.d. !, # eða @)
+				</p>
+			</div>
 		</div>
 
 		<div class="col-span-3 flex gap-8 mt-12">
@@ -125,33 +158,16 @@ const onSubmit = async () => {
 				{{ action }}
 			</ActionButton>
 
-			<label class="flex items-center" v-if="!id">
+			<label class="flex items-center" v-if="isSignUp && showTerms">
 				<input v-model="isTerms" type="checkbox" class="mr-2">
 				<span>Ég hef lesið og samþykki <Anchor to="/terms">skilmála</Anchor></span>
 			</label>
 		</div>
-
-		<!-- <div v-if="showDelete ?? false" class="pt-16 col-span-3">
-			<p class="text-red-700 font-bold">
-				ATH! Passa sig hvar maður klikkar! Það er ekki hægt að bakfæra!
-			</p>
-			<ActionButton danger-zone>
-				Eyða notanda
-			</ActionButton>
-		</div> -->
 	</form>
 </template>
 
 <style lang="postcss" scoped>
-
-#user {
-	p {
-		@apply text-base opacity-75 pb-0;
-	}
+h3 {
+	@apply mt-2;
 }
-.label::after {
-	content: ' *',
-	@apply text-red-500;
-}
-
 </style>

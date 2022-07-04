@@ -2,6 +2,7 @@
   "extends": "tsconfig/vue.json",
   "include": ["./src/**/*.ts", "./src/**/*.vue"],
   "exclude": ["node_modules"],
+	
 	"ts-node": {
     "compilerOptions": {
       "module": "CommonJS"

@@ -4,7 +4,7 @@ import { Page } from "../@"
 
 <template>
 	<Page>
-		<div class="px-8">
+		<div class="py-8 max-w-[50rem] mx-auto">
 			<h2>SKILMÁLAR UM HEILDSÖLU FERÐASKRIFSTOFU ÍSLANDS EHF. Á FLUGSÆTUM Í LOFTFARI Á VEGUM FÉLAGSINS</h2>
 
 			<h3>1. TENGSL SKILMÁLA OG SÁTTAR</h3>

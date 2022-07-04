@@ -73,12 +73,11 @@ export const createEndpoint = (domain: string, database: string) => {
 		if (userExists) throw 'Það er þegar til aðgangur skráður á þetta netfang'
 		
 		const isVerified = isAdmin
-		const isActive   = true
 		const created    = new Date()
 		const registry   = `${take(6)(body.registry)}${takeLast(4)(body.registry)}`
 		const licence    = `${take(4)(body.licence)}-${takeLast(3)(body.licence)}`
 		
-		await users.insert({ ...body, email, password, isVerified, isActive, created, registry, licence })
+		await users.insert({ ...body, email, password, isVerified, created, registry, licence })
 
 		const message = `Aðgangur hefur verið stofnaður á netfang ${email}` + (
 			isAdmin ? '' : ' — Athugaðu að það þarf að staðfesta aðganginn áður en hann verður virkur, sem getur tekið 1-2 virka daga'

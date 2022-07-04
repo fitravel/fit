@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { Page } from "../@"
-import { UserForm } from "../@"
+import { Page, UserForm } from "../@"
+import { PencilIcon } from "vui/@"
 </script>
 
 <template>
 	<Page secure centered>
-		<UserForm :id="+$route.params.id" label="Breyta notenda" action="Skrá breytingar" show-delete show-roles></UserForm>
+		<UserForm :id="+$route.params.id" label="Breyta aðgangi" action="Skrá breytingar" show-delete show-roles>
+			<template #icon><PencilIcon/></template>
+		</UserForm>
 	</Page>
 </template>

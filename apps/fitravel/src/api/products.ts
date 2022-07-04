@@ -1,0 +1,82 @@
+import { connect } from "heimdall/ntl"
+import { createNetlifyEndpoint, createTable, type EndpointMethodContext } from "mimir"
+import { head, map, o, type R } from "geri"
+
+type CTX = EndpointMethodContext
+
+//
+
+const context = async (event: CTX) => {
+	const { db, disconnect, bearer, authenticateToken } = await connect('fitravel')
+
+	const token    = bearer(event.headers)
+	const products = createTable(db, 'products')
+	const id       = event.query?.id ?? 0
+	const auth     = await authenticateToken(token)
+
+	const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
+	const checkAdmin = () => {
+		if (!auth.exp && auth.role !== 'admin') throw fuckOff
+	}
+	if (!auth.id) throw fuckOff
+
+	return { ...event, disconnect, id, auth, products, checkAdmin }
+}
+const final = async ({ disconnect, results }: CTX) => {
+	await disconnect()
+	return results
+}
+
+//
+
+const parseSchedule = (i: R) => {
+	i.outbound = JSON.parse(i.outbound)
+	i.inbound  = JSON.parse(i.inbound)
+	return i
+}
+const stringifySchedule = (i: R) => {
+	i.outbound = JSON.stringify(i.outbound)
+	i.iinbound = JSON.stringify(i.inbound)
+	return i
+}
+
+const get = async ({ products, id, response }: CTX) => {
+	if (id) {
+		try {
+			const item = head<R>(await products.select({ id })) ?? null
+			if (!item) throw 'Tilboð fannst ekki'
+			return o(response, parseSchedule)(item)
+		}
+		catch (e) { throw e }
+	}
+	const items = await products.select({})
+	return o(response, map(parseSchedule))(items)
+}
+const patch = async ({ checkAdmin, body, auth, products, response }: CTX) => {
+	checkAdmin()
+
+	const item       = stringifySchedule(body)
+	const modified   = new Date()
+	const modifiedBy = auth.id
+
+	await products.update({ id: item.id }, {
+		...item, modified, modifiedBy
+	})
+
+	return response({ message: 'Tilboð hefur verið uppfært' })
+}
+const put = async ({ checkAdmin, body, products, auth, response }: CTX) => {
+	checkAdmin()
+
+	const item       = stringifySchedule(body)
+	const created    = new Date()
+	const modified   = created
+	const createdBy  = auth.id
+	const modifiedBy = createdBy
+
+	await products.insert({ ...item, created, createdBy, modified, modifiedBy })
+
+	return response({ message: 'Tilboð hefur verið stofnað' })
+}
+
+export const handler = createNetlifyEndpoint({ context, final, get, patch, put })

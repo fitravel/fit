@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Page } from "../@"
+import { Page, ProductTable } from "../@"
 import { localize } from "geri"
 import { DataTable, Heading, CalendarIcon } from "vui/@"
 import { parse } from "date-fns"
@@ -38,27 +38,14 @@ const parseDate = (i: string) => parse(i, 'd.M.yyyy HH:mm', new Date())
 
 <template>
 	<Page secure>
-		<Heading>
-			Flugáætlun — Keflavík | Verona 2022-2023
-
-			<template #icon>
-				<CalendarIcon></CalendarIcon>
-			</template>
+		<Heading label="Flugáætlun — Keflavík | Verona 2022-2023">
+			<template #icon><CalendarIcon/></template>
 		</Heading>
+		<ProductTable :id="+($route.params.id ?? 0)"/>
 
-		<section>
-			<ul class="mb-4">
-				<li><strong>Áfangastaður:</strong> Verona</li>
-				<li><strong>Tímabil:</strong> 3. júlí 2022 – 1. ágúst 2023</li>
-				<li><strong>Sæti í boði:</strong> 20</li>
-				<li><strong>Seld sæti:</strong> 0</li>
-				<li><strong>Athugasemdir:</strong> Án tösku</li>
-			</ul>
-		</section>
-
-		<section class="w-full grid grid-cols-2 gap-8">
+		<section class="w-full grid grid-cols-2 gap-8 mt-4">
 			<div>
-				<h3>Flug út</h3>
+				<!-- <h3>Flug út</h3> -->
 				<DataTable :cols="columns" :rows="outbound">
 					<template #cell:destination="{ row }">
 						<div>
@@ -75,7 +62,7 @@ const parseDate = (i: string) => parse(i, 'd.M.yyyy HH:mm', new Date())
 			</div>
 
 			<div>
-				<h3>Flug heim</h3>
+				<!-- <h3>Flug heim</h3> -->
 				<DataTable :cols="columns" :rows="inbound">
 					<template #cell:destination="{ row }">
 						<div>

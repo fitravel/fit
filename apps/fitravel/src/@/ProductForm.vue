@@ -3,8 +3,10 @@ import { compareAsc, parse } from "date-fns"
 import { split, o, map, compose, join, values, type R, any, isEmpty, flatten, sort, head, last, localize } from "geri"
 import { useAuth } from "heimdall"
 import { computed, onMounted, ref } from "vue"
+import { routerKey, useRouter } from "vue-router"
 import { TextField, PencilIcon, Heading } from "vui/@"
 import ActionButton from "vui/@/ActionButton.vue"
+import { useAlerts } from "vui/fn"
 import { useProducts } from "../useProducts"
 
 const props = defineProps<{
@@ -14,6 +16,8 @@ const props = defineProps<{
 
 const auth     = useAuth()
 const products = useProducts()
+const router   = useRouter()
+const alerts   = useAlerts()
 
 const title       = ref('')
 const destination = ref('')
@@ -41,13 +45,12 @@ const outbound = computed(() => refactor(outSchedule.value))
 const inbound  = computed(() => refactor(inSchedule.value))
 
 const allDates = computed(() => {
-	const extractDates = compose(flatten, map(({ departure, arrival }) => [ departure, arrival ])) as (a: R[]) => Date[]
+	const extractDates = compose(flatten, map(({ departure, arrival }) => [ new Date(departure), new Date(arrival) ])) as (a: R[]) => Date[]
 	return sort(compareAsc)([ ...extractDates(outbound.value), ...extractDates(inbound.value) ])
 })
 
 onMounted(async () => {
-	if (true) {
-		console.log(auth.token)
+	if (!isNew.value) {
 		await products.fetch(props.id ?? 0)
 		const product = products.product
 
@@ -61,26 +64,29 @@ onMounted(async () => {
 	}
 })
 const onSubmit = async () => {
-	const isAnyEmpty = any(isEmpty)([ 
-		title.value, available.value, price.value, comment.value,
-		outSchedule.value, inSchedule.value
-	])
-	if (isAnyEmpty) throw 'Það þarf að fylla í alla reiti nema athugasemdir'
+	try {
+		if (any(isEmpty)([ 
+			title.value, available.value, price.value, comment.value,
+			outSchedule.value, inSchedule.value
+		])) throw 'Það þarf að fylla í alla reiti nema athugasemdir'
 
-	const dateFrom = head(allDates.value)
-	const dateTo   = last(allDates.value)
+		const dateFrom = head(allDates.value)
+		const dateTo   = last(allDates.value)
 
-	if (isNew.value) {
-		await products.create({
+		if (isNew.value) await products.create({
 			title, destination, outbound, inbound, 
 			dateFrom, dateTo, available, price, comment
 		})
+		else await products.update({ id: props.id }, {
+			title, destination, outbound, inbound, 
+			dateFrom, dateTo, available, price, comment
+		})
+		const message = isNew.value ? `Tilboð „${title.value}“ hefur verið stofnað` : `Tilboð „${title.value}“ hefur verið uppfært`
+		alerts.add({ type: 'success', message })
+		router.push('/dash')
 	}
-	else {
-		await products.update({ id: props.id }, {
-			title, destination, outbound, inbound, 
-			dateFrom, dateTo, available, price, comment
-		})
+	catch (e) {
+		alerts.add({ type: 'error', message: `${e}` })
 	}
 }
 </script>

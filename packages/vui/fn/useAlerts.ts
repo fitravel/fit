@@ -1,39 +1,37 @@
 import { ref, computed } from "vue"
-import { filter, append, update, map } from "ramda"
+import { filter as FILTER, append, update, map, reject } from "ramda"
+import { defineStore } from "pinia";
+import { addSeconds } from "date-fns";
+import { delay } from "geri";
 
 interface Alert {
-	type: string;
-	message: string;
-	index: number;
-	isDismissed: boolean;
+	message: string
+	type: string
+	sticky: boolean
+	id: number
+	isActive: boolean
+	stamp: Date
 }
-const ALERTS = ref<Alert[]>([])
 
-export function useAlerts (scope = '') {
-	const isType = (i: Alert) => scope ? i.type === scope : true
-	const alerts = computed(() => filter((i: Alert) => isType(i) && !(i?.isDismissed ?? null))(ALERTS.value))
-	const alert  = (message: string, type = scope) => {
-		const index = ALERTS.value.length
-		const alert = { type, message, index, isDismissed: false }
-		ALERTS.value = append(alert)(ALERTS.value)
-		return alert
-	}
-	const dismiss = (index: number) => {
-		const alert = ALERTS.value?.[index] ?? null
-		if (!alert) return null
-		alert.isDismissed = true
-		ALERTS.value = update(index, alert)(ALERTS.value)
-		return alert
-	}
-	const clear = () => {
-		const fn = (i: Alert) => {
-			if (isType(i)) i.isDismissed = true
-			return i
-		}
-		ALERTS.value = map(fn)(ALERTS.value)
-	}
+export const useAlerts = defineStore('alerts', () => {
+	const _items = ref([] as Alert[])
+	const active = computed(() => FILTER<Alert>(i => i?.isActive ?? false)(_items.value))
 
-	return { alerts, alert, dismiss, clear }
-}
+	const dummy   = (): Alert => ({ id: -1, message: 'Það kom upp villa!', type: 'error', sticky: false, isActive: true, stamp: new Date() })
+	const filter  = (fn: (i: Alert) => boolean) => computed(() => FILTER<Alert>(fn)(active.value))
+	const add     = (i: Partial<Alert>) => _items.value.push({ ...dummy(), ...i, id: _items.value.length })
+	const dismiss = (id: number) => _items.value[id] = { ..._items.value?.[id] ?? {}, isActive: false }
+	const clear   = () => _items.value = []
+
+	async function loop () {
+		const tick = new Date()
+		_items.value = reject<Alert>(i => !i.sticky && tick > addSeconds(i.stamp, 6))(_items.value)
+		await delay(3000)
+		loop()
+	}
+	loop()
+
+	return { active, filter, add, dismiss, clear, dummy }
+})
 
 export default useAlerts

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Page as BasePage } from "vui/@"
+import { Page as BasePage, XCircleIcon } from "vui/@"
 import { useAuth } from "heimdall"
 import { computed, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router"
@@ -57,6 +57,15 @@ onMounted(() => {
 		<template #footer>
 			<PageLine/>
 			<PageFooterInfo/>
+		</template>
+
+		<template #alert="{ message, type, close }">
+			<div :class="{ [type]: true }">
+				<span>{{ message }}</span>
+				<div class="absolute top-0 right-4 grid items-center h-full">
+					<XCircleIcon class="w-6 cursor-pointer" @click="close"/>
+				</div>
+			</div>
 		</template>
 	</BasePage>
 </template>

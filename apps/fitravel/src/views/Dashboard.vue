@@ -2,6 +2,7 @@
 import { Page, ProductTable } from "../@"
 import { Heading, TagIcon, ActionAnchor, DocumentAddIcon } from "vui/@"
 import { useAuth } from "heimdall"
+import { onMounted } from "vue";
 
 const auth = useAuth()
 </script>

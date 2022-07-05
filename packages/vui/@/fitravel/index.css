@@ -118,3 +118,21 @@ th, td {
 		}
 	}
 }
+
+#page-alerts {
+	@apply absolute top-0 right-8;
+
+	> article {
+		@apply ml-auto mt-4 w-96;
+
+		> * {
+			@apply w-full h-full block opacity-90 border text-sm relative p-4 pr-14 rounded;
+		}
+		.error {
+			@apply border-red-300 bg-red-200 text-red-700;
+		}
+		.success {
+			@apply border-green-300 bg-green-200 text-green-700;
+		}
+	}
+}

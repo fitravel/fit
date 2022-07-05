@@ -2,15 +2,20 @@
 import { localize, isk } from "geri"
 import { TableIcon, ActionAnchor, PencilIcon, Anchor } from "vui/@"
 import DataTable, { type DataTableColumn } from "vui/@/DataTable.vue"
-import { computed } from "vue"
+import { computed, onMounted } from "vue"
 import { useAuth } from "heimdall"
+import { useProducts } from "../useProducts"
+import { addWeeks } from "date-fns"
 
 const props = defineProps<{
 	id?: number
 }>()
 
-const auth   = useAuth()
-const isSolo = computed(() => !!(props.id ?? 0))
+const auth     = useAuth()
+const products = useProducts()
+const isSolo   = computed(() => !!(props.id ?? 0))
+
+onMounted(() => products.fetchAll())
 
 const columns = computed<DataTableColumn[]>(() => {
 	console.log(isSolo.value, props.id)
@@ -18,26 +23,29 @@ const columns = computed<DataTableColumn[]>(() => {
 
 	if (!isSolo.value) cols.push({ header: 'Tilboð', key: 'title' })
 	cols.push(
-		{ header: 'Birtingardagur', key: 'published' },
+		{ header: 'Birtingardagur', key: 'created' },
+		{ header: 'Losnar', key: 'free' },
 		{ header: 'Áfangastaður', key: 'destination' },
 		{ header: 'Tímabil', key: 'dates' },
 		{ header: 'Athugasemdir', key: 'comment' },
 		{ header: 'Sæti í boði', key: 'available', col: 'text-center' },
-		{ header: 'Sæti seld', key: 'sold', col: 'text-center' },
-		{ header: 'Verð p/sæti p/flug', key: 'price', col: 'text-center' }
+		// { header: 'Sæti seld', key: 'sold', col: 'text-center' },
+		{ header: 'Verð á sæti', key: 'price', col: 'text-center' }
 	)
 	if (!isSolo.value) cols.push({ header: 'Flugáætlun', key: 'outbound', col: 'text-center' })
 	if (auth.isAdmin) cols.push({ header: 'Breyta', key: 'id', col: 'text-center' })
 
 	return cols
 })
+const table = computed(() => ({
+	cols: columns.value,
+	rows: products.products,
+	noResults: 'Það eru engin tilboð'
+}))
 </script>
 
 <template>
-	<DataTable :cols="columns" :rows="[
-			{ id: 1, title: 'Keflavík | Verona 2022-2023', destination: 'Verona', sold: 0, available: 20, dateFrom: '2022-7-03', dateTo: '2023-08-01', comment: 'Án tösku', price: 20000, published: '2022-07-01' }
-		]"
-	>
+	<DataTable v-bind="table">
 		<template #cell:dates="{ row }">
 			{{ localize(new Date(row.dateFrom), 'do MMM yyyy') }} – {{ localize(new Date(row.dateTo), 'do MMM yyyy')}}
 		</template>
@@ -52,8 +60,12 @@ const columns = computed<DataTableColumn[]>(() => {
 			{{ isk(value) }}
 		</template>
 
-		<template #cell:published="{ value }">
+		<template #cell:created="{ value }">
 			{{ localize(value, 'do MMM yyyy') }}
+		</template>
+
+		<template #cell:free="{ row }" v-if="auth.isAdmin">
+			{{ localize(addWeeks(new Date(row.created), 3), 'do MMM yyyy') }}
 		</template>
 
 		<template #cell:id="{ value }">

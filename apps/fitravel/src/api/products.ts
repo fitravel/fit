@@ -55,15 +55,17 @@ const get = async ({ products, id, response }: CTX) => {
 	const items = await products.select({})
 	return o(response, map(parseSchedule))(items)
 }
-const patch = async ({ checkAdmin, body, auth, products, response }: CTX) => {
+const patch = async ({ checkAdmin, id, body, auth, products, response }: CTX) => {
 	checkAdmin()
 
 	const item       = stringifySchedule(body)
+	const dateFrom   = new Date(body?.dateFrom)
+	const dateTo     = new Date(body?.dateTo)
 	const modified   = new Date()
 	const modifiedBy = auth.id
 
-	await products.update({ id: item.id }, {
-		...item, modified, modifiedBy
+	await products.update({ id }, {
+		...item, modified, modifiedBy, dateFrom, dateTo
 	})
 
 	return response({ message: 'Tilboð hefur verið uppfært' })

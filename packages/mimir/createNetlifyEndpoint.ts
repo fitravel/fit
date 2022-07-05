@@ -21,7 +21,7 @@ export const refactorEvent = (event: HandlerEvent) => {
 	} = event
 	const method = toLower(httpMethod)
 	const query  = parse(rawQuery)
-	const body   = JSON.parse(`${payload}`)
+	const body   = payload ? JSON.parse(`${payload}`) : {}
 
 	return { query, body, method, headers, event }
 }

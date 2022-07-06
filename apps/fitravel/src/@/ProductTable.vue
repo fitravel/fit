@@ -15,10 +15,9 @@ const auth     = useAuth()
 const products = useProducts()
 const isSolo   = computed(() => !!(props.id ?? 0))
 
-onMounted(() => products.fetchAll())
+products.fetchAll()
 
 const columns = computed<DataTableColumn[]>(() => {
-	console.log(isSolo.value, props.id)
 	const cols = []
 
 	if (!isSolo.value) cols.push({ header: 'Tilboð', key: 'title' })

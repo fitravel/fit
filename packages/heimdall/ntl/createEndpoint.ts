@@ -1,4 +1,4 @@
-import { createNetlifyEndpoint, type EndpointMethodContext } from "mimir"
+import { createAPI, type EndpointMethodContext } from "mimir"
 import { connect } from "./connect"
 import { take, takeLast, toLower, o, trim, type R, omit } from "geri"
 import bcrypt from "bcrypt"
@@ -91,7 +91,7 @@ export const createEndpoint = (domain: string, database: string) => {
 		return response({})
 	}
 
-	return createNetlifyEndpoint({ domain, context, final, get, post, put, patch })
+	return createAPI({ domain, context, final, get, post, put, patch })
 }
 
 export default createEndpoint

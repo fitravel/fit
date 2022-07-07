@@ -53,7 +53,7 @@ export type EndpointConfig = EndpointMethods & {
 	error?: (i: EndpointMethodContext) => Promise<EndpointMethodContext>
 } 
 
-export function createNetlifyEndpoint (config: EndpointConfig): Handler {
+export function createAPI (config: EndpointConfig): Handler {
 	const methods: EndpointMethods = {
 		get: config?.get ?? null,
 		post: config?.post ?? null,
@@ -94,4 +94,4 @@ export function createNetlifyEndpoint (config: EndpointConfig): Handler {
 	} 
 }
 
-export default createNetlifyEndpoint
+export default createAPI

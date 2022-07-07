@@ -1,5 +1,5 @@
 import { connect } from "heimdall/ntl"
-import { createNetlifyEndpoint, createTable, type EndpointMethodContext } from "mimir"
+import { createAPI, createTable, type EndpointMethodContext } from "mimir"
 import { head, map, o, type R } from "geri"
 
 type CTX = EndpointMethodContext
@@ -86,4 +86,4 @@ const put = async ({ checkAdmin, body, products, auth, response }: CTX) => {
 	return response({ message: 'Tilboð hefur verið stofnað' })
 }
 
-export const handler = createNetlifyEndpoint({ context, final, get, patch, put, domain: '*' })
+export const handler = createAPI({ context, final, get, patch, put, domain: '*' })

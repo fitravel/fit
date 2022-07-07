@@ -1,4 +1,4 @@
-import { connectToMaria, createTable } from "mimir"
+import { createConnection, createTable } from "mimir"
 import { epoch, last, o, split, type R, head } from "geri"
 import jwt from "jsonwebtoken"
 
@@ -13,7 +13,7 @@ export interface AuthToken {
 }
 
 export async function connect (database: string) {
-	const db = await connectToMaria(database)
+	const db = await createConnection(database)
 
 	const users      = createTable(db, 'heimdall-users')
 	const tokens     = createTable(db, 'heimdall-tokens')

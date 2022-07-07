@@ -1,4 +1,4 @@
-import { createAPI, type EndpointMethodContext } from "mimir"
+import { createAPI, type EndpointMethodContext } from "mimir/ntl"
 import { connect } from "./connect"
 import { take, takeLast, toLower, o, trim, type R, omit } from "geri"
 import bcrypt from "bcrypt"

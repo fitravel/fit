@@ -1,4 +1,4 @@
-import { createConnection, createTable } from "mimir"
+import { createConnection, createTable } from "mimir/ntl"
 import { epoch, last, o, split, type R, head } from "geri"
 import jwt from "jsonwebtoken"
 
@@ -37,7 +37,7 @@ export async function connect (database: string) {
 		const data = { id, role, iat } as AuthToken
 
 		if (isAuthToken) {
-			data.exp = iat + 60
+			data.exp = iat + 5
 		}
 		return await jwt.sign(data, secret)
 	}

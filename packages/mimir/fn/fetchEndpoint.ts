@@ -9,6 +9,7 @@ export interface FetchEndpointOptions {
 	token?: string
 	config?: R
 }
+const baseURL = 'fitravel.is'
 export async function fetchEndpoint (options: FetchEndpointOptions) {
 	const { token = '', query = {}, endpoint = '' } = options
 
@@ -19,7 +20,8 @@ export async function fetchEndpoint (options: FetchEndpointOptions) {
 	if (token) config.headers.append('Authorization', `Bearer ${token}`)
 	if (config.method !== 'GET') config.body = JSON.stringify(unrefProps(options.data))
 
-	const url = import.meta['env'].DEV ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://fitravel.is/api/${endpoint}`
+	//@ts-ignore
+	const url = import.meta['env'].DEV ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://${baseURL}/api/${endpoint}`
 
 	return fetch(`${url}?${search}`, options).then(async response => {
 		const data = await response.json()

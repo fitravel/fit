@@ -6,13 +6,19 @@ import { computed, ref, watch } from "vue"
 import { fetchEndpoint } from "./fetchEndpoint"
 
 export const useAuth = defineStore('heimdall-auth', () => {
-	const user  = ref({} as R)
-	const token = ref('')
+	const user    = ref<R>({})
+	const token   = ref<string>('')
+	const isError = ref<any>(false)
 
 	const isLoggedIn = computed(() => !isNil(user.value?.id))
 	const isAdmin    = computed(() => user.value?.role === 'admin')
+	const isReady    = computed(() => isLoggedIn.value || !!isError.value)
 
-	const onError = (error: any) => { logout(); throw error }
+	const onError = (error: any) => { 
+		console.log(error)
+		isError.value = error
+		logout()
+	}
 	const logout = (fn?: () => void) => {
 		user.value = {}
 		if (!isNil(fn)) fn()
@@ -29,7 +35,7 @@ export const useAuth = defineStore('heimdall-auth', () => {
 
 	watch(token, waitAndRefresh)
 
-	return { login, logout, refresh, user, token, isLoggedIn, isAdmin }
+	return { login, logout, refresh, user, token, isLoggedIn, isAdmin, isReady }
 }, {
 	persist: {
 		storage: window.localStorage,

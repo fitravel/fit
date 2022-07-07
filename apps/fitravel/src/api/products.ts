@@ -1,5 +1,5 @@
 import { connect } from "heimdall/ntl"
-import { createAPI, createTable, type EndpointMethodContext } from "mimir"
+import { createAPI, createTable, type EndpointMethodContext } from "mimir/ntl"
 import { head, map, o, type R } from "geri"
 
 type CTX = EndpointMethodContext

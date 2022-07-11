@@ -15,7 +15,7 @@ const auth     = useAuth()
 const products = useProducts()
 const isSolo   = computed(() => !!(props.id ?? 0))
 
-products.fetchAll()
+products.fetch()
 
 const columns = computed<DataTableColumn[]>(() => {
 	const cols = []
@@ -29,7 +29,7 @@ const columns = computed<DataTableColumn[]>(() => {
 		{ header: 'Athugasemdir', key: 'comment' },
 		{ header: 'Sæti í boði', key: 'available', col: 'text-center' },
 		// { header: 'Sæti seld', key: 'sold', col: 'text-center' },
-		{ header: 'Verð á sæti', key: 'price', col: 'text-center' }
+		{ header: 'Verð per leið', key: 'price', col: 'text-center' }
 	)
 	if (!isSolo.value) cols.push({ header: 'Flugáætlun', key: 'outbound', col: 'text-center' })
 	if (auth.isAdmin) cols.push({ header: 'Breyta', key: 'id', col: 'text-center' })
@@ -38,7 +38,7 @@ const columns = computed<DataTableColumn[]>(() => {
 })
 const table = computed(() => ({
 	cols: columns.value,
-	rows: products.products,
+	rows: products.items,
 	noResults: 'Það eru engin tilboð'
 }))
 </script>

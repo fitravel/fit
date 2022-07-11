@@ -7,6 +7,7 @@ import { routerKey, useRouter } from "vue-router"
 import { TextField, PencilIcon, Heading } from "vui/@"
 import ActionButton from "vui/@/ActionButton.vue"
 import { useAlerts } from "vui/fn"
+import { useProduct } from "../useProduct"
 import { useProducts } from "../useProducts"
 
 const props = defineProps<{
@@ -14,8 +15,7 @@ const props = defineProps<{
 	label: string
 }>()
 
-const auth     = useAuth()
-const products = useProducts()
+const product  = useProduct()
 const router   = useRouter()
 const alerts   = useAlerts()
 
@@ -51,16 +51,15 @@ const allDates = computed(() => {
 
 onMounted(async () => {
 	if (!isNew.value) {
-		await products.fetch(props.id ?? 0)
-		const product = products.product
+		const i = await product.fetch({ id: props.id ?? 0})
 
-		title.value       = product.title
-		destination.value = product.destination
-		comment.value     = product.comment
-		available.value   = product.available
-		price.value       = product.price
-		outSchedule.value = defactor(product.outbound)
-		inSchedule.value  = defactor(product.inbound)
+		title.value       = i.title
+		destination.value = i.destination
+		comment.value     = i.comment
+		available.value   = i.available
+		price.value       = i.price
+		outSchedule.value = defactor(i.outbound)
+		inSchedule.value  = defactor(i.inbound)
 	}
 })
 const onSubmit = async () => {
@@ -73,11 +72,11 @@ const onSubmit = async () => {
 		const dateFrom = head(allDates.value)
 		const dateTo   = last(allDates.value)
 
-		if (isNew.value) await products.create({
+		if (isNew.value) await product.create({
 			title, destination, outbound, inbound, 
 			dateFrom, dateTo, available, price, comment
 		})
-		else await products.update({ id: props.id }, {
+		else await product.update({ id: props.id }, {
 			title, destination, outbound, inbound, 
 			dateFrom, dateTo, available, price, comment
 		})

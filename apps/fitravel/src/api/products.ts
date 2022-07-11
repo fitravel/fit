@@ -39,7 +39,7 @@ const parseSchedule = (i: R) => {
 }
 const stringifySchedule = (i: R) => {
 	i.outbound = JSON.stringify(i.outbound)
-	i.inbound = JSON.stringify(i.inbound)
+	i.inbound  = JSON.stringify(i.inbound)
 	return i
 }
 

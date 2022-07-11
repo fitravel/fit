@@ -1,4 +1,4 @@
-import { type MaybeRef } from "@vueuse/core"
+import { until, type MaybeRef } from "@vueuse/core"
 import { delay, type R } from "geri"
 import { defineStore } from "pinia"
 import { isNil } from "ramda"
@@ -12,7 +12,7 @@ export const useAuth = defineStore('heimdall-auth', () => {
 
 	const isLoggedIn = computed(() => !isNil(user.value?.id))
 	const isAdmin    = computed(() => user.value?.role === 'admin')
-	const isReady    = computed(() => isLoggedIn.value || !!isError.value)
+	const _ready     = computed(() => isLoggedIn.value || !!isError.value)
 
 	const onError = (error: any) => { 
 		console.log(error)
@@ -30,6 +30,10 @@ export const useAuth = defineStore('heimdall-auth', () => {
 	const refresh = async () => {
 		const { token: authToken = '' } = await fetchEndpoint('POST', {}, {}, user.value?.token ?? '')
 		token.value = authToken
+	}
+	const isReady = async () => {
+		await until(_ready).toBe(true)
+		return true
 	}
 	const waitAndRefresh = async () => { await delay(55000); refresh() }
 

@@ -21,7 +21,7 @@ export async function fetchEndpoint (options: FetchEndpointOptions) {
 	if (config.method !== 'GET') config.body = JSON.stringify(unrefProps(options.data))
 
 	//@ts-ignore
-	const url = import.meta['env'].DEV ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://${baseURL}/api/${endpoint}`
+	const url = import.meta.env.DEV ?? false ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://${baseURL}/api/${endpoint}`
 
 	return fetch(`${url}?${search}`, options).then(async response => {
 		const data = await response.json()

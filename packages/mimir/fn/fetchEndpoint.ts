@@ -23,7 +23,7 @@ export async function fetchEndpoint (options: FetchEndpointOptions) {
 	//@ts-ignore
 	const url = import.meta.env.DEV ?? false ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://${baseURL}/api/${endpoint}`
 
-	return fetch(`${url}?${search}`, options).then(async response => {
+	return fetch(`${url}?${search}`, config).then(async response => {
 		const data = await response.json()
 		if (response.status !== 200) throw data?.error ?? 'Það kom upp villa'
 		return data

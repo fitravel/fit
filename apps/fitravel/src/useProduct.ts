@@ -10,7 +10,7 @@ export const useProduct = defineStore('product', () => {
 
 	const { fetch, update, create } = createEndpoints('products', _item, {}, () => {
 		const products = useProducts()
-		return products.fetch()
+		return products.fetch() 
 	})
 	return { item, fetch, update, create }
 })

@@ -17,8 +17,8 @@ export const createAuthFetch = (_options: AuthFetchOptions) => async (query: R =
 export const createEndpoints = (endpoint: string, ref: Ref<any>, fallback: any, refresh?: () => Promise<any>) => {
 	const _fetch = (method: string, options: Partial<AuthFetchOptions> = {}) => createAuthFetch({ method, endpoint, ...options })
 	const fetch  = _fetch('GET', { endpoint, ref, fallback })
-	const update = (query: R, data: R) => _fetch('PATCH', { endpoint, query, data })().then(() => (refresh ?? fetch)(query, data))
-	const create = (data: R) => _fetch('PUT', { endpoint, data })().then(() => (refresh ?? fetch)({}, data))
+	const update = (query: R, data: R) => _fetch('PATCH', { endpoint })(query, data).then(() => (refresh ?? fetch)(query, data))
+	const create = (data: R) => _fetch('PUT', { endpoint, data })({}, data).then(() => (refresh ?? fetch)({}, data))
 
 	return { fetch, update, create }
 }

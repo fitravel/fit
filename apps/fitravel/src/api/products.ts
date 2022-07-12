@@ -14,7 +14,7 @@ const context = async (event: CTX) => {
 	const id       = event.query?.id ?? 0
 	const auth     = await authenticateToken(token)
 
-	console.log('AUTH', auth)
+	console.log('AUTH', auth) 
 
 	// const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
 	// const checkAdmin = () => {

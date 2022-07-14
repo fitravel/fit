@@ -10,7 +10,7 @@ export const createAuthFetch = (_options: AuthFetchOptions) => async (query: R =
 	const auth = useAuth()
 	await auth.isReady()
 	const options = { ...omit([ 'ref', 'fallback' ])(_options), token: auth.token, query, data }
-	REF.value = await fetchEndpoint(options).catch(error => { console.log(error); return _options?.fallback ?? null })
+	REF.value = await fetchEndpoint(options).catch(error => _options?.fallback ?? null)
 	return REF.value
 }
 

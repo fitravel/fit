@@ -37,7 +37,7 @@ export async function connect (database: string) {
 		const data = { id, role, iat } as AuthToken
 
 		if (isAuthToken) {
-			data.exp = iat + 5
+			data.exp = iat + 55
 		}
 		return await jwt.sign(data, secret)
 	}

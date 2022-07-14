@@ -65,7 +65,7 @@ onMounted(async () => {
 const onSubmit = async () => {
 	try {
 		if (any(isEmpty)([ 
-			title.value, available.value, price.value, comment.value,
+			title.value, available.value, price.value,
 			outSchedule.value, inSchedule.value
 		])) throw 'Það þarf að fylla í alla reiti nema athugasemdir'
 

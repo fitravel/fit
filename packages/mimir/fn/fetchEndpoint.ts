@@ -13,14 +13,14 @@ const baseURL = 'fitravel.is'
 export async function fetchEndpoint (options: FetchEndpointOptions) {
 	const { token = '', query = {}, endpoint = '' } = options
 
-	const method = toUpper(options.method)
-	const search = qs.stringify(unrefProps(query))
-	const config = { method, headers: new Headers(), ...options.config } as R
+	const method  = toUpper(options.method)
+	const search  = qs.stringify(unrefProps(query))
+	const headers = new Headers({ 'Content-Type': 'application/json; charset=utf-8' })
+	const config  = { method, headers, ...options.config } as R
 
 	if (token) config.headers.append('Authorization', `Bearer ${token}`)
 	if (config.method !== 'GET') config.body = JSON.stringify(unrefProps(options.data))
 
-	//@ts-ignore
 	const url = import.meta.env.DEV ?? false ? `http://localhost:9999/.netlify/functions/${endpoint}` : `https://${baseURL}/api/${endpoint}`
 
 	return fetch(`${url}?${search}`, config).then(async response => {

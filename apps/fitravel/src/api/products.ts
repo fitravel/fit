@@ -14,16 +14,17 @@ const context = async (event: CTX) => {
 	const id       = event.query?.id ?? 0
 	const auth     = await authenticateToken(token)
 
+	// console.log('æaæa', await products.select(id ? { id } : {}))
 	console.log('AUTH', auth) 
 
-	// const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
-	// const checkAdmin = () => {
-	// 	if (auth.role !== 'admin') throw fuckOff
-	// }
+	const fuckOff = 'Þú hefur ekki réttindi fyrir þessa aðgerð'
+	const checkAdmin = () => {
+		if (auth.role !== 'admin') throw fuckOff
+	}
 	// console.log('wut', token, auth, event.headers)
 	// if (!auth.id) throw fuckOff
 
-	return { ...event, disconnect, id, auth, products, checkAdmin: () => true }
+	return { ...event, disconnect, id, auth, products, checkAdmin }
 }
 const final = async ({ disconnect, results }: CTX) => {
 	await disconnect()

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { DataTable, ThumbUpIcon, TravelLicenceNumber, NationalRegistryNumber, Email, PhoneNumber } from "vui/@"
-import { useUsers } from "heimdall"
+import { useUser, useUsers } from "heimdall"
 import { localize } from "geri"
 import { computed } from "vue";
 
 const users = useUsers()
+const user  = useUser()
 
 const columns = [
 	{ header: 'Sótt um', key: 'created' },
@@ -19,7 +20,8 @@ const columns = [
 const table = computed(() => ({
 	cols: columns,
 	rows: users.unverified,
-	noResults: 'Það eru engir óstaðfestir aðgangar'
+	noResults: 'Það eru engir óstaðfestir aðgangar',
+	loading: users.isLoading
 }))
 </script>
 
@@ -30,25 +32,25 @@ const table = computed(() => ({
 		</template>
 
 		<template #cell:id="{ value }">
-			<a href="#" @click.prevent="users.verify(value, true)">
-				<ThumbUpIcon class="w-6"></ThumbUpIcon>
+			<a href="#" @click.prevent="user.verify(value).then(() => users.get())">
+				<ThumbUpIcon class="w-6"/>
 			</a>
 		</template>
 
 		<template #cell:registry="{ value }">
-			<NationalRegistryNumber :no="value"></NationalRegistryNumber>
+			<NationalRegistryNumber :no="value"/>
 		</template>
 
 		<template #cell:licence="{ value }">
-			<TravelLicenceNumber :no="value"></TravelLicenceNumber>
+			<TravelLicenceNumber :no="value"/>
 		</template>
 
 		<template #cell:phone="{ value }">
-			<PhoneNumber :no="value"></PhoneNumber>
+			<PhoneNumber :no="value"/>
 		</template>
 
 		<template #cell:email="{ value }">
-			<Email :address="value"></Email>
+			<Email :address="value"/>
 		</template>
 	</DataTable>
 </template>

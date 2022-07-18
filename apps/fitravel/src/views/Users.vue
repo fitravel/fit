@@ -4,11 +4,8 @@ import { Heading, UsersIcon, UserAddIcon, ActionAnchor } from "vui/@"
 import { UsersIcon as OutlinedUsersIcon } from "@heroicons/vue/outline"
 import { useUsers } from "heimdall"
 import { UnverifiedUserTable, VerifiedUserTable } from "../@"
-import { onMounted } from "vue"
 
-const users = useUsers()
-
-onMounted(() => users.fetchAll())
+useUsers().get()
 
 </script>
 

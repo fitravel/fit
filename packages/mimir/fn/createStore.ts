@@ -21,7 +21,7 @@ export const createStore = <Item = R, Context = StoreContext<Item>>(
 ) => {
 	const { id = 'store', endpoint, fallback = null, apiFactory = createFetchAPI } = options
 	return defineStore(`${endpoint}-${id}`, () => {
-		const response = ref(fallback)
+		const response = ref<Item[]>(fallback)
 		const api = apiFactory({ fetchRef: response, endpoint, fallback })
 		return extend({ response, ...api } as StoreContext<Item>) as Context
 	})

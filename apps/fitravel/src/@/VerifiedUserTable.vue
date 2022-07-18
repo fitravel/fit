@@ -2,10 +2,11 @@
 import { DataTable, PencilIcon, Anchor, LightningBoltIcon, TerminalIcon, TagIcon, TravelLicenceNumber, 
 	NationalRegistryNumber, Email, PhoneNumber } from "vui/@"
 import { LightningBoltIcon as OutlinedLightningBoltIcon } from "@heroicons/vue/outline"
-import { useUsers } from "heimdall/fn"
+import { useUser, useUsers } from "heimdall"
 import { computed } from "vue"
 
 const users = useUsers()
+const user  = useUser()
 
 const columns = [
 	{ header: 'Ferðaskrifstofa', key: 'name' },
@@ -22,14 +23,14 @@ const table = computed(() => ({
 	cols: columns,
 	rows: users.verified,
 	noResults: 'Það eru engir staðfestir aðgangar',
-	loading: !users.isReady
+	loading: users.isLoading
 }))
 </script>
 
 <template>
 	<DataTable id="verified-user-table" v-bind="table">
 		<template #cell:isActive="{ value, row }">
-			<a href="#" @click.prevent="() => users.toggle(row.id, true)">
+			<a href="#" @click.prevent="user.toggle(row.id).then(() => users.get())">
 				<LightningBoltIcon v-if="value" class="w-6"/>
 				<OutlinedLightningBoltIcon v-else class="w-6 text-gray-400"/>
 			</a>

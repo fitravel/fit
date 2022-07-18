@@ -1,19 +1,34 @@
 import { createSecureFetchAPI } from "heimdall"
-import { createItemStore, type StoreContext } from "mimir"
+import { createItemStore, type ItemStoreContext } from "mimir"
 import { type R } from "geri"
 
-interface ProductItemStoreContext extends Omit<StoreContext, 'get'> {
-	get: (id: number) => Promise<R>
+export interface Product {
+	id: number
+	title: string
+	destination: string
+	outbound: R[]
+	inbound: R[]
+	dateFrom: Date
+	dateTo: Date
+	available: number
+	price: number
+	comment: string
+	published: Date
+	created: Date
+	createdBy: number
+	modified: Date
+	modifiedBy: number
+}
+export interface ProductItemStoreContext extends ItemStoreContext<Product> {
 }
 
-export const useProduct = createItemStore(
+export const useProduct = createItemStore<Product, ProductItemStoreContext>(
 	{ 
 		endpoint: 'products', 
 		apiFactory: createSecureFetchAPI
 	},
 	context => {
-		const get = (id: number): Promise<R> => context.get({ id }) as Promise<R>
-		return { ...context, get } as ProductItemStoreContext
+		return { ...context } as ProductItemStoreContext
 	}
 )
 

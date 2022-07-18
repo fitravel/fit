@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { any, isEmpty, verifyEmail, verifyPassword } from "geri";
-import { useAuth, useUsers, type User } from "heimdall"
+import { useAuth, useUser, type User } from "heimdall"
 import { computed, onMounted, ref } from "vue";
 import { TextField, ActionButton, Heading, Anchor } from "vui/@"
 
@@ -15,8 +15,8 @@ const emit = defineEmits([
 	'submit'
 ])
 
-const auth  = useAuth()
-const users = useUsers()
+const auth = useAuth()
+const user = useUser()
 
 const alerts      = ref([] as string[])
 const name        = ref('')
@@ -35,18 +35,18 @@ const isSignUp = computed(() => !(props.id ?? 0))
 
 onMounted(async () => {
 	if (!isSignUp.value) {
-		await users.fetch(props.id as number)
-		const user = users.user as User
+		const x = await user.get(props.id ?? 0)
+		console.log('X', x)
 
-		name.value     = user.name
-		email.value    = user.email
-		phone.value    = user.phone
-		contact.value  = user.contact
-		registry.value = user.registry
-		licence.value  = user.licence
-		isAdmin.value  = user.role === 'admin'
-		isActive.value = !!user.isActive
-		isTerms.value  = !!user.isTerms
+		name.value     = user.data.name
+		email.value    = user.data.email
+		phone.value    = user.data.phone
+		contact.value  = user.data.contact
+		registry.value = user.data.registry
+		licence.value  = user.data.licence
+		isAdmin.value  = user.data.role === 'admin'
+		isActive.value = !!user.data.isActive
+		isTerms.value  = !!user.data.isTerms
 	}
 })
 const onSubmit = async () => {
@@ -81,13 +81,13 @@ const onSubmit = async () => {
 		const role = isAdmin.value ? 'admin' : 'reseller'
 
 		if (!isSignUp.value) {
-			await users.update({ id: props.id }, {
+			await user.patch({ id: props.id }, {
 				name, email, phone, contact, registry, 
 				licence, role, isActive
 			})
 		}
 		else {
-			await users.create({
+			await user.put({
 				name, email, contact, phone, registry,  
 				licence, password, role, isTerms, isActive
 			})

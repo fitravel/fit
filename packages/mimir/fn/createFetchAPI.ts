@@ -26,8 +26,8 @@ export interface FetchAPI {
 	error: Ref<string>
 	isError: Ref<boolean>
 }
-export const createFetchAPI = (options: CreateFetchApiOptions): FetchAPI => {
-	const { dataRef = ref([]), messageRef = ref({ message: '' }), 
+export const createFetchAPI = <T = R>(options: CreateFetchApiOptions): FetchAPI => {
+	const { dataRef = ref<T[]>([]), messageRef = ref<{ message: string }>({ message: '' }), 
 		loadingRef = ref(true), errorRef = ref(null)} = options
 
 	const fetch = (method: string, fetchRef: Ref<any>) => {

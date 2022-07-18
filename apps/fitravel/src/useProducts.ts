@@ -1,16 +1,15 @@
-import { defineStore } from "pinia"
-import { computed, ref } from "vue"
-import { type R } from "geri"
-import { createAuthFetch } from "heimdall"
+import { createSecureFetchAPI } from "heimdall"
+import { createListStore } from "mimir"
 
-export const useProducts = defineStore('products', () => {
-	const endpoint = 'products'
-	const _items   = ref([] as R[])
-	const items    = computed(() => _items.value)
+export const useProducts = createListStore(
+	{
+		endpoint: 'products',
+		apiFactory: createSecureFetchAPI
+	},
+	context => {
 
-	const fetch = createAuthFetch({ method: 'GET', endpoint, ref: _items, fallback: [] })
-
-	return { items, fetch }
-})
+		return { ...context } 
+	}
+)
 
 export default useProducts

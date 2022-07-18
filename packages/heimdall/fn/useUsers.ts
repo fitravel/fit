@@ -45,7 +45,7 @@ export const useUsers = defineStore('heimdall-users', () => {
 	const verified   = reduced(filter)
 	const unverified = reduced(reject)
 	const user       = computed(() => ({ ...(_user.value ?? {}), isReady: !!_user.value }))
-	const isReady    = computed(() => isEmpty(_users.value))
+	const isReady    = computed(() => !isEmpty(_users.value))
 
 	// 
 

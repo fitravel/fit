@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "@vue/reactivity"
-import { map, slice, length } from "geri"
+import { map, slice, length, isEmpty } from "geri"
 import { watch } from "vue";
 
 export interface DataTableColumn {
@@ -12,12 +12,15 @@ export interface DataTableColumn {
 }
 const props = defineProps<{
 	cols: DataTableColumn[]
-	rows: Record<string, any>[]
+	rows?: Record<string, any>[]
 	paginated?: number
 	noResults?: string
+	loading?: boolean
 }>()
+const rows = computed(() => props.rows ?? [])
+
 const itemsPerPage = computed(() => props.paginated ?? 0)
-const totalItems   = computed(() => length(props.rows ?? []))
+const totalItems   = computed(() => rows.value.length)
 const totalPages   = computed(() => Math.ceil(totalItems.value/itemsPerPage.value))
 
 const page = ref(1)
@@ -27,13 +30,14 @@ watch(page, (n) => {
 })
 
 const items = computed(() => {
+	console.log(rows.value)
 	if (itemsPerPage.value > 0) {
 		const n = (page.value * itemsPerPage.value)
-		return slice(n - itemsPerPage.value, n)(props.rows)
+		return slice(n - itemsPerPage.value, n)(rows.value)
 	}
-	return props.rows
+	return rows.value
 })
-const isResultZero = computed(() => !props.rows.length)
+const isResultZero = computed(() => isEmpty(rows.value))
 
 </script>
 
@@ -41,7 +45,12 @@ const isResultZero = computed(() => !props.rows.length)
 
 
 	<div class="data-table overflow-x-scroll pb-4 animate-in fade-in">
-		<div class="no-results" v-if="isResultZero">
+		<div v-if="loading" class="loader">
+			<slot name="loader">
+				Loading...
+			</slot>
+		</div>
+		<div class="no-results" v-else-if="isResultZero">
 			{{ noResults ?? 'Engar niðurstöður' }}
 		</div>
 		<div v-else>

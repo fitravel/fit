@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { localize, isk } from "geri"
+import { localize, isk, filter, reject, o } from "geri"
 import { TableIcon, ActionAnchor, PencilIcon, Anchor } from "vui/@"
 import DataTable, { type DataTableColumn } from "vui/@/DataTable.vue"
-import { computed, onMounted } from "vue"
+import { computed, onMounted, watch } from "vue"
 import { useAuth } from "heimdall"
 import { useProducts } from "../useProducts"
 import { addWeeks } from "date-fns"
@@ -15,30 +15,29 @@ const auth     = useAuth()
 const products = useProducts()
 const isSolo   = computed(() => !!(props.id ?? 0))
 
-products.fetch()
+products.get()
 
-const columns = computed<DataTableColumn[]>(() => {
-	const cols = []
-
-	if (!isSolo.value) cols.push({ header: 'Tilboð', key: 'title' })
-	cols.push(
+const columns = computed(() => {
+	type C = (DataTableColumn & { solo?: boolean; admin?: boolean })
+	const cols: C[] = [
+		{ header: 'Tilboð', key: 'title', solo: false },
 		{ header: 'Birtingardagur', key: 'created' },
-		{ header: 'Losnar', key: 'free' },
+		{ header: 'Losnar', key: 'free', admin: true },
 		{ header: 'Áfangastaður', key: 'destination' },
 		{ header: 'Tímabil', key: 'dates' },
 		{ header: 'Athugasemdir', key: 'comment' },
 		{ header: 'Sæti í boði', key: 'available', col: 'text-center' },
-		// { header: 'Sæti seld', key: 'sold', col: 'text-center' },
-		{ header: 'Verð per leið', key: 'price', col: 'text-center' }
-	)
-	if (!isSolo.value) cols.push({ header: 'Flugáætlun', key: 'outbound', col: 'text-center' })
-	if (auth.isAdmin) cols.push({ header: 'Breyta', key: 'id', col: 'text-center' })
-
-	return cols
+		{ header: 'Verð per leið', key: 'price', col: 'text-center' },
+		{ header: 'Flugáætlun', key: 'outbound', col: 'text-center', solo: false },
+		{ header: 'Breyta', key: 'id', col: 'text-center', admin: true, solo: false }
+	]
+	const hideAdmin   = reject((i: C) => auth.isAdmin ? false : (i?.admin ?? false))
+	const soloVersion = reject((i: C) => isSolo.value ? !(i?.solo ?? true) : false)
+	return o<C[], C[], C[]>(soloVersion, hideAdmin)(cols)
 })
 const table = computed(() => ({
 	cols: columns.value,
-	rows: products.items,
+	rows: products.data,
 	noResults: 'Það eru engin tilboð'
 }))
 </script>

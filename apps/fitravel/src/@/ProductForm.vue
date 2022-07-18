@@ -51,7 +51,7 @@ const allDates = computed(() => {
 
 onMounted(async () => {
 	if (!isNew.value) {
-		const i = await product.fetch({ id: props.id ?? 0})
+		const i: R = await product.get(props.id ?? 0)
 
 		title.value       = i.title
 		destination.value = i.destination

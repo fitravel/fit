@@ -2,7 +2,8 @@
 import { DataTable, PencilIcon, Anchor, LightningBoltIcon, TerminalIcon, TagIcon, TravelLicenceNumber, 
 	NationalRegistryNumber, Email, PhoneNumber } from "vui/@"
 import { LightningBoltIcon as OutlinedLightningBoltIcon } from "@heroicons/vue/outline"
-import { useUsers } from "heimdall"
+import { useUsers } from "heimdall/fn"
+import { computed } from "vue"
 
 const users = useUsers()
 
@@ -17,10 +18,16 @@ const columns = [
 	{ header: 'Virkur', key: 'isActive', col: 'text-center' },
 	{ header: 'Breyta', key: 'id', col: 'text-center' }
 ]
+const table = computed(() => ({
+	cols: columns,
+	rows: users.verified,
+	noResults: 'Það eru engir staðfestir aðgangar',
+	loading: !users.isReady
+}))
 </script>
 
 <template>
-	<DataTable id="verified-user-table" :cols="columns" :rows="users.verified" no-results="Það eru engir staðfestir aðgangar">
+	<DataTable id="verified-user-table" v-bind="table">
 		<template #cell:isActive="{ value, row }">
 			<a href="#" @click.prevent="() => users.toggle(row.id, true)">
 				<LightningBoltIcon v-if="value" class="w-6"/>

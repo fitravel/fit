@@ -1,16 +1,20 @@
-import { defineStore } from "pinia"
-import { computed, ref } from "vue"
+import { createSecureFetchAPI } from "heimdall"
+import { createItemStore, type StoreContext } from "mimir"
 import { type R } from "geri"
-import { createEndpoints } from "heimdall"
-import useProducts from "./useProducts"
 
-export const useProduct = defineStore('product', () => {
-	const _item = ref({} as R)
-	const item  = computed(() => _item.value)
+interface ProductItemStoreContext extends Omit<StoreContext, 'get'> {
+	get: (id: number) => Promise<R>
+}
 
-	const { fetch, update, create } = createEndpoints('products', _item, {}, () => {
-		const products = useProducts()
-		return products.fetch() 
-	})
-	return { item, fetch, update, create }
-})
+export const useProduct = createItemStore(
+	{ 
+		endpoint: 'products', 
+		apiFactory: createSecureFetchAPI
+	},
+	context => {
+		const get = (id: number): Promise<R> => context.get({ id }) as Promise<R>
+		return { ...context, get } as ProductItemStoreContext
+	}
+)
+
+export default useProduct

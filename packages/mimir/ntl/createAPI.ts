@@ -78,6 +78,7 @@ export function createAPI (config: EndpointConfig): Handler {
 		const context = (toAdd: R) => _context = { ..._context, ...toAdd }
 
 		const ctx = await forContext(event)
+		
 		try {
 			context({ ...ctx, response })
 			if (!method) throw 'Unsupported method'

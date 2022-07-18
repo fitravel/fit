@@ -1,6 +1,6 @@
 import { connect } from "heimdall/ntl"
 import { createAPI, createTable, type EndpointMethodContext } from "mimir/ntl"
-import { head, map, o, type R } from "geri"
+import { head, isEmpty, map, o, type R } from "geri"
 
 type CTX = EndpointMethodContext
 
@@ -44,16 +44,12 @@ const stringifySchedule = (i: R) => {
 }
 
 const get = async ({ products, id, response }: CTX) => {
-	if (id) {
-		try {
-			const item = head<R>(await products.select({ id })) ?? null
-			if (!item) throw 'Tilboð fannst ekki'
-			return o(response, parseSchedule)(item)
-		}
-		catch (e) { throw e }
+	try {
+		const items = await products.select(id ? { id } : {})
+		if (id && isEmpty(items)) throw 'Tilboð fannst ekki'
+		return o(response, map(parseSchedule))(items)
 	}
-	const items = await products.select({})
-	return o(response, map(parseSchedule))(items)
+	catch (e) { throw e }
 }
 const patch = async ({ checkAdmin, id, body, auth, products, response }: CTX) => {
 	checkAdmin()
